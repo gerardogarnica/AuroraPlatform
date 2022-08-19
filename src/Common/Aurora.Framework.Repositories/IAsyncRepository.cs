@@ -2,7 +2,7 @@
 
 namespace Aurora.Framework.Repositories
 {
-    public interface IAsyncRepository<T> where T : IEntity
+    public interface IAsyncRepository<T> where T : EntityBase
     {
     }
 }

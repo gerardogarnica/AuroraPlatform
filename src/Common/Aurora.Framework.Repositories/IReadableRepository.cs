@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Aurora.Framework.Repositories
 {
-    public interface IReadableRepository<T> : IAsyncRepository<T> where T : class, IEntity
+    public interface IReadableRepository<T> : IAsyncRepository<T> where T : EntityBase
     {
         Task<T?> GetAsync(Expression<Func<T, bool>> predicate);
         Task<T?> GetByIdAsync(int id);

@@ -2,7 +2,7 @@
 
 namespace Aurora.Framework.Repositories
 {
-    public interface IRemovableRepository<T> : IAsyncRepository<T> where T : class, IEntity
+    public interface IRemovableRepository<T> : IAsyncRepository<T> where T : EntityBase
     {
         Task DeleteAsync(T entity);
     }

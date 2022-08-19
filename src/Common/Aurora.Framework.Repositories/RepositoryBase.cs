@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Aurora.Framework.Repositories
 {
-    public abstract class RepositoryBase<T> : IReadableRepository<T>, IWriteableRepository<T>, IRemovableRepository<T> where T : class, IEntity
+    public abstract class RepositoryBase<T> : IReadableRepository<T>, IWriteableRepository<T>, IRemovableRepository<T> where T : EntityBase
     {
         #region Private members
 
