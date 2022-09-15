@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Aurora.Platform.Settings.Infrastructure
 {
-    public static class ServiceConfiguration
+    public static class InfrastructureServiceConfiguration
     {
-        public static IServiceCollection AddSettingsRepositories(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddSettingsInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             // Repositories implementations
             services.AddScoped<IOptionsListRepository, OptionsListRepository>();
