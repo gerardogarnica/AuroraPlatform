@@ -14,9 +14,14 @@ namespace Aurora.Platform.Settings.Application
             // Queries interfaces
             services.AddScoped<IOptionsListQueries, OptionsListQueries>();
 
+            // AutoMapper
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            // Validations
             services.AddValidationServices();
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
+            // MediatR
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             return services;
