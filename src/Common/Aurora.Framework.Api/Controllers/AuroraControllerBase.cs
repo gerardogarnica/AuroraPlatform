@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Aurora.Framework.Api
@@ -9,6 +10,7 @@ namespace Aurora.Framework.Api
         #region Private members
 
         protected readonly ILogger<AuroraControllerBase> _logger;
+        protected readonly IMediator? _mediator;
 
         #endregion
 
@@ -17,6 +19,14 @@ namespace Aurora.Framework.Api
         public AuroraControllerBase(ILogger<AuroraControllerBase> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        public AuroraControllerBase(
+            ILogger<AuroraControllerBase> logger,
+            IMediator mediator)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         #endregion
