@@ -4,7 +4,7 @@ namespace Aurora.Platform.Settings.Domain.Exceptions
 {
     public class OptionsListException : BusinessException
     {
-        protected const string OptionsListNullMessage = "El registro de lista de opciones no puede ser nulo.";
+        protected const string OptionsListNullMessage = "The record of the options list cannot be null.";
 
         public OptionsListException(string message)
             : base("OptionsListException", message) { }
