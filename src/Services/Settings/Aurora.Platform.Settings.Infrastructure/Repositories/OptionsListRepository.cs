@@ -18,10 +18,12 @@ namespace Aurora.Platform.Settings.Infrastructure.Repositories
         public OptionsListRepository(SettingsContext context)
             : base(context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         #endregion
+
+        #region IOptionsListRepository implementation
 
         async Task<OptionsList?> IOptionsListRepository.GetByCodeAsync(string code)
         {
@@ -31,5 +33,7 @@ namespace Aurora.Platform.Settings.Infrastructure.Repositories
                 .Include(x => x.Items)
                 .FirstOrDefaultAsync(x => x.Code == code);
         }
+
+        #endregion
     }
 }

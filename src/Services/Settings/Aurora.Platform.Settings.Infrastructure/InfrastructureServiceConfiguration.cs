@@ -15,6 +15,8 @@ namespace Aurora.Platform.Settings.Infrastructure
                 o => o.UseSqlServer(configuration.GetConnectionString("SettingsDataConnection")));
 
             // Repositories implementations
+            services.AddScoped<IAttributeSettingRepository, AttributeSettingRepository>();
+            services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
             services.AddScoped<IOptionsListRepository, OptionsListRepository>();
 
             return services;
