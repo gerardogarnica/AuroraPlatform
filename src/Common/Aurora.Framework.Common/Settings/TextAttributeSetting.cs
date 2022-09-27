@@ -32,7 +32,7 @@ namespace Aurora.Framework.Settings
             Pattern = q.FirstOrDefault().Pattern;
         }
 
-        public override string GetConfigurationWrapper()
+        public override string GetSettingWrapper()
         {
             if (MaxLength < MinLength)
             {

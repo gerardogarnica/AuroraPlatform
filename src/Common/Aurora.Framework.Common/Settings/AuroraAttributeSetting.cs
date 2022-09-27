@@ -18,27 +18,27 @@ namespace Aurora.Framework.Settings
             {
                 case AuroraDataType.Boolean:
                     if (BooleanSetting == null) throw new PlatformException(ExceptionMessages.InvalidBooleanAttributeSetting);
-                    return BooleanSetting.GetConfigurationWrapper();
+                    return BooleanSetting.GetSettingWrapper();
 
                 case AuroraDataType.Integer:
                     if (IntegerSetting == null) throw new PlatformException(ExceptionMessages.InvalidIntegerAttributeSetting);
-                    return IntegerSetting.GetConfigurationWrapper();
+                    return IntegerSetting.GetSettingWrapper();
 
                 case AuroraDataType.Money:
                     if (MoneySetting == null) throw new PlatformException(ExceptionMessages.InvalidMoneyAttributeSetting);
-                    return MoneySetting.GetConfigurationWrapper();
+                    return MoneySetting.GetSettingWrapper();
 
                 case AuroraDataType.Numeric:
                     if (NumericSetting == null) throw new PlatformException(ExceptionMessages.InvalidNumericAttributeSetting);
-                    return NumericSetting.GetConfigurationWrapper();
+                    return NumericSetting.GetSettingWrapper();
 
                 case AuroraDataType.OptionsList:
                     if (OptionsListSetting == null) throw new PlatformException(ExceptionMessages.InvalidOptionsListAttributeSetting);
-                    return OptionsListSetting.GetConfigurationWrapper();
+                    return OptionsListSetting.GetSettingWrapper();
 
                 case AuroraDataType.Text:
                     if (TextSetting == null) throw new PlatformException(ExceptionMessages.InvalidTextAttributeSetting);
-                    return TextSetting.GetConfigurationWrapper();
+                    return TextSetting.GetSettingWrapper();
 
                 default: return null;
             }

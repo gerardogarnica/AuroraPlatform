@@ -21,7 +21,7 @@ namespace Aurora.Framework.Settings
             DefaultValue = q.FirstOrDefault().DefaultValue.Value;
         }
 
-        public override string GetConfigurationWrapper()
+        public override string GetSettingWrapper()
         {
             var document = new XDocument(
                 new XElement("booleanSetting",

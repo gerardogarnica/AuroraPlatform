@@ -31,7 +31,7 @@ namespace Aurora.Framework.Settings
             DecimalsQuantity = q.FirstOrDefault().DecimalsQuantity;
         }
 
-        public override string GetConfigurationWrapper()
+        public override string GetSettingWrapper()
         {
             if (MaxValue < MinValue)
             {

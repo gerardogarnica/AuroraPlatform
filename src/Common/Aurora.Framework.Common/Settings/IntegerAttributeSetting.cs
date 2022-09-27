@@ -28,7 +28,7 @@ namespace Aurora.Framework.Settings
             DefaultValue = q.FirstOrDefault().DefaultValue;
         }
 
-        public override string GetConfigurationWrapper()
+        public override string GetSettingWrapper()
         {
             if (MaxValue < MinValue)
             {

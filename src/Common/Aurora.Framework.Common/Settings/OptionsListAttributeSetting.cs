@@ -33,7 +33,7 @@ namespace Aurora.Framework.Settings
             ShowInactiveItems = q.FirstOrDefault().ShowInactiveItems;
         }
 
-        public override string GetConfigurationWrapper()
+        public override string GetSettingWrapper()
         {
             var document = new XDocument(
                 new XElement("catalogSetting",

@@ -11,6 +11,6 @@ namespace Aurora.Framework.Settings
             XDocument = XDocument.Parse(xmlSetting);
         }
 
-        public abstract string GetConfigurationWrapper();
+        public abstract string GetSettingWrapper();
     }
 }
