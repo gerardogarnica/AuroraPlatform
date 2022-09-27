@@ -1,4 +1,6 @@
-﻿namespace Aurora.Framework
+﻿using Aurora.Framework.Exceptions;
+
+namespace Aurora.Framework
 {
     public static class IntegerExtensions
     {
@@ -6,8 +8,7 @@
         {
             if (maxValue < minValue)
             {
-                // TODO: add exception
-                //throw new Exceptions.PlatformException(ExceptionMessages.OutOfRangeException);
+                throw new PlatformException(string.Format(ExceptionMessages.OutOfRangeException, minValue, maxValue));
             }
 
             return value >= minValue && value <= maxValue;
