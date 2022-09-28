@@ -64,12 +64,12 @@ namespace Aurora.Framework
             return string.Empty;
         }
 
-        public static string? ToString(this DateTime? date, DateFormat format)
+        public static string ToString(this DateTime? date, DateFormat format)
         {
             return date.ToString(format, string.Empty);
         }
 
-        public static string? ToString(this DateTime? date, DateFormat format, string separator)
+        public static string ToString(this DateTime? date, DateFormat format, string separator)
         {
             return date.HasValue ? Convert.ToDateTime(date).ToString(format, separator) : null;
         }

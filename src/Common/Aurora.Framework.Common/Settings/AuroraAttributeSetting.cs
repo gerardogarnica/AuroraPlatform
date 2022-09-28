@@ -12,7 +12,7 @@ namespace Aurora.Framework.Settings
         public OptionsListAttributeSetting OptionsListSetting { get; set; }
         public TextAttributeSetting TextSetting { get; set; }
 
-        public string GetConfigurationSetting()
+        public string GetSettingString()
         {
             switch (DataType)
             {
