@@ -12,6 +12,7 @@ namespace Aurora.Platform.Settings.Application
         public static IServiceCollection AddSettingsApplicationServices(this IServiceCollection services)
         {
             // Queries interfaces
+            services.AddScoped<IAttributeQueries, AttributeQueries>();
             services.AddScoped<IOptionsListQueries, OptionsListQueries>();
 
             // AutoMapper
