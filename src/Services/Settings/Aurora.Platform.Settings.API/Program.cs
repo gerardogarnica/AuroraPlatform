@@ -4,6 +4,9 @@ using Aurora.Platform.Settings.API.Extensions;
 using Aurora.Platform.Settings.Application;
 using Aurora.Platform.Settings.Infrastructure;
 
+const string apiName = "Aurora Platform Settings";
+const string apiDescription = "Aurora Platform common settings services API.";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add API configuration.
@@ -15,7 +18,8 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(apiName, apiDescription, 1);
+builder.Services.AddStringEnumConverter();
 
 // Add Serilog configuration.
 builder.Host.ConfigureSerilog();

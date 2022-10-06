@@ -30,11 +30,12 @@ namespace Aurora.Platform.Settings.API.Controllers
 
         #region Controller methods
 
-        [HttpGet(Name = "GetByCode")]
-        [ProducesResponseType(typeof(IReadOnlyList<OptionsListViewModel>), StatusCodes.Status200OK)]
+        // GET aurora/api/settings/options/{code}
+        [HttpGet("{code}", Name = "GetByCode")]
+        [ProducesResponseType(typeof(OptionsListViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IReadOnlyList<OptionsListViewModel>>> GetByCode(string code, [FromQuery] bool onlyGetActiveItems)
+        public async Task<ActionResult<OptionsListViewModel>> GetByCode(string code, [FromQuery] bool onlyGetActiveItems)
         {
             var optionsList = await _optionsListQueries.GetByCodeAsync(code, onlyGetActiveItems);
             if (optionsList == null) return NoContent();
