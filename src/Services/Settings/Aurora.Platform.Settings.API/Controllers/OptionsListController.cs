@@ -1,4 +1,5 @@
 ﻿using Aurora.Framework.Api;
+using Aurora.Platform.Settings.Application.Commands;
 using Aurora.Platform.Settings.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,16 @@ namespace Aurora.Platform.Settings.API.Controllers
             if (optionsList == null) return NoContent();
 
             return Ok(optionsList);
+        }
+
+        [HttpPost(Name = "Create")]
+        [ProducesResponseType(typeof(OptionsListViewModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<OptionsListViewModel>> Create([FromBody] CreateOptionsListCommand command)
+        {
+            var optionsList = await _mediator.Send(command);
+            return Created(string.Empty, optionsList);
         }
 
         #endregion
