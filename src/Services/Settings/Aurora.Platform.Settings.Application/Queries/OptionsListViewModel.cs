@@ -3,19 +3,19 @@
     public class OptionsListViewModel
     {
         public int Id { get; set; }
-        public string? Code { get; set; }
-        public string? Name { get; set; }
-        public string? Description { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public bool IsVisible { get; set; }
         public bool IsEditable { get; set; }
-        public IList<OptionsListItem>? Items { get; set; }
+        public IList<OptionsListItem> Items { get; set; }
     }
 
     public class OptionsListItem
     {
         public int Id { get; set; }
-        public string? Code { get; set; }
-        public string? Description { get; set; }
+        public string Code { get; set; }
+        public string Description { get; set; }
         public bool IsEditable { get; set; }
         public bool IsActive { get; set; }
     }

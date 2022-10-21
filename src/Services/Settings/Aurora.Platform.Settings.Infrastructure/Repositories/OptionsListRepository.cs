@@ -25,7 +25,7 @@ namespace Aurora.Platform.Settings.Infrastructure.Repositories
 
         #region IOptionsListRepository implementation
 
-        async Task<OptionsList?> IOptionsListRepository.GetByCodeAsync(string code)
+        async Task<OptionsList> IOptionsListRepository.GetByCodeAsync(string code)
         {
             return await _context
                 .Options

@@ -7,7 +7,7 @@ namespace Aurora.Platform.Settings.Application.Queries
     {
         public int Id { get; set; }
         public int RelationshipId { get; set; }
-        public string? Code { get; set; }
+        public string Code { get; set; }
         public AuroraDataType DataType { get; set; }
     }
 }

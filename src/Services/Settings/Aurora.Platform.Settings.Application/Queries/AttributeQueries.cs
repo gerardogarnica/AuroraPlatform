@@ -10,9 +10,9 @@ namespace Aurora.Platform.Settings.Application.Queries
 {
     public interface IAttributeQueries
     {
-        Task<AttributeSettingModel?> GetSettingAsync(string code);
+        Task<AttributeSettingModel> GetSettingAsync(string code);
         Task<PagedCollection<AttributeSettingModel>> GetSettingListAsync(PagedViewRequest viewRequest, string scope);
-        Task<AttributeValueModel?> GetValueAsync(string code, int relationshipId);
+        Task<AttributeValueModel> GetValueAsync(string code, int relationshipId);
         Task<IList<AttributeValueModel>> GetValueListAsync(string scopeType, int relationshipId);
     }
 
@@ -42,12 +42,12 @@ namespace Aurora.Platform.Settings.Application.Queries
 
         #region IAttributeQueries implementation
 
-        async Task<AttributeSettingModel?> IAttributeQueries.GetSettingAsync(string code)
+        async Task<AttributeSettingModel> IAttributeQueries.GetSettingAsync(string code)
         {
             var attributeSetting = await GetExistentAttributeSetting(code);
             if (attributeSetting == null) return null;
 
-            return _mapper.Map<AttributeSettingModel?>(attributeSetting);
+            return _mapper.Map<AttributeSettingModel>(attributeSetting);
         }
 
         async Task<PagedCollection<AttributeSettingModel>> IAttributeQueries.GetSettingListAsync(PagedViewRequest viewRequest, string scope)
@@ -61,7 +61,7 @@ namespace Aurora.Platform.Settings.Application.Queries
             return _mapper.Map<PagedCollection<AttributeSettingModel>>(attributeSettings);
         }
 
-        async Task<AttributeValueModel?> IAttributeQueries.GetValueAsync(string code, int relationshipId)
+        async Task<AttributeValueModel> IAttributeQueries.GetValueAsync(string code, int relationshipId)
         {
             var attributeValue = await _valueRepository.GetByCodeAsync(code, relationshipId);
 
@@ -70,7 +70,7 @@ namespace Aurora.Platform.Settings.Application.Queries
                 var attributeSetting = await GetExistentAttributeSetting(code);
                 if (attributeSetting == null) return null;
 
-                var settingModel = _mapper.Map<AttributeSettingModel?>(attributeSetting);
+                var settingModel = _mapper.Map<AttributeSettingModel>(attributeSetting);
                 if (settingModel == null) return null;
 
                 attributeValue = new AttributeValue()
@@ -82,7 +82,7 @@ namespace Aurora.Platform.Settings.Application.Queries
                 };
             }
 
-            return _mapper.Map<AttributeValueModel?>(attributeValue);
+            return _mapper.Map<AttributeValueModel>(attributeValue);
         }
 
         async Task<IList<AttributeValueModel>> IAttributeQueries.GetValueListAsync(string scopeType, int relationshipId)
@@ -118,12 +118,12 @@ namespace Aurora.Platform.Settings.Application.Queries
             return await _settingRepository.GetListAsync(x => x.ScopeType == scopeType, x => x.Name);
         }
 
-        private async Task<AttributeSetting?> GetExistentAttributeSetting(string code)
+        private async Task<AttributeSetting> GetExistentAttributeSetting(string code)
         {
             return await _settingRepository.GetAsync(x => x.Code == code);
         }
 
-        private string CreateDefaultValue(AttributeSettingModel setting)
+        private static string CreateDefaultValue(AttributeSettingModel setting)
         {
             switch (setting.DataType)
             {

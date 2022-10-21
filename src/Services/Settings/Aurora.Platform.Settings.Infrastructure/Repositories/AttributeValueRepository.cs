@@ -25,7 +25,7 @@ namespace Aurora.Platform.Settings.Infrastructure.Repositories
 
         #region IAttributeValueRepository implementation
 
-        async Task<AttributeValue?> IAttributeValueRepository.GetByCodeAsync(string code, int relationshipId)
+        async Task<AttributeValue> IAttributeValueRepository.GetByCodeAsync(string code, int relationshipId)
         {
             return await _context
                 .AttributeValues

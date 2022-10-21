@@ -5,7 +5,7 @@ namespace Aurora.Platform.Settings.Application.Queries
 {
     public interface IOptionsListQueries
     {
-        Task<OptionsListViewModel?> GetByCodeAsync(string code, bool onlyActiveItems);
+        Task<OptionsListViewModel> GetByCodeAsync(string code, bool onlyActiveItems);
     }
 
     public class OptionsListQueries : IOptionsListQueries
@@ -29,17 +29,17 @@ namespace Aurora.Platform.Settings.Application.Queries
 
         #region IOptionsListQueries implementation
 
-        async Task<OptionsListViewModel?> IOptionsListQueries.GetByCodeAsync(string code, bool onlyActiveItems)
+        async Task<OptionsListViewModel> IOptionsListQueries.GetByCodeAsync(string code, bool onlyActiveItems)
         {
             var optionList = await _repository.GetByCodeAsync(code);
             if (optionList == null) return null;
 
             if (onlyActiveItems)
             {
-                optionList.Items?.ToList().RemoveAll(x => x.IsActive == false);
+                optionList.Items.ToList().RemoveAll(x => x.IsActive == false);
             }
 
-            return _mapper.Map<OptionsListViewModel?>(optionList);
+            return _mapper.Map<OptionsListViewModel>(optionList);
         }
 
         #endregion
