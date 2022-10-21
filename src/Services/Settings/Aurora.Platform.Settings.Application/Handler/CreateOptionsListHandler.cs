@@ -1,6 +1,7 @@
 ﻿using Aurora.Platform.Settings.Application.Commands;
 using Aurora.Platform.Settings.Application.Queries;
 using Aurora.Platform.Settings.Domain.Entities;
+using Aurora.Platform.Settings.Domain.Exceptions;
 using Aurora.Platform.Settings.Domain.Repositories;
 using AutoMapper;
 using MediatR;
@@ -31,10 +32,26 @@ namespace Aurora.Platform.Settings.Application.Handler
         async Task<OptionsListViewModel> IRequestHandler<CreateOptionsListCommand, OptionsListViewModel>.Handle(
             CreateOptionsListCommand request, CancellationToken cancellationToken)
         {
+            await VerifyIfExists(request.Code.Trim());
+
             var entry = _mapper.Map<OptionsList>(request);
 
-            var optionList = await _repository.AddAsync(entry);
-            return _mapper.Map<OptionsListViewModel>(optionList);
+            var optionsList = await _repository.AddAsync(entry);
+            return _mapper.Map<OptionsListViewModel>(optionsList);
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private async Task VerifyIfExists(string code)
+        {
+            var optionsList = await _repository.GetByCodeAsync(code);
+
+            if (optionsList != null)
+            {
+                throw new ExistsOptionsListCodeException(code);
+            }
         }
 
         #endregion
