@@ -1,6 +1,7 @@
 ﻿using Aurora.Framework.Entities;
 using Aurora.Framework.Repositories.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
 namespace Aurora.Framework.Repositories
@@ -104,8 +105,9 @@ namespace Aurora.Framework.Repositories
             using var transaction = await _context.Database.BeginTransactionAsync();
 
             _context.Set<T>().Add(entity);
-            await _context.SaveChangesAsync();
+            AddAuditableData();
 
+            await _context.SaveChangesAsync();
             await transaction.CommitAsync();
 
             return entity;
@@ -116,8 +118,9 @@ namespace Aurora.Framework.Repositories
             using var transaction = await _context.Database.BeginTransactionAsync();
 
             _context.Set<T>().Update(entity);
-            await _context.SaveChangesAsync();
+            AddAuditableData();
 
+            await _context.SaveChangesAsync();
             await transaction.CommitAsync();
 
             return entity;
@@ -132,16 +135,32 @@ namespace Aurora.Framework.Repositories
             using var transaction = await _context.Database.BeginTransactionAsync();
 
             _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
+            AddAuditableData();
 
+            await _context.SaveChangesAsync();
             await transaction.CommitAsync();
         }
 
         #endregion
 
-        private bool IsAuditableEntity(T entity)
+        private void AddAuditableData()
         {
-            return typeof(AuditableEntity).IsAssignableFrom(entity.GetType());
+            foreach (var entry in _context
+                .ChangeTracker
+                .Entries()
+                .Where(x => x.Entity is AuditableEntity))
+            {
+                if (entry.Entity is not AuditableEntity entity) continue;
+
+                if (entry.State == EntityState.Added)
+                {
+                    entity.CreatedBy = "admin";
+                    entity.CreatedDate = DateTime.UtcNow;
+                }
+
+                entity.LastUpdatedBy = "admin";
+                entity.LastUpdatedDate = DateTime.UtcNow;
+            }
         }
     }
 }
