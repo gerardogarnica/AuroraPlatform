@@ -28,6 +28,14 @@
 
         #region Constructors
 
+        public ErrorDetailResponse()
+        {
+            StatusCode = 500;
+            ErrorCategory = ErrorDetailCategory.Error;
+            Errors = new List<ErrorMessage>();
+            _message = string.Empty;
+        }
+
         public ErrorDetailResponse(int statusCode, ErrorDetailCategory category)
         {
             StatusCode = statusCode;
