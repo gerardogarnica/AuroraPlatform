@@ -7,13 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Aurora.Framework.Api\Aurora.Framework.Api.csproj" />
     <ProjectReference Include="..\..\..\Common\Aurora.Framework.Logging\Aurora.Framework.Logging.csproj" />
+    <ProjectReference Include="..\..\Security\Aurora.Platform.Security.Application\Aurora.Platform.Security.Application.csproj" />
+    <ProjectReference Include="..\..\Security\Aurora.Platform.Security.Infrastructure\Aurora.Platform.Security.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
