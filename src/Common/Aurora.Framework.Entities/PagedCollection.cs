@@ -6,6 +6,13 @@
         public int CurrentPage { get; set; }
         public int TotalItems { get; set; }
         public int TotalPages { get; set; }
+        public string Description
+        {
+            get
+            {
+                return ToString();
+            }
+        }
 
         public bool HasItems
         {
