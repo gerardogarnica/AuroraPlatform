@@ -1,4 +1,6 @@
-﻿using Aurora.Framework.Entities;
+﻿using Aurora.Framework.Cryptography;
+using Aurora.Framework.Entities;
+using Aurora.Platform.Security.Domain.Exceptions;
 
 namespace Aurora.Platform.Security.Domain.Entities
 {
@@ -13,5 +15,29 @@ namespace Aurora.Platform.Security.Domain.Entities
         public bool IsActive { get; set; }
         public UserCredential Credential { get; set; }
         public List<UserRole> UserRoles { get; set; }
+
+        public void CheckIfPasswordMatches(string password)
+        {
+            var decryptPassword = SymmetricEncryptionProvider
+                .Unprotect(Credential.Password, Credential.PasswordControl, "Aurora.Platform.Security.UserData");
+
+            if (password != decryptPassword)
+                throw new InvalidCredentialsException();
+        }
+
+        public void CheckIfIsActive()
+        {
+            if (IsActive) return;
+
+            throw new InactiveUserException(LoginName);
+        }
+
+        public void CheckIfPasswordHasExpired()
+        {
+            if (!Credential.MustChange) return;
+
+            if (DateTime.UtcNow > Credential.ExpirationDate.Value.Date)
+                throw new PasswordExpiredException();
+        }
     }
 }
