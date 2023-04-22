@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Aurora.Platform.Security.Domain.Repositories;
+using Aurora.Platform.Security.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +15,10 @@ namespace Aurora.Platform.Security.Infrastructure
                 options => options.UseSqlServer(configuration.GetConnectionString("SecurityDataConnection")));
 
             // Repository implementations
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserSessionRepository, UserSessionRepository>();
+            services.AddScoped<IUserTokenRepository, UserTokenRepository>();
 
             return services;
         }
