@@ -14,6 +14,7 @@ namespace Aurora.Platform.Security.Domain.Entities
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
         public UserCredential Credential { get; set; }
+        public UserToken Token { get; set; }
         public List<UserRole> UserRoles { get; set; }
 
         public void CheckIfPasswordMatches(string password)
