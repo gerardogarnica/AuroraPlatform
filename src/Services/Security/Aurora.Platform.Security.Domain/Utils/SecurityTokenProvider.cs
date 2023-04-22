@@ -1,6 +1,7 @@
 ﻿using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Exceptions;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -44,6 +45,29 @@ namespace Aurora.Platform.Security.Domain
                 Expires = DateTime.UtcNow.AddMinutes(tokenValidityInMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+        }
+
+        public static ClaimsPrincipal GetPrincipal(string token, string secretKey)
+        {
+            var key = Encoding.ASCII.GetBytes(secretKey);
+
+            var tokenParameters = new TokenValidationParameters()
+            {
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                ValidateLifetime = false
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenParameters, out var securityToken);
+
+            if (securityToken is not JwtSecurityToken jwtSecurityToken || 
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256Signature, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("There is an invalid security token.");
+
+            return principal;
         }
 
         public static string GenerateRefreshToken()
