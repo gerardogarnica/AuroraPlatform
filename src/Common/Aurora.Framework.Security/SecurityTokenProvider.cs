@@ -9,7 +9,29 @@ namespace Aurora.Framework.Security
 {
     public static class SecurityTokenProvider
     {
-        public static IList<Claim> CreateClaims(UserInfo user, IList<RoleInfo> roles)
+        public static TokenInfo GenerateTokenInfo(UserInfo user, JwtConfiguration configuration)
+        {
+            // Create claims from user
+            var claims = CreateClaims(user);
+
+            // Get the token descriptor
+            var tokenDescriptor = CreateTokenDescriptor(claims, configuration.Key, configuration.TokenValidityInMinutes);
+
+            // Create the security token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+
+            // Return token information
+            return new TokenInfo()
+            {
+                AccessToken = tokenHandler.WriteToken(securityToken),
+                AccessTokenExpiration = securityToken.ValidTo,
+                RefreshToken = GenerateRefreshToken(),
+                RefreshTokenExpiration = DateTime.UtcNow.AddDays(configuration.RefreshTokenValidityInDays)
+            };
+        }
+
+        private static IList<Claim> CreateClaims(UserInfo user)
         {
             if (user == null)
             {
@@ -23,10 +45,10 @@ namespace Aurora.Framework.Security
                 new Claim(ClaimTypes.GivenName, user.FirstName),
                 new Claim(ClaimTypes.Surname, user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, string.Concat(user.FirstName, " ", user.LastName))
+                new Claim(ClaimTypes.Name, user.Description)
             };
 
-            foreach (var role in roles)
+            foreach (var role in user.Roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role.Name));
             }
@@ -34,7 +56,7 @@ namespace Aurora.Framework.Security
             return claims;
         }
 
-        public static SecurityTokenDescriptor CreateTokenDescriptor(IList<Claim> claims, string secretKey, int tokenValidityInMinutes)
+        private static SecurityTokenDescriptor CreateTokenDescriptor(IList<Claim> claims, string secretKey, int tokenValidityInMinutes)
         {
             var key = Encoding.ASCII.GetBytes(secretKey);
 
@@ -46,7 +68,7 @@ namespace Aurora.Framework.Security
             };
         }
 
-        public static string GenerateRefreshToken()
+        private static string GenerateRefreshToken()
         {
             var randomNumber = new byte[64];
             using var rng = RandomNumberGenerator.Create();

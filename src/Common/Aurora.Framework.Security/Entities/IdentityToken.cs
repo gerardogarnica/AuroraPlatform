@@ -1,6 +1,6 @@
-﻿namespace Aurora.Platform.Security.Domain.Entities
+﻿namespace Aurora.Framework.Security
 {
-    public class IdentityAccess
+    public class IdentityToken
     {
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }

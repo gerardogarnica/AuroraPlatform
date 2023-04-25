@@ -18,6 +18,6 @@
         public DateTime? PasswordExpirationDate { get; set; }
         public bool IsDefaultUser { get; set; }
         public bool IsActive { get; set; }
-        public IList<RoleInfo> Roles { get; set; }
+        public List<RoleInfo> Roles { get; set; }
     }
 }
