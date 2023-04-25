@@ -1,23 +1,23 @@
-﻿using Aurora.Platform.Security.Domain;
+﻿using Aurora.Framework.Security;
 using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Exceptions;
 using Aurora.Platform.Security.Domain.Repositories;
+using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace Aurora.Platform.Security.Application.UserLogin
 {
-    public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityAccess>
+    public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
     {
         #region Private members
 
-        private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRepository _userRepository;
         private readonly IUserSessionRepository _userSessionRepository;
         private readonly IUserTokenRepository _userTokenRepository;
+        private readonly JwtConfiguration _configuration;
 
         #endregion
 
@@ -25,53 +25,48 @@ namespace Aurora.Platform.Security.Application.UserLogin
 
         public UserLoginHandler(
             IConfiguration configuration,
+            IMapper mapper,
             IUserRepository userRepository,
             IRoleRepository roleRepository,
             IUserSessionRepository userSessionRepository,
             IUserTokenRepository userTokenRepository)
         {
-            _configuration = configuration;
+            _mapper = mapper;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _userSessionRepository = userSessionRepository;
             _userTokenRepository = userTokenRepository;
+            _configuration = new JwtConfiguration(configuration);
         }
 
         #endregion
 
         #region IRequestHandler implementation
 
-        async Task<IdentityAccess> IRequestHandler<UserLoginCommand, IdentityAccess>.Handle(
+        async Task<IdentityToken> IRequestHandler<UserLoginCommand, IdentityToken>.Handle(
             UserLoginCommand request, CancellationToken cancellationToken)
         {
             // Get user and roles
             var user = await GetUserAsync(request.LoginName, request.Password);
             var roles = await GetUserRolesAsync(user.UserRoles);
 
-            // Create claims from user
-            var claims = SecurityTokenProvider.CreateClaims(user, roles);
+            // Get token information
+            var userInfo = _mapper.Map<UserInfo>(user);
+            userInfo.Roles = _mapper.Map<List<RoleInfo>>(roles);
 
-            // Get the token descriptor
-            var secretKey = _configuration.GetValue<string>("JWT:SecretKey");
-            var tokenValidityInMinutes = _configuration.GetValue<int>("JWT:TokenValidityInMinutes");
-            var tokenDescriptor = SecurityTokenProvider.CreateTokenDescriptor(claims, secretKey, tokenValidityInMinutes);
-
-            // Create the security token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var accessToken = tokenHandler.CreateToken(tokenDescriptor);
-            var refreshToken = SecurityTokenProvider.GenerateRefreshToken();
+            var tokenInfo = SecurityTokenProvider.GenerateTokenInfo(userInfo, _configuration);
 
             // Updates token repository
-            var entry = await UpdateUserTokenAsync(user.Token, tokenHandler, accessToken, refreshToken);
+            var entry = await UpdateUserTokenAsync(user.Token, tokenInfo);
 
             // Add user session
             await AddUserSessionAsync(user.Id, user.LoginName, entry);
 
-            // Returns token information
-            return new IdentityAccess()
+            // Returns identity tokens
+            return new IdentityToken()
             {
-                AccessToken = entry.AccessToken,
-                RefreshToken = entry.RefreshToken
+                AccessToken = tokenInfo.AccessToken,
+                RefreshToken = tokenInfo.RefreshToken
             };
         }
 
@@ -103,14 +98,14 @@ namespace Aurora.Platform.Security.Application.UserLogin
         }
 
         private async Task<UserToken> UpdateUserTokenAsync(
-            UserToken userToken, JwtSecurityTokenHandler tokenHandler, SecurityToken accessToken, string refreshToken)
+            UserToken userToken, TokenInfo tokenInfo)
         {
             var entry = userToken;
 
-            entry.AccessToken = tokenHandler.WriteToken(accessToken);
-            entry.AccessTokenExpiration = accessToken.ValidTo;
-            entry.RefreshToken = refreshToken;
-            entry.RefreshTokenExpiration = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("JWT:RefreshTokenValidityInDays"));
+            entry.AccessToken = tokenInfo.AccessToken;
+            entry.AccessTokenExpiration = tokenInfo.AccessTokenExpiration;
+            entry.RefreshToken = tokenInfo.RefreshToken;
+            entry.RefreshTokenExpiration = tokenInfo.RefreshTokenExpiration;
             entry.IssuedDate = DateTime.UtcNow;
 
             return await _userTokenRepository.UpdateAsync(entry);
