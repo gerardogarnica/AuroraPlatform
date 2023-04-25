@@ -1,10 +1,14 @@
 ﻿using Aurora.Framework.Api;
+using Aurora.Platform.Security.Application.UserLogin;
+using Aurora.Platform.Security.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Aurora.Identity.API.Controllers
+namespace Aurora.Platform.Identity.API.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     [Route("aurora/api/v1/auth")]
     public class AuthController : AuroraControllerBase
@@ -23,7 +27,17 @@ namespace Aurora.Identity.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<bool>> Login([FromBody] string credentials)
+        public async Task<ActionResult<IdentityAccess>> Login([FromBody] UserLoginCommand command)
+        {
+            var identityAccess = await _mediator.Send(command);
+            return Created(string.Empty, identityAccess);
+        }
+
+        [HttpPost("logout")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<bool>> Logout()
         {
             return Created(string.Empty, null);
         }
