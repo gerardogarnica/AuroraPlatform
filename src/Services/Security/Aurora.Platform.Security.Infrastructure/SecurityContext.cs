@@ -1,4 +1,5 @@
 ﻿using Aurora.Platform.Security.Domain.Entities;
+using Aurora.Platform.Security.Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Aurora.Platform.Security.Infrastructure
@@ -27,6 +28,14 @@ namespace Aurora.Platform.Security.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserCredentialConfiguration());
+            modelBuilder.ApplyConfiguration(new UserCredentialLogConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new UserSessionConfiguration());
+            modelBuilder.ApplyConfiguration(new UserTokenConfiguration());
         }
     }
 }

@@ -108,9 +108,9 @@ namespace Aurora.Platform.Security.Application.UserLogin
             var entry = userToken;
 
             entry.AccessToken = tokenHandler.WriteToken(accessToken);
-            entry.AccessTokenExpirationDate = accessToken.ValidTo;
+            entry.AccessTokenExpiration = accessToken.ValidTo;
             entry.RefreshToken = refreshToken;
-            entry.RefreshTokenExpirationDate = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("JWT:RefreshTokenValidityInDays"));
+            entry.RefreshTokenExpiration = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("JWT:RefreshTokenValidityInDays"));
             entry.IssuedDate = DateTime.UtcNow;
 
             return await _userTokenRepository.UpdateAsync(entry);
@@ -123,9 +123,9 @@ namespace Aurora.Platform.Security.Application.UserLogin
                 UserId = userId,
                 LoginName = loginName,
                 AccessToken = userToken.AccessToken,
-                AccessTokenExpirationDate = userToken.AccessTokenExpirationDate,
+                AccessTokenExpiration = userToken.AccessTokenExpiration,
                 RefreshToken = userToken.RefreshToken,
-                RefreshTokenExpirationDate = userToken.RefreshTokenExpirationDate,
+                RefreshTokenExpiration = userToken.RefreshTokenExpiration,
                 BeginSessionDate = DateTime.UtcNow
             };
 
