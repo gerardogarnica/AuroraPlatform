@@ -4,7 +4,6 @@ using Aurora.Platform.Security.Domain.Exceptions;
 using Aurora.Platform.Security.Domain.Repositories;
 using AutoMapper;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 
 namespace Aurora.Platform.Security.Application.UserLogin
 {
@@ -13,30 +12,30 @@ namespace Aurora.Platform.Security.Application.UserLogin
         #region Private members
 
         private readonly IMapper _mapper;
+        private readonly ISecurityToken _securityToken;
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRepository _userRepository;
         private readonly IUserSessionRepository _userSessionRepository;
         private readonly IUserTokenRepository _userTokenRepository;
-        private readonly JwtConfiguration _configuration;
 
         #endregion
 
         #region Constructor
 
         public UserLoginHandler(
-            IConfiguration configuration,
             IMapper mapper,
+            ISecurityToken securityToken,
             IUserRepository userRepository,
             IRoleRepository roleRepository,
             IUserSessionRepository userSessionRepository,
             IUserTokenRepository userTokenRepository)
         {
             _mapper = mapper;
+            _securityToken = securityToken;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _userSessionRepository = userSessionRepository;
             _userTokenRepository = userTokenRepository;
-            _configuration = new JwtConfiguration(configuration);
         }
 
         #endregion
@@ -54,7 +53,7 @@ namespace Aurora.Platform.Security.Application.UserLogin
             var userInfo = _mapper.Map<UserInfo>(user);
             userInfo.Roles = _mapper.Map<List<RoleInfo>>(roles);
 
-            var tokenInfo = SecurityTokenProvider.GenerateTokenInfo(userInfo, _configuration);
+            var tokenInfo = _securityToken.GenerateTokenInfo(userInfo);
 
             // Updates token repository
             var entry = await UpdateUserTokenAsync(user.Token, tokenInfo);

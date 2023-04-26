@@ -9,6 +9,9 @@ namespace Aurora.Framework.Security
     {
         public static IServiceCollection AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
         {
+            // Add security token implementation
+            services.AddScoped<ISecurityToken, SecurityToken>();
+
             // Get secret key value
             var secretKey = configuration.GetValue<string>("JWT:SecretKey");
 
