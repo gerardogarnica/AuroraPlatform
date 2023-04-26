@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Aurora.Framework.Api\Aurora.Framework.Api.csproj" />
+    <ProjectReference Include="..\..\..\Common\Aurora.Framework.Logging\Aurora.Framework.Logging.csproj" />
+    <ProjectReference Include="..\Aurora.Platform.Security.Application\Aurora.Platform.Security.Application.csproj" />
+    <ProjectReference Include="..\Aurora.Platform.Security.Infrastructure\Aurora.Platform.Security.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
