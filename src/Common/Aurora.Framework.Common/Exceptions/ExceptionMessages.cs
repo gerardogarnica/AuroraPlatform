@@ -1,4 +1,4 @@
-﻿namespace Aurora.Framework.Exceptions
+﻿namespace Aurora.Framework
 {
     internal static class ExceptionMessages
     {

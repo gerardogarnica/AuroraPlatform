@@ -37,7 +37,7 @@ namespace Aurora.Framework.Validations
 
                 if (failures.Any())
                 {
-                    throw new Exceptions.ValidationException(failures);
+                    throw new ValidationException(failures);
                 }
             }
 

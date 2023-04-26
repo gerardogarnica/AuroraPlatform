@@ -1,4 +1,4 @@
-﻿using Aurora.Framework.Exceptions;
+﻿using Aurora.Framework;
 
 namespace Aurora.Platform.Security.Domain.Exceptions
 {

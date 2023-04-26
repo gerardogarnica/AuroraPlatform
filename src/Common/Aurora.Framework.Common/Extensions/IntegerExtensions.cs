@@ -1,6 +1,4 @@
-﻿using Aurora.Framework.Exceptions;
-
-namespace Aurora.Framework
+﻿namespace Aurora.Framework
 {
     public static class IntegerExtensions
     {

@@ -1,5 +1,4 @@
-﻿using Aurora.Framework.Exceptions;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace Aurora.Framework.Api

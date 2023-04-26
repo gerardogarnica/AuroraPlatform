@@ -1,5 +1,4 @@
-﻿using Aurora.Framework.Exceptions;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace Aurora.Framework.Cryptography

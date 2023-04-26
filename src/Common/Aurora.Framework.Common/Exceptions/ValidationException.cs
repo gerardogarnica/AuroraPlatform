@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Aurora.Framework.Exceptions
+﻿namespace Aurora.Framework
 {
     public class ValidationException : Exception
     {

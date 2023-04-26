@@ -1,6 +1,4 @@
-﻿using Aurora.Framework.Exceptions;
-
-namespace Aurora.Framework.Settings
+﻿namespace Aurora.Framework.Settings
 {
     public class AuroraAttributeSetting
     {

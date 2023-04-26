@@ -1,5 +1,4 @@
-﻿using Aurora.Framework.Exceptions;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace Aurora.Framework.Settings

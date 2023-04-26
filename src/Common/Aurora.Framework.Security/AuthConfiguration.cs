@@ -17,7 +17,7 @@ namespace Aurora.Framework.Security
 
             if (string.IsNullOrWhiteSpace(secretKey))
             {
-                throw new Exceptions.PlatformException("SecretKey value not set.");
+                throw new PlatformException("SecretKey value not set.");
             }
 
             // Add auth configuration
