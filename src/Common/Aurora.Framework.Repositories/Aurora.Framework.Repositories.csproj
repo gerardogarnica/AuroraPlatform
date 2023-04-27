@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Aurora.Framework.Common\Aurora.Framework.Common.csproj" />
     <ProjectReference Include="..\Aurora.Framework.Entities\Aurora.Framework.Entities.csproj" />
   </ItemGroup>
 

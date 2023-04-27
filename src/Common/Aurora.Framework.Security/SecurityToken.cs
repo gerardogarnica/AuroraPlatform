@@ -9,12 +9,15 @@ namespace Aurora.Framework.Security
 {
     public interface ISecurityToken
     {
+        UserInfo UserInfo { get; }
         TokenInfo GenerateTokenInfo(UserInfo user);
     }
 
     public class SecurityToken : ISecurityToken
     {
         private readonly IConfiguration _configuration;
+
+        UserInfo ISecurityToken.UserInfo => throw new NotImplementedException();
 
         public SecurityToken(IConfiguration configuration)
         {
