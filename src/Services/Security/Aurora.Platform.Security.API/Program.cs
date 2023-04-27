@@ -3,6 +3,7 @@ using Aurora.Framework.Logging;
 using Aurora.Framework.Security;
 using Aurora.Platform.Security.Application;
 using Aurora.Platform.Security.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 const string apiName = "Aurora Platform Security";
 const string apiDescription = "Aurora Platform security services API.";
@@ -31,6 +32,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<SecurityContext>();
+    dbContext.Database.Migrate();
+}
+
 
 app.UseMiddleware(typeof(ApiHandlerMiddleware));
 
