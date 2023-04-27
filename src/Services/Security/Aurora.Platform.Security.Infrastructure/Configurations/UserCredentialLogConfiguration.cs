@@ -20,7 +20,7 @@ namespace Aurora.Platform.Security.Infrastructure.Configurations
             builder.Property(e => e.MustChange).HasColumnName("MustChange").IsRequired().HasColumnType("bit");
             builder.Property(e => e.ExpirationDate).HasColumnName("ExpirationDate").HasColumnType("datetime");
             builder.Property(e => e.CreatedDate).HasColumnName("CreatedDate").IsRequired().HasColumnType("datetime");
-            builder.Property(e => e.EndDate).HasColumnName("EndDate").IsRequired().HasColumnType("datetime");
+            builder.Property(e => e.EndDate).HasColumnName("EndDate").HasColumnType("datetime");
 
             builder.HasOne(e => e.Credential).WithMany(e => e.CredentialLogs).HasForeignKey(e => e.UserId).HasConstraintName("FK_UserCredentialLog_UserCredential");
         }

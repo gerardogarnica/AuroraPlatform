@@ -117,9 +117,9 @@ namespace Aurora.Platform.Security.Application.UserLogin
                 UserId = userId,
                 LoginName = loginName,
                 AccessToken = userToken.AccessToken,
-                AccessTokenExpiration = userToken.AccessTokenExpiration,
+                AccessTokenExpiration = userToken.AccessTokenExpiration.Value,
                 RefreshToken = userToken.RefreshToken,
-                RefreshTokenExpiration = userToken.RefreshTokenExpiration,
+                RefreshTokenExpiration = userToken.RefreshTokenExpiration.Value,
                 BeginSessionDate = DateTime.UtcNow
             };
 
