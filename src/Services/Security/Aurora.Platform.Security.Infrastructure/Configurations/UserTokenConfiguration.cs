@@ -13,9 +13,9 @@ namespace Aurora.Platform.Security.Infrastructure.Configurations
             builder.HasKey(e => e.Id).HasName("PK_UserToken");
 
             builder.Property(e => e.Id).HasColumnName("UserId").IsRequired().HasColumnType("int");
-            builder.Property(e => e.AccessToken).HasColumnName("AccessToken").HasColumnType("varchar(200)");
+            builder.Property(e => e.AccessToken).HasColumnName("AccessToken").HasColumnType("varchar(4000)");
             builder.Property(e => e.AccessTokenExpiration).HasColumnName("AccessTokenExpiration").HasColumnType("datetime");
-            builder.Property(e => e.RefreshToken).HasColumnName("RefreshToken").HasColumnType("varchar(500)");
+            builder.Property(e => e.RefreshToken).HasColumnName("RefreshToken").HasColumnType("varchar(200)");
             builder.Property(e => e.RefreshTokenExpiration).HasColumnName("RefreshTokenExpiration").HasColumnType("datetime");
             builder.Property(e => e.IssuedDate).HasColumnName("IssuedDate").HasColumnType("datetime");
 
