@@ -20,7 +20,7 @@ namespace Aurora.Platform.Security.Infrastructure.Configurations
             builder.Property(e => e.ExpirationDate).HasColumnName("ExpirationDate").HasColumnType("datetime");
             builder.AddAuditableProperties();
 
-            builder.HasOne(e => e.User).WithOne(e => e.Credential).HasConstraintName("FK_UserCredential_User");
+            builder.HasOne(e => e.User).WithOne(e => e.Credential).HasForeignKey<UserCredential>(e => e.Id).HasConstraintName("FK_UserCredential_User");
         }
     }
 }

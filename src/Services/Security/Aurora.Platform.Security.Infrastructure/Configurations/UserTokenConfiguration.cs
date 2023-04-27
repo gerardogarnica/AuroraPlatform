@@ -19,7 +19,7 @@ namespace Aurora.Platform.Security.Infrastructure.Configurations
             builder.Property(e => e.RefreshTokenExpiration).HasColumnName("RefreshTokenExpiration").IsRequired().HasColumnType("datetime");
             builder.Property(e => e.IssuedDate).HasColumnName("IssuedDate").IsRequired().HasColumnType("datetime");
 
-            builder.HasOne(e => e.User).WithOne(e => e.Token).HasConstraintName("FK_UserToken_User");
+            builder.HasOne(e => e.User).WithOne(e => e.Token).HasForeignKey<UserToken>(e => e.Id).HasConstraintName("FK_UserToken_User");
         }
     }
 }
