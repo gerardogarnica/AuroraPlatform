@@ -12,7 +12,9 @@ namespace Aurora.Platform.Security.Infrastructure
         {
             // Connection string
             services.AddDbContext<SecurityContext>(
-                options => options.UseSqlServer(configuration.GetConnectionString("SecurityDataConnection")));
+                options => options.UseSqlServer(
+                    configuration.GetConnectionString("SecurityDataConnection"),
+                    x => x.MigrationsHistoryTable("__EFMigrationsHistory", "SEC")));
 
             // Repository implementations
             services.AddScoped<IRoleRepository, RoleRepository>();
