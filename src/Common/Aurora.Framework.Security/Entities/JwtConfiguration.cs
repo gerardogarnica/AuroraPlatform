@@ -11,7 +11,7 @@ namespace Aurora.Framework.Security
         public JwtConfiguration(IConfiguration configuration)
         {
             Key = configuration.GetValue<string>("JWT:SecretKey");
-            TokenValidityInMinutes = configuration.GetValue<int>("JWT:TokenValidityInMinutes"); ;
+            TokenValidityInMinutes = configuration.GetValue<int>("JWT:TokenValidityInMinutes");
             RefreshTokenValidityInDays = configuration.GetValue<int>("JWT:RefreshTokenValidityInDays");
         }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,12 +17,16 @@ namespace Aurora.Framework.Security
     public class SecurityToken : ISecurityToken
     {
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        UserInfo ISecurityToken.UserInfo => throw new NotImplementedException();
+        UserInfo ISecurityToken.UserInfo => GetUserInfoFromToken();
 
-        public SecurityToken(IConfiguration configuration)
+        public SecurityToken(
+            IConfiguration configuration,
+            IHttpContextAccessor contextAccessor)
         {
             _configuration = configuration;
+            _contextAccessor = contextAccessor;
         }
 
         TokenInfo ISecurityToken.GenerateTokenInfo(UserInfo user)
@@ -66,16 +71,17 @@ namespace Aurora.Framework.Security
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Sid, user.UserId.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.LoginName),
+                new Claim(ClaimTypes.NameIdentifier, user.Description),
                 new Claim(ClaimTypes.GivenName, user.FirstName),
                 new Claim(ClaimTypes.Surname, user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.Description)
+                new Claim(ClaimTypes.Name, user.LoginName),
+                new Claim(ClaimTypes.UserData, user.InternalUserData)
             };
 
             foreach (var role in user.Roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role.Name));
+                claims.Add(new Claim(ClaimTypes.Role, role.InternalRoleData));
             }
 
             return claims;
@@ -99,6 +105,15 @@ namespace Aurora.Framework.Security
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
+        }
+
+        private UserInfo GetUserInfoFromToken()
+        {
+            var principal = _contextAccessor.HttpContext.User;
+
+            if (principal == null) return null;
+
+            return new UserInfo(principal.Claims.ToList());
         }
     }
 }
