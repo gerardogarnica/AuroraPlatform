@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text;
 
 namespace Aurora.Framework.Security
 {
@@ -10,7 +9,7 @@ namespace Aurora.Framework.Security
         public static IServiceCollection AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
         {
             // Add security token implementation
-            services.AddScoped<ISecurityToken, SecurityToken>();
+            services.AddScoped<IJwtSecurityHandler, JwtSecurityHandler>();
 
             // Get secret key value
             var secretKey = configuration.GetValue<string>("JWT:SecretKey");
@@ -26,7 +25,7 @@ namespace Aurora.Framework.Security
                 {
                     o.RequireHttpsMetadata = false;
                     o.SaveToken = true;
-                    o.TokenValidationParameters = SecurityTokenProvider.GetValidationParameters(Encoding.ASCII.GetBytes(secretKey));
+                    o.TokenValidationParameters = TokenParametersProvider.GetValidationParameters(secretKey);
                 });
 
             return services;

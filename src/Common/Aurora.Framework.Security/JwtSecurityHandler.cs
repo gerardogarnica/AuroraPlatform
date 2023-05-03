@@ -8,38 +8,47 @@ using System.Text;
 
 namespace Aurora.Framework.Security
 {
-    public interface ISecurityToken
+    public interface IJwtSecurityHandler
     {
         UserInfo UserInfo { get; }
         TokenInfo GenerateTokenInfo(UserInfo user);
+        void ValidateToken(string token);
     }
 
-    public class SecurityToken : ISecurityToken
+    public class JwtSecurityHandler : IJwtSecurityHandler
     {
-        private readonly IConfiguration _configuration;
+        #region Private members
+
+        private readonly JwtConfiguration _jwtConfiguration;
         private readonly IHttpContextAccessor _contextAccessor;
 
-        UserInfo ISecurityToken.UserInfo => GetUserInfoFromToken();
+        UserInfo IJwtSecurityHandler.UserInfo => GetUserInfoFromToken();
 
-        public SecurityToken(
+        #endregion
+
+        #region Constructors
+
+        public JwtSecurityHandler(
             IConfiguration configuration,
             IHttpContextAccessor contextAccessor)
         {
-            _configuration = configuration;
+            _jwtConfiguration = new JwtConfiguration(configuration);
             _contextAccessor = contextAccessor;
         }
 
-        TokenInfo ISecurityToken.GenerateTokenInfo(UserInfo user)
+        #endregion
+
+        #region IJwtSecurityHandler implementation
+
+        TokenInfo IJwtSecurityHandler.GenerateTokenInfo(UserInfo user)
         {
             try
             {
-                var configuration = new JwtConfiguration(_configuration);
-
                 // Create claims from user
                 var claims = CreateClaims(user);
 
                 // Get the token descriptor
-                var tokenDescriptor = CreateTokenDescriptor(claims, configuration.Key, configuration.TokenValidityInMinutes);
+                var tokenDescriptor = CreateTokenDescriptor(claims, _jwtConfiguration.Key, _jwtConfiguration.TokenValidityInMinutes);
 
                 // Create the security token
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -51,7 +60,7 @@ namespace Aurora.Framework.Security
                     AccessToken = tokenHandler.WriteToken(securityToken),
                     AccessTokenExpiration = securityToken.ValidTo,
                     RefreshToken = GenerateRefreshToken(),
-                    RefreshTokenExpiration = DateTime.UtcNow.AddDays(configuration.RefreshTokenValidityInDays)
+                    RefreshTokenExpiration = DateTime.UtcNow.AddDays(_jwtConfiguration.RefreshTokenValidityInDays)
                 };
             }
             catch (Exception e)
@@ -60,6 +69,27 @@ namespace Aurora.Framework.Security
                 throw new PlatformException(message, e);
             }
         }
+
+        void IJwtSecurityHandler.ValidateToken(string token)
+        {
+            if (token == null) throw new ApiAuthorizationException();
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            tokenHandler.ValidateToken(
+                token,
+                TokenParametersProvider.GetValidationParameters(_jwtConfiguration.Key),
+                out var securityToken);
+
+            if (securityToken is not JwtSecurityToken)
+                throw new SecurityTokenException("There is an invalid security token.");
+
+            if (securityToken.ValidTo <= DateTime.UtcNow)
+                throw new ApiAuthorizationException();
+        }
+
+        #endregion
+
+        #region Private methods
 
         private static IList<Claim> CreateClaims(UserInfo user)
         {
@@ -115,5 +145,7 @@ namespace Aurora.Framework.Security
 
             return new UserInfo(principal.Claims.ToList());
         }
+
+        #endregion
     }
 }
