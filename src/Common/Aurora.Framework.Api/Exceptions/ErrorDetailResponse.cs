@@ -12,7 +12,7 @@
 
         public int StatusCode { get; set; }
 
-        public string? Message
+        public string Message
         {
             get
             {

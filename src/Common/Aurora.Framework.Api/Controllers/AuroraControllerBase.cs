@@ -10,7 +10,7 @@ namespace Aurora.Framework.Api
         #region Private members
 
         protected readonly ILogger<AuroraControllerBase> _logger;
-        protected readonly IMediator? _mediator;
+        protected readonly IMediator _mediator;
 
         #endregion
 

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
 
@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Aurora.Framework.Common\Aurora.Framework.Common.csproj" />
+    <ProjectReference Include="..\Aurora.Framework.Security\Aurora.Framework.Security.csproj" />
     <ProjectReference Include="..\Aurora.Framework.Validations\Aurora.Framework.Validations.csproj" />
   </ItemGroup>
 

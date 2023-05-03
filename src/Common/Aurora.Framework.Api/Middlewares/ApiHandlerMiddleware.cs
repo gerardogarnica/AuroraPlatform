@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Aurora.Framework.Security;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace Aurora.Framework.Api
@@ -12,10 +13,20 @@ namespace Aurora.Framework.Api
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, IJwtSecurityHandler securityHandler)
         {
             try
             {
+                var requestHeader = context.Request.Headers["Authorization"];
+
+                if (requestHeader.Any())
+                {
+                    var token = requestHeader.FirstOrDefault().GetLastSplit(" ");
+
+                    securityHandler.ValidateToken(token);
+                    context.Items["UserInfo"] = securityHandler.UserInfo;
+                }
+
                 await _next(context);
             }
             catch (Exception e)
@@ -24,6 +35,12 @@ namespace Aurora.Framework.Api
 
                 switch (e)
                 {
+                    case ApiAuthorizationException:
+                        response.StatusCode = StatusCodes.Status401Unauthorized;
+                        response.ErrorCategory = ErrorDetailCategory.Authorization;
+                        response.AddErrorMessage(e.GetType().Name, e.Message);
+                        break;
+
                     case BusinessException:
                         response.StatusCode = StatusCodes.Status400BadRequest;
                         response.ErrorCategory = ErrorDetailCategory.BusinessValidation;
