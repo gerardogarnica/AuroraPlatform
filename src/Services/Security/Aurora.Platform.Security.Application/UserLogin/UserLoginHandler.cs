@@ -12,7 +12,7 @@ namespace Aurora.Platform.Security.Application.UserLogin
         #region Private members
 
         private readonly IMapper _mapper;
-        private readonly ISecurityToken _securityToken;
+        private readonly IJwtSecurityHandler _securityHandler;
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRepository _userRepository;
         private readonly IUserSessionRepository _userSessionRepository;
@@ -24,14 +24,14 @@ namespace Aurora.Platform.Security.Application.UserLogin
 
         public UserLoginHandler(
             IMapper mapper,
-            ISecurityToken securityToken,
+            IJwtSecurityHandler securityHandler,
             IUserRepository userRepository,
             IRoleRepository roleRepository,
             IUserSessionRepository userSessionRepository,
             IUserTokenRepository userTokenRepository)
         {
             _mapper = mapper;
-            _securityToken = securityToken;
+            _securityHandler = securityHandler;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _userSessionRepository = userSessionRepository;
@@ -53,7 +53,7 @@ namespace Aurora.Platform.Security.Application.UserLogin
             var userInfo = _mapper.Map<UserInfo>(user);
             userInfo.Roles = _mapper.Map<List<RoleInfo>>(roles);
 
-            var tokenInfo = _securityToken.GenerateTokenInfo(userInfo);
+            var tokenInfo = _securityHandler.GenerateTokenInfo(userInfo);
 
             // Updates token repository
             var entry = await UpdateUserTokenAsync(user.Token, tokenInfo);
