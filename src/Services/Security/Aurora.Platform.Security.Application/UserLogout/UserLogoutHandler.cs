@@ -1,7 +1,6 @@
 ﻿using Aurora.Framework.Security;
 using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Repositories;
-using AutoMapper;
 using MediatR;
 
 namespace Aurora.Platform.Security.Application.UserLogout

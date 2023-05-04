@@ -20,6 +20,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenWithApiKey(apiName, apiDescription, 1);
 builder.Services.AddStringEnumConverter();
 builder.Services.AddAuthenticationServices(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
 
 // Add Serilog configuration.
 builder.Host.ConfigureSerilog();

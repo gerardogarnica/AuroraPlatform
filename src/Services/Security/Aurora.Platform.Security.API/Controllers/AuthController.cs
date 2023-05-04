@@ -1,14 +1,14 @@
 using Aurora.Framework.Api;
 using Aurora.Framework.Security;
+using Aurora.Platform.Security.Application.ChangePassword;
 using Aurora.Platform.Security.Application.UserLogin;
+using Aurora.Platform.Security.Application.UserLogout;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aurora.Platform.Security.API.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     [ApiController]
     [Route("aurora/api/security/v1/auth")]
     public class AuthController : AuroraControllerBase
@@ -37,9 +37,12 @@ namespace Aurora.Platform.Security.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<bool>> Logout()
+        public async Task<ActionResult<int>> Logout()
         {
-            return Created(string.Empty, null);
+            var command = new UserLogoutCommand();
+            var response = await _mediator.Send(command);
+
+            return Created(string.Empty, response);
         }
 
         [HttpPost("recovery")]
@@ -55,9 +58,10 @@ namespace Aurora.Platform.Security.API.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<bool>> ChangePassword([FromBody] string credentials)
+        public async Task<ActionResult<bool>> ChangePassword([FromBody] ChangePasswordCommand command)
         {
-            return Accepted(string.Empty, null);
+            var response = await _mediator.Send(command);
+            return Accepted(string.Empty, response);
         }
 
         [HttpPut("refresh-token")]

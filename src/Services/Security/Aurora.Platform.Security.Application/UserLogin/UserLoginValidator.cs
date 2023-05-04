@@ -7,12 +7,10 @@ namespace Aurora.Platform.Security.Application.UserLogin
         public UserLoginValidator() 
         {
             RuleFor(p => p.LoginName)
-                .NotEmpty()
-                .WithMessage("Login name is required.");
+                .NotEmpty().WithMessage("Login name is required.");
 
             RuleFor(p => p.Password)
-                .NotEmpty()
-                .WithMessage("Password is required.");
+                .NotEmpty().WithMessage("Password is required.");
         }
     }
 }
