@@ -19,6 +19,7 @@ namespace Aurora.Platform.Security.Infrastructure
             // Repository implementations
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserCredentialRepository, UserCredentialRepository>();
             services.AddScoped<IUserSessionRepository, UserSessionRepository>();
             services.AddScoped<IUserTokenRepository, UserTokenRepository>();
 
