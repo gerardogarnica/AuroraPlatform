@@ -1,19 +1,46 @@
 # Aurora Platform
-.NET 6 base platform for Aurora Soft applications.
 
-### Architectures used
+.NET 7 base platform libraries and microservices for Aurora Soft applications following the principles of Clean Architecture.
+
+## Features
+
 * Microservices
-* DDD Pattern
+* Clean Architecture
+* Domain Driven Design
 * CQRS Pattern
 * Repository Pattern
 * Dependency injection
-* Logs fields in data models
-* Error handling middleware
+* API handling middleware
+* JWT for authentication and authorization
 
-### Packages used
-* Entity Framework Core
-* AutoMapper
-* MediatR
-* FluentValidation
-* Swashbuckle
-* Serilog
+## Technologies
+
+* [.NET 7](https://docs.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core)
+* [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core)
+* [AutoMapper](https://automapper.org)
+* [MediatR](https://github.com/jbogard/MediatR)
+* [FluentValidation](https://fluentvalidation.net)
+* [Swashbuckle](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
+* [Serilog](https://serilog.net/)
+
+## Getting Started
+
+Coming soon...
+
+## Overview
+
+### Common
+
+In progress.
+
+### Gateway
+
+In progress.
+
+### Services
+
+In progress.
+
+## License
+
+This project is licensed with the [MIT license](LICENSE).
