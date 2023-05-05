@@ -5,7 +5,7 @@ using Aurora.Platform.Security.Domain.Exceptions;
 using Aurora.Platform.Security.Domain.Repositories;
 using MediatR;
 
-namespace Aurora.Platform.Security.Application.ChangePassword
+namespace Aurora.Platform.Security.Application.Identity.Commands.ChangePassword
 {
     public class ChangePasswordHandler : IRequestHandler<ChangePasswordCommand, bool>
     {

@@ -3,7 +3,7 @@ using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Repositories;
 using MediatR;
 
-namespace Aurora.Platform.Security.Application.UserLogout
+namespace Aurora.Platform.Security.Application.Identity.Commands.UserLogout
 {
     public class UserLogoutHandler : IRequestHandler<UserLogoutCommand, int>
     {

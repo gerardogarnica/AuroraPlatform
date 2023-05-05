@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Aurora.Platform.Security.Application.UserLogin
+namespace Aurora.Platform.Security.Application.Identity.Commands.UserLogin
 {
     public class UserLoginValidator : AbstractValidator<UserLoginCommand>
     {
-        public UserLoginValidator() 
+        public UserLoginValidator()
         {
             RuleFor(p => p.LoginName)
                 .NotEmpty().WithMessage("Login name is required.");

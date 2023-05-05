@@ -1,8 +1,8 @@
 using Aurora.Framework.Api;
 using Aurora.Framework.Security;
-using Aurora.Platform.Security.Application.ChangePassword;
-using Aurora.Platform.Security.Application.UserLogin;
-using Aurora.Platform.Security.Application.UserLogout;
+using Aurora.Platform.Security.Application.Identity.Commands.ChangePassword;
+using Aurora.Platform.Security.Application.Identity.Commands.UserLogin;
+using Aurora.Platform.Security.Application.Identity.Commands.UserLogout;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -5,7 +5,7 @@ using Aurora.Platform.Security.Domain.Repositories;
 using AutoMapper;
 using MediatR;
 
-namespace Aurora.Platform.Security.Application.UserLogin
+namespace Aurora.Platform.Security.Application.Identity.Commands.UserLogin
 {
     public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
     {

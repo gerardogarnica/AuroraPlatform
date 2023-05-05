@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Aurora.Platform.Security.Application.ChangePassword
+namespace Aurora.Platform.Security.Application.Identity.Commands.ChangePassword
 {
     public class ChangePasswordCommand : IRequest<bool>
     {
