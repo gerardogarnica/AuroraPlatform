@@ -1,3 +1,5 @@
+<img src="https://gerardogarnica.dev/assets/logos/aurorasoft.png" alt="Logo">
+
 # Aurora Platform
 
 .NET 7 base platform libraries and microservices for Aurora Soft applications following the principles of Clean Architecture.
