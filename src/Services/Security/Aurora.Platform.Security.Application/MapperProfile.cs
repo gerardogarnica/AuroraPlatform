@@ -1,4 +1,5 @@
-﻿using Aurora.Framework.Security;
+﻿using Aurora.Framework.Entities;
+using Aurora.Framework.Security;
 using Aurora.Platform.Security.Domain.Entities;
 using AutoMapper;
 
@@ -16,6 +17,9 @@ namespace Aurora.Platform.Security.Application
                 .ForMember(d => d.UserId, o => o.MapFrom(o => o.Id))
                 .ForMember(d => d.PasswordMustChange, o => o.MapFrom(o => o.Credential.MustChange))
                 .ForMember(d => d.PasswordExpirationDate, o => o.MapFrom(o => o.Credential.ExpirationDate));
+
+            CreateMap<PagedCollection<Role>, PagedCollection<RoleInfo>>();
+            CreateMap<PagedCollection<User>, PagedCollection<UserInfo>>();
         }
     }
 }

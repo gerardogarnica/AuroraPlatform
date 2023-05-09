@@ -1,4 +1,5 @@
-﻿using Aurora.Framework.Repositories;
+﻿using Aurora.Framework.Entities;
+using Aurora.Framework.Repositories;
 using Aurora.Platform.Security.Domain.Entities;
 
 namespace Aurora.Platform.Security.Domain.Repositories
@@ -6,5 +7,6 @@ namespace Aurora.Platform.Security.Domain.Repositories
     public interface IUserRepository : IReadableRepository<User>, IWriteableRepository<User>
     {
         Task<User> GetAsync(string loginName);
+        Task<PagedCollection<User>> GetListAsync(PagedViewRequest viewRequest, int roleId, bool onlyActives);
     }
 }
