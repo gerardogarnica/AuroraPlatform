@@ -1,6 +1,7 @@
 ﻿using Aurora.Framework.Api;
 using Aurora.Framework.Entities;
 using Aurora.Framework.Security;
+using Aurora.Platform.Security.Application.Users.Commands.CreateUser;
 using Aurora.Platform.Security.Application.Users.Queries.GetUserByLogin;
 using Aurora.Platform.Security.Application.Users.Queries.GetUsers;
 using MediatR;
@@ -44,6 +45,16 @@ namespace Aurora.Platform.Security.API.Controllers
                 new GetUsersQuery { PagedViewRequest = viewRequest, RoleId = roleId, OnlyActives = onlyActives });
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> Create([FromBody] CreateUserCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Created(string.Empty, response);
         }
     }
 }

@@ -5,8 +5,8 @@ namespace Aurora.Platform.Security.Domain.Exceptions
     public class UserException : BusinessException
     {
         protected const string UserNullMessage = "The record of the user cannot be null.";
-        protected const string InvalidCredentialsMessage = "The username or password are incorrect.";
         protected const string InactiveUserMessage = "The user {0} is not active.";
+        protected const string InvalidCredentialsMessage = "The username or password are incorrect.";
         protected const string InvalidUserNameMessage = "The username '{0}' does not exist.";
         protected const string PasswordExpiredMessage = "The user password has expired. Password must be changed before login.";
 

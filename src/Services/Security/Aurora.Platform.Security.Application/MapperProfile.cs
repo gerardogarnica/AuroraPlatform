@@ -1,5 +1,6 @@
 ﻿using Aurora.Framework.Entities;
 using Aurora.Framework.Security;
+using Aurora.Platform.Security.Application.Users.Commands.CreateUser;
 using Aurora.Platform.Security.Domain.Entities;
 using AutoMapper;
 
@@ -20,6 +21,9 @@ namespace Aurora.Platform.Security.Application
 
             CreateMap<PagedCollection<Role>, PagedCollection<RoleInfo>>();
             CreateMap<PagedCollection<User>, PagedCollection<UserInfo>>();
+
+            // Source: command. Destination: entity.
+            CreateMap<CreateUserCommand, User>();
         }
     }
 }

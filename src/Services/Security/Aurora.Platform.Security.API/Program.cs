@@ -38,6 +38,8 @@ app.Services.MigrateData<SecurityContext>(builder.Configuration);
 
 app.UseMiddleware(typeof(ApiHandlerMiddleware));
 
+app.UseCors();
+
 app.UseAuthorization();
 
 app.MapControllers();

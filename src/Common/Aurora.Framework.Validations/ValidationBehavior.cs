@@ -28,8 +28,10 @@ namespace Aurora.Framework.Validations
         {
             if (_validators.Any())
             {
-                var failures = _validators
-                    .Select(v => v.Validate(request))
+                var results = await Task.WhenAll(_validators
+                    .Select(v => v.ValidateAsync(request)));
+
+                var failures = results
                     .SelectMany(r => r.Errors)
                     .Where(f => f != null)
                     .Select(f => f.ErrorMessage)
