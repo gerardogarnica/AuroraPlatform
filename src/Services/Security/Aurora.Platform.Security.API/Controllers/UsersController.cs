@@ -2,6 +2,7 @@
 using Aurora.Framework.Entities;
 using Aurora.Framework.Security;
 using Aurora.Platform.Security.Application.Users.Commands.CreateUser;
+using Aurora.Platform.Security.Application.Users.Commands.UpdateUser;
 using Aurora.Platform.Security.Application.Users.Queries.GetUserByLogin;
 using Aurora.Platform.Security.Application.Users.Queries.GetUsers;
 using MediatR;
@@ -55,6 +56,16 @@ namespace Aurora.Platform.Security.API.Controllers
         {
             var response = await _mediator.Send(command);
             return Created(string.Empty, response);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> Update([FromBody] UpdateUserCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Accepted(response);
         }
     }
 }
