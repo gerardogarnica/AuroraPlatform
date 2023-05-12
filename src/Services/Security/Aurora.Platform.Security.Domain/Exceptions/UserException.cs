@@ -9,6 +9,7 @@ namespace Aurora.Platform.Security.Domain.Exceptions
         protected const string InvalidCredentialsMessage = "The username or password are incorrect.";
         protected const string InvalidUserNameMessage = "The username '{0}' does not exist.";
         protected const string PasswordExpiredMessage = "The user password has expired. Password must be changed before login.";
+        protected const string UnableChangeUserMessage = "The user is unable to be changed.";
 
         public UserException(string message)
             : base("UserException", message) { }
@@ -42,5 +43,11 @@ namespace Aurora.Platform.Security.Domain.Exceptions
     {
         public PasswordExpiredException()
             : base(PasswordExpiredMessage) { }
+    }
+
+    public class UnableChangeUserException : UserException
+    {
+        public UnableChangeUserException()
+            : base(UnableChangeUserMessage) { }
     }
 }

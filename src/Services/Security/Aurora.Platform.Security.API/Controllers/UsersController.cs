@@ -3,6 +3,7 @@ using Aurora.Framework.Entities;
 using Aurora.Framework.Security;
 using Aurora.Platform.Security.Application.Users.Commands.CreateUser;
 using Aurora.Platform.Security.Application.Users.Commands.UpdateUser;
+using Aurora.Platform.Security.Application.Users.Commands.UpdateUserStatus;
 using Aurora.Platform.Security.Application.Users.Queries.GetUserByLogin;
 using Aurora.Platform.Security.Application.Users.Queries.GetUsers;
 using MediatR;
@@ -64,6 +65,38 @@ namespace Aurora.Platform.Security.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<int>> Update([FromBody] UpdateUserCommand command)
         {
+            var response = await _mediator.Send(command);
+            return Accepted(response);
+        }
+
+        [HttpPut("{loginName}/activate")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> Activate(string loginName)
+        {
+            var command = new UpdateUserStatusCommand()
+            {
+                LoginName = loginName,
+                IsActive = true
+            };
+
+            var response = await _mediator.Send(command);
+            return Accepted(response);
+        }
+
+        [HttpPut("{loginName}/deactivate")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> Deactivate(string loginName)
+        {
+            var command = new UpdateUserStatusCommand()
+            {
+                LoginName = loginName,
+                IsActive = false
+            };
+
             var response = await _mediator.Send(command);
             return Accepted(response);
         }

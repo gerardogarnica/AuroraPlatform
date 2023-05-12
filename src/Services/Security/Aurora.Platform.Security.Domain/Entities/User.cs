@@ -33,6 +33,13 @@ namespace Aurora.Platform.Security.Domain.Entities
             throw new InactiveUserException(LoginName);
         }
 
+        public void CheckIfIsUnableToChange()
+        {
+            if (!IsDefault) return;
+
+            throw new UnableChangeUserException();
+        }
+
         public void CheckIfPasswordHasExpired()
         {
             if (!Credential.MustChange) return;

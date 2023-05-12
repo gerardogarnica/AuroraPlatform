@@ -3,17 +3,15 @@ using Aurora.Platform.Security.Domain.Exceptions;
 using Aurora.Platform.Security.Domain.Repositories;
 using MediatR;
 
-namespace Aurora.Platform.Security.Application.Users.Commands.UpdateUser;
+namespace Aurora.Platform.Security.Application.Users.Commands.UpdateUserStatus;
 
-public record UpdateUserCommand : IRequest<int>
+public record UpdateUserStatusCommand : IRequest<int>
 {
     public string LoginName { get; init; }
-    public string FirstName { get; init; }
-    public string LastName { get; init; }
-    public string Email { get; init; }
+    public bool IsActive { get; init; }
 }
 
-public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, int>
+public class UpdateUserStatusHandler : IRequestHandler<UpdateUserStatusCommand, int>
 {
     #region Private members
 
@@ -23,7 +21,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, int>
 
     #region Constructor
 
-    public UpdateUserHandler(IUserRepository userRepository)
+    public UpdateUserStatusHandler(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
@@ -32,16 +30,14 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, int>
 
     #region IRequestHandler implementation
 
-    async Task<int> IRequestHandler<UpdateUserCommand, int>.Handle(
-        UpdateUserCommand request, CancellationToken cancellationToken)
+    async Task<int> IRequestHandler<UpdateUserStatusCommand, int>.Handle(
+        UpdateUserStatusCommand request, CancellationToken cancellationToken)
     {
         // Get user
         var user = await GetUserAsync(request.LoginName);
 
         // Update user entity
-        user.FirstName = request.FirstName;
-        user.LastName = request.LastName;
-        user.Email = request.Email;
+        user.IsActive = request.IsActive;
 
         user = await _userRepository.UpdateAsync(user);
 
@@ -57,7 +53,6 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, int>
     {
         var user = await _userRepository.GetAsync(loginName) ?? throw new InvalidUserNameException(loginName);
         user.CheckIfIsUnableToChange();
-        user.CheckIfIsActive();
 
         return user;
     }

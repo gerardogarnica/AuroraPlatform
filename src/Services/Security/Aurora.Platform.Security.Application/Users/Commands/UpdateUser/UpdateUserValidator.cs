@@ -1,12 +1,16 @@
 ﻿using Aurora.Framework.Utils;
+using Aurora.Platform.Security.Domain.Repositories;
 using FluentValidation;
 
 namespace Aurora.Platform.Security.Application.Users.Commands.UpdateUser
 {
     public class UpdateUserValidator : AbstractValidator<UpdateUserCommand>
     {
-        public UpdateUserValidator()
+        public UpdateUserValidator(IUserRepository userRepository)
         {
+            RuleFor(p => p.LoginName)
+                .NotEmpty().WithMessage("Login name is required.");
+
             RuleFor(p => p.FirstName)
                 .NotEmpty().WithMessage("First name is required.")
                 .MaximumLength(40).WithMessage("The maximum first name length is 40 characters.");
