@@ -1,12 +1,11 @@
 ﻿using Aurora.Framework.Utils;
-using Aurora.Platform.Security.Domain.Repositories;
 using FluentValidation;
 
 namespace Aurora.Platform.Security.Application.Users.Commands.UpdateUser
 {
     public class UpdateUserValidator : AbstractValidator<UpdateUserCommand>
     {
-        public UpdateUserValidator(IUserRepository userRepository)
+        public UpdateUserValidator()
         {
             RuleFor(p => p.LoginName)
                 .NotEmpty().WithMessage("Login name is required.");

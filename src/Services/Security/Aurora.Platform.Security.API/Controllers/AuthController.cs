@@ -3,6 +3,7 @@ using Aurora.Framework.Security;
 using Aurora.Platform.Security.Application.Identity.Commands.ChangePassword;
 using Aurora.Platform.Security.Application.Identity.Commands.UserLogin;
 using Aurora.Platform.Security.Application.Identity.Commands.UserLogout;
+using Aurora.Platform.Security.Application.Identity.Queries.GetProfile;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -76,9 +77,12 @@ namespace Aurora.Platform.Security.API.Controllers
         [HttpGet("profile")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<string>> GetProfile()
+        public async Task<ActionResult<UserInfo>> GetProfile()
         {
-            return Ok(string.Empty);
+            var command = new GetProfileQuery();
+            var response = await _mediator.Send(command);
+
+            return Ok(response);
         }
     }
 }
