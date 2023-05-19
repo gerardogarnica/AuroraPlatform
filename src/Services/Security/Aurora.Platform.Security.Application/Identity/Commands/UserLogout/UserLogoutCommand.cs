@@ -63,6 +63,7 @@ public class UserLogoutHandler : IRequestHandler<UserLogoutCommand, int>
     private async Task UpdateUserToken(UserInfo user)
     {
         var tokenInfo = await _userTokenRepository.GetByIdAsync(user.UserId);
+
         tokenInfo.AccessToken = null;
         tokenInfo.RefreshToken = null;
         tokenInfo.AccessTokenExpiration = null;

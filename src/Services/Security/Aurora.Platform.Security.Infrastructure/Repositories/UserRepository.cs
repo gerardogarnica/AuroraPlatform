@@ -4,7 +4,6 @@ using Aurora.Framework.Repositories.Extensions;
 using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 
 namespace Aurora.Platform.Security.Infrastructure.Repositories
 {

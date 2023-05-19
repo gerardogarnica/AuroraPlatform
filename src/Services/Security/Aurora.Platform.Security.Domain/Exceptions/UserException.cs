@@ -5,9 +5,11 @@ namespace Aurora.Platform.Security.Domain.Exceptions
     public class UserException : BusinessException
     {
         protected const string UserNullMessage = "The record of the user cannot be null.";
+        protected const string ExpiredUserTokenMessage = "The refresh token is expired.";
         protected const string InactiveUserMessage = "The user {0} is not active.";
         protected const string InvalidCredentialsMessage = "The username or password are incorrect.";
         protected const string InvalidUserNameMessage = "The username '{0}' does not exist.";
+        protected const string InvalidUserTokenMessage = "The refresh token is invalid.";
         protected const string PasswordExpiredMessage = "The user password has expired. Password must be changed before login.";
         protected const string UnableChangeUserMessage = "The user is unable to be changed.";
 
@@ -19,6 +21,12 @@ namespace Aurora.Platform.Security.Domain.Exceptions
     {
         public UserNullException()
             : base(UserNullMessage) { }
+    }
+
+    public class ExpiredUserTokenException : UserException
+    {
+        public ExpiredUserTokenException()
+            : base(ExpiredUserTokenMessage) { }
     }
 
     public class InvalidCredentialsException : UserException
@@ -37,6 +45,12 @@ namespace Aurora.Platform.Security.Domain.Exceptions
     {
         public InvalidUserNameException(string loginName)
             : base(string.Format(InvalidUserNameMessage, loginName)) { }
+    }
+
+    public class InvalidUserTokenException : UserException
+    {
+        public InvalidUserTokenException()
+            : base(InvalidUserTokenMessage) { }
     }
 
     public class PasswordExpiredException : UserException

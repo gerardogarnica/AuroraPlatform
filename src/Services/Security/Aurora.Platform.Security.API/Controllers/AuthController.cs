@@ -1,6 +1,7 @@
 using Aurora.Framework.Api;
 using Aurora.Framework.Security;
 using Aurora.Platform.Security.Application.Identity.Commands.ChangePassword;
+using Aurora.Platform.Security.Application.Identity.Commands.RefreshToken;
 using Aurora.Platform.Security.Application.Identity.Commands.UserLogin;
 using Aurora.Platform.Security.Application.Identity.Commands.UserLogout;
 using Aurora.Platform.Security.Application.Identity.Queries.GetProfile;
@@ -46,6 +47,7 @@ namespace Aurora.Platform.Security.API.Controllers
             return Created(string.Empty, response);
         }
 
+        [AllowAnonymous]
         [HttpPost("recovery")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -69,9 +71,10 @@ namespace Aurora.Platform.Security.API.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<bool>> RefreshToken([FromBody] string credentials)
+        public async Task<ActionResult<bool>> RefreshToken([FromBody] RefreshTokenCommand command)
         {
-            return Accepted(string.Empty, null);
+            var response = await _mediator.Send(command);
+            return Accepted(string.Empty, response);
         }
 
         [HttpGet("profile")]
