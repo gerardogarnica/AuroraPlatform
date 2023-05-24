@@ -11,5 +11,13 @@ namespace Aurora.Framework
 
             return Expression.Lambda<Func<T, bool>>(Expression.And(newFilter, expressionToAdd.Body), expressionToAdd.Parameters);
         }
+
+        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> filter, Expression<Func<T, bool>> expressionToAdd)
+        {
+            var newFilter = new ReplaceVisitor(filter.Parameters[0], expressionToAdd.Parameters[0])
+                .Visit(filter.Body);
+
+            return Expression.Lambda<Func<T, bool>>(Expression.Or(newFilter, expressionToAdd.Body), expressionToAdd.Parameters);
+        }
     }
 }
