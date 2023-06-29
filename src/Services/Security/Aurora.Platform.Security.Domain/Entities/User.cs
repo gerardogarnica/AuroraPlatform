@@ -6,21 +6,29 @@ namespace Aurora.Platform.Security.Domain.Entities
 {
     public class User : AuditableEntity
     {
+        private const string defaultPasswordControl = "Aurora.Platform.Security.UserData";
+
         public override int Id { get => base.Id; set => base.Id = value; }
-        public string LoginName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public string Password { get; set; }
+        public string PasswordControl { get; set; }
+        public DateTime? PasswordExpirationDate { get; set; }
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
-        public UserCredential Credential { get; set; }
         public UserToken Token { get; set; }
         public List<UserRole> UserRoles { get; set; }
+
+        public static Tuple<string, string> EncryptPassword(string password)
+        {
+            return SymmetricEncryptionProvider.Protect(password, defaultPasswordControl);
+        }
 
         public void CheckIfPasswordMatches(string password)
         {
             var decryptPassword = SymmetricEncryptionProvider
-                .Unprotect(Credential.Password, Credential.PasswordControl, "Aurora.Platform.Security.UserData");
+                .Unprotect(Password, PasswordControl, defaultPasswordControl);
 
             if (password != decryptPassword)
                 throw new InvalidCredentialsException();
@@ -30,7 +38,7 @@ namespace Aurora.Platform.Security.Domain.Entities
         {
             if (IsActive) return;
 
-            throw new InactiveUserException(LoginName);
+            throw new InactiveUserException(Email);
         }
 
         public void CheckIfIsUnableToChange()
@@ -42,9 +50,9 @@ namespace Aurora.Platform.Security.Domain.Entities
 
         public void CheckIfPasswordHasExpired()
         {
-            if (!Credential.MustChange) return;
+            if (!PasswordExpirationDate.HasValue) return;
 
-            if (DateTime.UtcNow > Credential.ExpirationDate.Value.Date)
+            if (DateTime.UtcNow > PasswordExpirationDate.Value.Date)
                 throw new PasswordExpiredException();
         }
     }
