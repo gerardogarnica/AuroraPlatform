@@ -27,15 +27,14 @@ namespace Aurora.Platform.Security.Infrastructure.Repositories
 
         #region IUserRepository implementation
 
-        async Task<User> IUserRepository.GetAsync(string loginName)
+        async Task<User> IUserRepository.GetAsync(string email)
         {
             return await _context
                 .Users
                 .AsNoTracking()
-                .Include(x => x.Credential)
                 .Include(x => x.Token)
                 .Include(x => x.UserRoles)
-                .FirstOrDefaultAsync(x => x.LoginName.Equals(loginName));
+                .FirstOrDefaultAsync(x => x.Email.Equals(email));
         }
 
         async Task<PagedCollection<User>> IUserRepository.GetListAsync(PagedViewRequest viewRequest, int roleId, bool onlyActives)
@@ -45,13 +44,13 @@ namespace Aurora.Platform.Security.Infrastructure.Repositories
                 .Where(x => x.IsActive && roleId > 0
                     ? x.RoleId.Equals(roleId)
                     : x.RoleId.Equals(x.RoleId))
-                .OrderBy(x => x.User.LoginName)
+                .OrderBy(x => x.User.FirstName)
                 .Skip(viewRequest.PageIndex * viewRequest.PageSize)
                 .Take(viewRequest.PageSize)
                 .Select(x => x.UserId)
                 .ToArrayAsync();
 
-            return await (from s in _context.Users.Include(x => x.Credential)
+            return await (from s in _context.Users
                           where ids.Contains(s.Id)
                           select s)
                           .ToPagedCollectionAsync(viewRequest);

@@ -8,10 +8,9 @@ namespace Aurora.Platform.Security.Infrastructure
     {
         #region DbSet properties
 
+        public DbSet<CredentialLog> CredentialLogs { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserCredential> UserCredentials { get; set; }
-        public DbSet<UserCredentialLog> UserCredentialLogs { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<UserSession> UserSessions { get; set; }
         public DbSet<UserToken> UserTokens { get; set; }
@@ -31,11 +30,15 @@ namespace Aurora.Platform.Security.Infrastructure
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new UserCredentialConfiguration());
-            modelBuilder.ApplyConfiguration(new UserCredentialLogConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserSessionConfiguration());
             modelBuilder.ApplyConfiguration(new UserTokenConfiguration());
+            modelBuilder.ApplyConfiguration(new CredentialLogConfiguration());
+
+            /*
+            modelBuilder.HasSequence<int>("UserSequence", "SEC");
+            modelBuilder.Entity<User>().Property(o => o.Id).HasDefaultValueSql("NEXT VALUE FOR UserSequence");
+            */
         }
     }
 }

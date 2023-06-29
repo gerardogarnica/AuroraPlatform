@@ -5,17 +5,22 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
 {
     public class UserRoleSeed : ISeedData<SecurityContext>
     {
+        const string adminUserEmail = "admin@aurorasoft.ec";
+        const string adminRoleName = "Administradores";
+        const string applicationCode = "DBB1F084-0E5C-488F-8990-EA1FDF223A94";
+        const string userBatch = "BATCH-USR";
+
         public void Seed(SecurityContext context)
         {
             var adminUser = context
                 .Users
-                .FirstOrDefault(x => x.LoginName.Equals("admin"));
+                .FirstOrDefault(x => x.Email.Equals(adminUserEmail));
 
             if (adminUser == null) return;
 
             var adminRole = context
                 .Roles
-                .FirstOrDefault(x => x.IsGlobal && x.Name.Equals("Administradores"));
+                .FirstOrDefault(x => x.Application.Equals(applicationCode) && x.Name.Equals(adminRoleName));
 
             if (adminRole == null) return;
 
@@ -28,7 +33,7 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
             context.UserRoles.Add(CreateAdminUserRole(adminUser.Id, adminRole.Id));
         }
 
-        private UserRole CreateAdminUserRole(int userId, int roleId)
+        private static UserRole CreateAdminUserRole(int userId, int roleId)
         {
             return new UserRole()
             {
@@ -36,9 +41,9 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
                 RoleId = roleId,
                 IsDefault = true,
                 IsActive = true,
-                CreatedBy = "BATCH-USR",
+                CreatedBy = userBatch,
                 CreatedDate = DateTime.UtcNow,
-                LastUpdatedBy = "BATCH-USR",
+                LastUpdatedBy = userBatch,
                 LastUpdatedDate = DateTime.UtcNow
             };
         }

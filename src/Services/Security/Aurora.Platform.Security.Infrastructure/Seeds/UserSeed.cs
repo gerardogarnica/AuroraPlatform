@@ -1,80 +1,62 @@
-﻿using Aurora.Framework.Cryptography;
-using Aurora.Framework.Repositories;
+﻿using Aurora.Framework.Repositories;
 using Aurora.Platform.Security.Domain.Entities;
 
 namespace Aurora.Platform.Security.Infrastructure.Seeds
 {
     public class UserSeed : ISeedData<SecurityContext>
     {
+        const string adminUserEmail = "admin@aurorasoft.ec";
+        const string userBatch = "BATCH-USR";
+
         public void Seed(SecurityContext context)
         {
             var adminUser = context
                 .Users
-                .FirstOrDefault(x => x.LoginName.Equals("admin"));
+                .FirstOrDefault(x => x.Email.Equals(adminUserEmail));
 
             if (adminUser != null) return;
 
-            context.Users.Add(CreateAdminUser());
+            adminUser = CreateAdminUser();
+
+            context.Users.Add(adminUser);
+            context.CredentialLogs.Add(CreateAdminCredentialLog(adminUser));
         }
 
-        private User CreateAdminUser()
+        private static User CreateAdminUser()
         {
+            var passwordTuple = User.EncryptPassword("admin123");
+
             return new User()
             {
-                LoginName = "admin",
                 FirstName = "Administrador",
                 LastName = "Plataforma",
-                Email = "admin@aurorasoft.ec",
-                IsDefault = true,
-                IsActive = true,
-                CreatedBy = "BATCH-USR",
-                CreatedDate = DateTime.UtcNow,
-                LastUpdatedBy = "BATCH-USR",
-                LastUpdatedDate = DateTime.UtcNow,
-                Credential = CreateAdminCredential(),
-                Token = CreateAdminToken()
-            };
-        }
-
-        private UserCredential CreateAdminCredential()
-        {
-            var passwordTuple = SymmetricEncryptionProvider.Protect("admin", "Aurora.Platform.Security.UserData");
-
-            return new UserCredential()
-            {
+                Email = adminUserEmail,
                 Password = passwordTuple.Item1,
                 PasswordControl = passwordTuple.Item2,
-                MustChange = false,
-                CreatedBy = "BATCH-USR",
+                IsDefault = true,
+                IsActive = true,
+                CreatedBy = userBatch,
                 CreatedDate = DateTime.UtcNow,
-                LastUpdatedBy = "BATCH-USR",
+                LastUpdatedBy = userBatch,
                 LastUpdatedDate = DateTime.UtcNow,
-                CredentialLogs = CreateAdminCredentialLogs(passwordTuple.Item1, passwordTuple.Item2)
-            };
-        }
-
-        private List<UserCredentialLog> CreateAdminCredentialLogs(string password, string control)
-        {
-            return new List<UserCredentialLog>
-            {
-                new UserCredentialLog()
+                Token = new UserToken()
                 {
-                    ChangeVersion = 1,
-                    Password = password,
-                    PasswordControl = control,
-                    MustChange = false,
-                    CreatedDate = DateTime.UtcNow
+                    AccessToken = null,
+                    RefreshToken = null,
+                    IssuedDate = DateTime.UtcNow,
                 }
             };
         }
 
-        private UserToken CreateAdminToken()
+        private static CredentialLog CreateAdminCredentialLog(User user)
         {
-            return new UserToken()
+            return new CredentialLog
             {
-                AccessToken = null,
-                RefreshToken = null,
-                IssuedDate = DateTime.UtcNow,
+                UserId = user.Id,
+                Password = user.Password,
+                PasswordControl = user.PasswordControl,
+                ChangeVersion = 1,
+                CreatedDate = DateTime.UtcNow
             };
         }
     }
