@@ -6,7 +6,7 @@ namespace Aurora.Platform.Security.Application.Identity.Commands.UserLogin
     {
         public UserLoginValidator()
         {
-            RuleFor(p => p.LoginName)
+            RuleFor(p => p.Email)
                 .NotEmpty().WithMessage("Login name is required.");
 
             RuleFor(p => p.Password)

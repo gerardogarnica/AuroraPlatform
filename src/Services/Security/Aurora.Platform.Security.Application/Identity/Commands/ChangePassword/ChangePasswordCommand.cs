@@ -1,5 +1,4 @@
-﻿using Aurora.Framework.Cryptography;
-using Aurora.Framework.Security;
+﻿using Aurora.Framework.Security;
 using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Exceptions;
 using Aurora.Platform.Security.Domain.Repositories;
@@ -19,7 +18,7 @@ public class ChangePasswordHandler : IRequestHandler<ChangePasswordCommand, bool
 
     private readonly IJwtSecurityHandler _securityHandler;
     private readonly IUserRepository _userRepository;
-    private readonly IUserCredentialRepository _userCredentialRepository;
+    private readonly ICredentialLogRepository _credentialLogRepository;
 
     #endregion
 
@@ -28,11 +27,11 @@ public class ChangePasswordHandler : IRequestHandler<ChangePasswordCommand, bool
     public ChangePasswordHandler(
         IJwtSecurityHandler securityHandler,
         IUserRepository userRepository,
-        IUserCredentialRepository userCredentialRepository)
+        ICredentialLogRepository credentialLogRepository)
     {
         _securityHandler = securityHandler;
         _userRepository = userRepository;
-        _userCredentialRepository = userCredentialRepository;
+        _credentialLogRepository = credentialLogRepository;
     }
 
     #endregion
@@ -43,11 +42,26 @@ public class ChangePasswordHandler : IRequestHandler<ChangePasswordCommand, bool
         ChangePasswordCommand request, CancellationToken cancellationToken)
     {
         // Get logged user
-        var entry = await GetUserAsync(request.CurrentPassword);
+        var user = await GetUserAsync(request.CurrentPassword);
 
-        // Update credential repository
-        await UpdateUserCredentialAsync(entry.Credential, request.NewPassword);
+        // TODO: get expiration days from configuration
+        // Update password credential
+        user.EncryptPassword(request.NewPassword, DateTime.Today);
 
+        // Update user repository
+        user = await _userRepository.UpdateAsync(user);
+
+        // Update current credential log
+        var currentCredential = await _credentialLogRepository.GetLastAsync(user.Id);
+        currentCredential.EndDate = DateTime.UtcNow;
+
+        await _credentialLogRepository.UpdateAsync(currentCredential);
+
+        // Add credential log repository
+        var newCredential = new CredentialLog(user, currentCredential.ChangeVersion);
+        await _credentialLogRepository.AddAsync(newCredential);
+
+        // Returns result
         return true;
     }
 
@@ -57,35 +71,13 @@ public class ChangePasswordHandler : IRequestHandler<ChangePasswordCommand, bool
 
     private async Task<User> GetUserAsync(string password)
     {
-        var loginName = _securityHandler.UserInfo.LoginName;
-        var user = await _userRepository.GetAsync(loginName) ?? throw new InvalidUserNameException(loginName);
+        var email = _securityHandler.UserInfo.Email;
+        var user = await _userRepository.GetAsync(email) ?? throw new InvalidUserEmailException(email);
 
         user.CheckIfPasswordMatches(password);
         user.CheckIfIsActive();
 
         return user;
-    }
-
-    private async Task<UserCredential> UpdateUserCredentialAsync(UserCredential credential, string newPassword)
-    {
-        var passwordTuple = SymmetricEncryptionProvider.Protect(newPassword, "Aurora.Platform.Security.UserData");
-        credential.Password = passwordTuple.Item1;
-        credential.PasswordControl = passwordTuple.Item2;
-        credential.CredentialLogs.Add(AddCredentialLog(passwordTuple.Item1, passwordTuple.Item2));
-
-        return await _userCredentialRepository.UpdateAsync(credential);
-    }
-
-    private static UserCredentialLog AddCredentialLog(string password, string control)
-    {
-        return new UserCredentialLog()
-        {
-            ChangeVersion = 1,
-            Password = password,
-            PasswordControl = control,
-            MustChange = false,
-            CreatedDate = DateTime.UtcNow
-        };
     }
 
     #endregion

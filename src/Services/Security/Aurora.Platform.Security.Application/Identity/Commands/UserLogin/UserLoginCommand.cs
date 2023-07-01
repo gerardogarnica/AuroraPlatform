@@ -9,7 +9,7 @@ namespace Aurora.Platform.Security.Application.Identity.Commands.UserLogin;
 
 public record UserLoginCommand : IRequest<IdentityToken>
 {
-    public string LoginName { get; set; }
+    public string Email { get; set; }
     public string Password { get; set; }
 }
 
@@ -52,7 +52,7 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
         UserLoginCommand request, CancellationToken cancellationToken)
     {
         // Get user and roles
-        var user = await GetUserAsync(request.LoginName, request.Password);
+        var user = await GetUserAsync(request.Email, request.Password);
         var roles = await GetUserRolesAsync(user.UserRoles);
 
         // Get token information
@@ -62,10 +62,12 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
         var tokenInfo = _securityHandler.GenerateTokenInfo(userInfo);
 
         // Updates token repository
-        var entry = await UpdateUserTokenAsync(user.Token, tokenInfo);
+        user.Token.UpdateWithTokenInfo(tokenInfo);
+        await _userTokenRepository.UpdateAsync(user.Token);
 
         // Add user session
-        await AddUserSessionAsync(user.Id, user.LoginName, entry);
+        var userSession = new UserSession(user.Id, user.Email, tokenInfo);
+        await _userSessionRepository.AddAsync(userSession);
 
         // Returns identity tokens
         return new IdentityToken()
@@ -79,9 +81,9 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
 
     #region Private methods
 
-    private async Task<User> GetUserAsync(string loginName, string password)
+    private async Task<User> GetUserAsync(string email, string password)
     {
-        var user = await _userRepository.GetAsync(loginName) ?? throw new InvalidCredentialsException();
+        var user = await _userRepository.GetAsync(email) ?? throw new InvalidCredentialsException();
 
         user.CheckIfPasswordMatches(password);
         user.CheckIfIsActive();
@@ -100,36 +102,6 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
         }
 
         return roles;
-    }
-
-    private async Task<UserToken> UpdateUserTokenAsync(
-        UserToken userToken, TokenInfo tokenInfo)
-    {
-        var entry = userToken;
-
-        entry.AccessToken = tokenInfo.AccessToken;
-        entry.AccessTokenExpiration = tokenInfo.AccessTokenExpiration;
-        entry.RefreshToken = tokenInfo.RefreshToken;
-        entry.RefreshTokenExpiration = tokenInfo.RefreshTokenExpiration;
-        entry.IssuedDate = DateTime.UtcNow;
-
-        return await _userTokenRepository.UpdateAsync(entry);
-    }
-
-    private async Task AddUserSessionAsync(int userId, string loginName, UserToken userToken)
-    {
-        var entry = new UserSession()
-        {
-            UserId = userId,
-            LoginName = loginName,
-            AccessToken = userToken.AccessToken,
-            AccessTokenExpiration = userToken.AccessTokenExpiration.Value,
-            RefreshToken = userToken.RefreshToken,
-            RefreshTokenExpiration = userToken.RefreshTokenExpiration.Value,
-            BeginSessionDate = DateTime.UtcNow
-        };
-
-        await _userSessionRepository.AddAsync(entry);
     }
 
     #endregion

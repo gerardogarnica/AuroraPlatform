@@ -1,5 +1,4 @@
 ﻿using Aurora.Framework.Security;
-using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Repositories;
 using MediatR;
 
@@ -39,38 +38,21 @@ public class UserLogoutHandler : IRequestHandler<UserLogoutCommand, int>
         // Get logged user
         var user = _securityHandler.UserInfo;
 
-        // Update user token
-        await UpdateUserToken(user);
+        // Get current user token
+        var userToken = await _userTokenRepository.GetByIdAsync(user.UserId);
+
+        // Update token repository
+        userToken.ClearTokenInfo();
+        await _userTokenRepository.UpdateAsync(userToken);
 
         // Update user session
-        var entry = await UpdateUserSession(user);
-
-        return entry.Id;
-    }
-
-    #endregion
-
-    #region Private methods
-
-    private async Task<UserSession> UpdateUserSession(UserInfo user)
-    {
         var userSession = await _userSessionRepository.GetLastAsync(user.UserId);
         userSession.EndSessionDate = DateTime.UtcNow;
 
-        return await _userSessionRepository.UpdateAsync(userSession);
-    }
+        await _userSessionRepository.UpdateAsync(userSession);
 
-    private async Task UpdateUserToken(UserInfo user)
-    {
-        var tokenInfo = await _userTokenRepository.GetByIdAsync(user.UserId);
-
-        tokenInfo.AccessToken = null;
-        tokenInfo.RefreshToken = null;
-        tokenInfo.AccessTokenExpiration = null;
-        tokenInfo.RefreshTokenExpiration = null;
-        tokenInfo.IssuedDate = DateTime.UtcNow;
-
-        await _userTokenRepository.UpdateAsync(tokenInfo);
+        // Returns session ID
+        return userSession.Id;
     }
 
     #endregion

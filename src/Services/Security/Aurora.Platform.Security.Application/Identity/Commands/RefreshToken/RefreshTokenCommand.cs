@@ -1,5 +1,4 @@
 ﻿using Aurora.Framework.Security;
-using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Repositories;
 using MediatR;
 
@@ -39,19 +38,26 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Identity
     async Task<IdentityToken> IRequestHandler<RefreshTokenCommand, IdentityToken>.Handle(
         RefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        // Get current user token
-        var entry = await _userTokenRepository.GetByIdAsync(_securityHandler.UserInfo.UserId);
-        entry.CheckIfRefreshTokenIsValid(request.RefreshToken);
-        entry.CheckIfRefreshTokenIsNotExpired();
+        // Get logged user
+        var user = _securityHandler.UserInfo;
 
         // Get token information
-        var tokenInfo = _securityHandler.GenerateTokenInfo(_securityHandler.UserInfo);
+        var tokenInfo = _securityHandler.GenerateTokenInfo(user);
+
+        // Get current user token
+        var userToken = await _userTokenRepository.GetByIdAsync(user.UserId);
+        userToken.CheckIfRefreshTokenIsValid(request.RefreshToken);
+        userToken.CheckIfRefreshTokenIsNotExpired();
 
         // Update token repository
-        await UpdateUserTokenAsync(entry, tokenInfo);
+        userToken.UpdateWithTokenInfo(tokenInfo);
+        await _userTokenRepository.UpdateAsync(userToken);
 
         // Update user session
-        await UpdateUserSessionAsync(_securityHandler.UserInfo.UserId, entry);
+        var userSession = await _userSessionRepository.GetLastAsync(user.UserId);
+        userSession.UpdateWithTokenInfo(tokenInfo);
+
+        await _userSessionRepository.UpdateAsync(userSession);
 
         // Returns identity tokens
         return new IdentityToken()
@@ -59,33 +65,6 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Identity
             AccessToken = tokenInfo.AccessToken,
             RefreshToken = tokenInfo.RefreshToken
         };
-    }
-
-    #endregion
-
-    #region Private methods
-
-    private async Task UpdateUserTokenAsync(UserToken userToken, TokenInfo tokenInfo)
-    {
-        userToken.AccessToken = tokenInfo.AccessToken;
-        userToken.AccessTokenExpiration = tokenInfo.AccessTokenExpiration;
-        userToken.RefreshToken = tokenInfo.RefreshToken;
-        userToken.RefreshTokenExpiration = tokenInfo.RefreshTokenExpiration;
-        userToken.IssuedDate = DateTime.UtcNow;
-
-        await _userTokenRepository.UpdateAsync(userToken);
-    }
-
-    private async Task UpdateUserSessionAsync(int userId, UserToken userToken)
-    {
-        var userSession = await _userSessionRepository.GetLastAsync(userId);
-
-        userSession.AccessToken = userToken.AccessToken;
-        userSession.AccessTokenExpiration = userToken.AccessTokenExpiration.Value;
-        userSession.RefreshToken = userToken.RefreshToken;
-        userSession.RefreshTokenExpiration = userToken.RefreshTokenExpiration.Value;
-
-        await _userSessionRepository.UpdateAsync(userSession);
     }
 
     #endregion

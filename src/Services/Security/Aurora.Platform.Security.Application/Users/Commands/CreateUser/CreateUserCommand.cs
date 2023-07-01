@@ -51,7 +51,8 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, int>
         user = await _userRepository.AddAsync(user);
 
         // Add credential log repository
-        await _credentialLogRepository.AddAsync(CreateCredentialLog(user));
+        var credentialLog = new CredentialLog(user, 0);
+        await _credentialLogRepository.AddAsync(credentialLog);
 
         // Returns entity ID
         return user.Id;
@@ -68,19 +69,6 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, int>
             AccessToken = null,
             RefreshToken = null,
             IssuedDate = DateTime.UtcNow,
-        };
-    }
-
-    private static CredentialLog CreateCredentialLog(User user)
-    {
-        return new CredentialLog()
-        {
-            UserId = user.Id,
-            Password = user.Password,
-            PasswordControl = user.PasswordControl,
-            ChangeVersion = 1,
-            ExpirationDate = user.PasswordExpirationDate,
-            CreatedDate = DateTime.UtcNow
         };
     }
 
