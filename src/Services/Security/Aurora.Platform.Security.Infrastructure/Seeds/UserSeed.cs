@@ -43,7 +43,7 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
                 }
             };
 
-            user.EncryptPassword("admin123");
+            user.EncryptPassword("admin123", null);
 
             return user;
         }

@@ -20,13 +20,14 @@ namespace Aurora.Platform.Security.Domain.Entities
         public UserToken Token { get; set; }
         public List<UserRole> UserRoles { get; set; }
 
-        public void EncryptPassword(string password)
+        public void EncryptPassword(string password, DateTime? expirationDate)
         {
             var passwordTuple = SymmetricEncryptionProvider
                 .Protect(password, defaultPasswordControl);
 
             Password = passwordTuple.Item1;
             PasswordControl = passwordTuple.Item2;
+            PasswordExpirationDate = expirationDate;
         }
 
         public void CheckIfPasswordMatches(string password)
