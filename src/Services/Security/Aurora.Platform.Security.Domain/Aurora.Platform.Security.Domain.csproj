@@ -11,6 +11,7 @@
     <ProjectReference Include="..\..\..\Common\Aurora.Framework.Cryptography\Aurora.Framework.Cryptography.csproj" />
     <ProjectReference Include="..\..\..\Common\Aurora.Framework.Entities\Aurora.Framework.Entities.csproj" />
     <ProjectReference Include="..\..\..\Common\Aurora.Framework.Repositories\Aurora.Framework.Repositories.csproj" />
+    <ProjectReference Include="..\..\..\Common\Aurora.Framework.Security\Aurora.Framework.Security.csproj" />
   </ItemGroup>
 
 </Project>

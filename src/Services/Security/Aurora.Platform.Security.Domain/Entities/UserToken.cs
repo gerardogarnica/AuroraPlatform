@@ -1,4 +1,5 @@
 ﻿using Aurora.Framework.Entities;
+using Aurora.Framework.Security;
 using Aurora.Platform.Security.Domain.Exceptions;
 
 namespace Aurora.Platform.Security.Domain.Entities
@@ -29,6 +30,24 @@ namespace Aurora.Platform.Security.Domain.Entities
             if (RefreshTokenExpiration.Value > DateTime.UtcNow) return;
 
             throw new ExpiredUserTokenException();
+        }
+
+        public void UpdateWithTokenInfo(TokenInfo tokenInfo)
+        {
+            AccessToken = tokenInfo.AccessToken;
+            AccessTokenExpiration = tokenInfo.AccessTokenExpiration;
+            RefreshToken = tokenInfo.RefreshToken;
+            RefreshTokenExpiration = tokenInfo.RefreshTokenExpiration;
+            IssuedDate = DateTime.UtcNow;
+        }
+
+        public void ClearTokenInfo()
+        {
+            AccessToken = null;
+            AccessTokenExpiration = null;
+            RefreshToken = null;
+            RefreshTokenExpiration = null;
+            IssuedDate = null;
         }
     }
 }

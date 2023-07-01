@@ -41,9 +41,9 @@ namespace Aurora.Platform.Security.Domain.Exceptions
             : base(string.Format(InactiveUserMessage, email)) { }
     }
 
-    public class InvalidUserNameException : UserException
+    public class InvalidUserEmailException : UserException
     {
-        public InvalidUserNameException(string email)
+        public InvalidUserEmailException(string email)
             : base(string.Format(InvalidEmailMessage, email)) { }
     }
 
