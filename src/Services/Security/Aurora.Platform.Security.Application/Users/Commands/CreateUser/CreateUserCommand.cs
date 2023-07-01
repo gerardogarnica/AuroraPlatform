@@ -1,5 +1,4 @@
-﻿using Aurora.Framework.Cryptography;
-using Aurora.Platform.Security.Domain.Entities;
+﻿using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Repositories;
 using AutoMapper;
 using MediatR;
@@ -8,7 +7,6 @@ namespace Aurora.Platform.Security.Application.Users.Commands.CreateUser;
 
 public record CreateUserCommand : IRequest<int>
 {
-    public string LoginName { get; init; }
     public string FirstName { get; init; }
     public string LastName { get; init; }
     public string Email { get; init; }
@@ -20,6 +18,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, int>
 
     private readonly IMapper _mapper;
     private readonly IUserRepository _userRepository;
+    private readonly ICredentialLogRepository _credentialLogRepository;
 
     #endregion
 
@@ -27,10 +26,12 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, int>
 
     public CreateUserHandler(
         IMapper mapper,
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        ICredentialLogRepository credentialLogRepository)
     {
         _mapper = mapper;
         _userRepository = userRepository;
+        _credentialLogRepository = credentialLogRepository;
     }
 
     #endregion
@@ -41,58 +42,45 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, int>
         CreateUserCommand request, CancellationToken cancellationToken)
     {
         // Create user entity
-        var entry = _mapper.Map<User>(request);
-        entry.Credential = CreateCredential(request.LoginName);
-        entry.Token = CreateToken();
+        var user = _mapper.Map<User>(request);
+        user.IsActive = true;
+        user.EncryptPassword(request.Email, DateTime.Today);
+        user.Token = CreateToken();
 
         // Add user repository
-        entry = await _userRepository.AddAsync(entry);
+        user = await _userRepository.AddAsync(user);
+
+        // Add credential log repository
+        await _credentialLogRepository.AddAsync(CreateCredentialLog(user));
 
         // Returns entity ID
-        return entry.Id;
+        return user.Id;
     }
 
     #endregion
 
     #region Private methods
 
-    private UserCredential CreateCredential(string loginName)
-    {
-        var passwordTuple = SymmetricEncryptionProvider.Protect(loginName, "Aurora.Platform.Security.UserData");
-
-        return new UserCredential()
-        {
-            Password = passwordTuple.Item1,
-            PasswordControl = passwordTuple.Item2,
-            MustChange = true,
-            ExpirationDate = DateTime.Today,
-            CredentialLogs = CreateCredentialLogs(passwordTuple.Item1, passwordTuple.Item2)
-        };
-    }
-
-    private List<UserCredentialLog> CreateCredentialLogs(string password, string control)
-    {
-        return new List<UserCredentialLog>
-            {
-                new UserCredentialLog()
-                {
-                    ChangeVersion = 1,
-                    Password = password,
-                    PasswordControl = control,
-                    MustChange = true,
-                    ExpirationDate = DateTime.Today,
-                    CreatedDate = DateTime.Today
-                }
-            };
-    }
-
-    private UserToken CreateToken()
+    private static UserToken CreateToken()
     {
         return new UserToken()
         {
             AccessToken = null,
             RefreshToken = null,
             IssuedDate = DateTime.UtcNow,
+        };
+    }
+
+    private static CredentialLog CreateCredentialLog(User user)
+    {
+        return new CredentialLog()
+        {
+            UserId = user.Id,
+            Password = user.Password,
+            PasswordControl = user.PasswordControl,
+            ChangeVersion = 1,
+            ExpirationDate = user.PasswordExpirationDate,
+            CreatedDate = DateTime.UtcNow
         };
     }
 

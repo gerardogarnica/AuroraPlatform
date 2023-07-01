@@ -7,7 +7,6 @@ namespace Aurora.Platform.Security.Application.Users.Commands.UpdateUser;
 
 public record UpdateUserCommand : IRequest<int>
 {
-    public string LoginName { get; init; }
     public string FirstName { get; init; }
     public string LastName { get; init; }
     public string Email { get; init; }
@@ -36,7 +35,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, int>
         UpdateUserCommand request, CancellationToken cancellationToken)
     {
         // Get user
-        var user = await GetUserAsync(request.LoginName);
+        var user = await GetUserAsync(request.Email);
 
         // Update user entity
         user.FirstName = request.FirstName;
@@ -53,9 +52,9 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, int>
 
     #region Private methods
 
-    private async Task<User> GetUserAsync(string loginName)
+    private async Task<User> GetUserAsync(string email)
     {
-        var user = await _userRepository.GetAsync(loginName) ?? throw new InvalidUserNameException(loginName);
+        var user = await _userRepository.GetAsync(email) ?? throw new InvalidUserEmailException(email);
         user.CheckIfIsUnableToChange();
         user.CheckIfIsActive();
 

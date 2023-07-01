@@ -12,11 +12,10 @@ namespace Aurora.Platform.Security.Application.Users.Commands.CreateUser
         {
             _userRepository = userRepository;
 
-            RuleFor(p => p.LoginName)
-                .NotEmpty().WithMessage("Login name is required.")
-                .MinimumLength(5).WithMessage("The minimum login name length is 5 characters.")
-                .MaximumLength(35).WithMessage("The maximum login name length is 35 characters.")
-                .MustAsync(LoginNameIsNotAvailableAsync).WithMessage("{PropertyName} already exists and cannot be created again.")
+            RuleFor(p => p.Email)
+                .NotEmpty().WithMessage("Email is required.")
+                .MaximumLength(50).WithMessage("The maximum email length is 50 characters.")
+                .MustAsync(EmailIsNotAvailableAsync).WithMessage("{PropertyName} already exists and cannot be created again.")
                 .Must(EmailIsNotValid).WithMessage("{PropertyName} does not have a valid email.");
 
             RuleFor(p => p.FirstName)
@@ -26,16 +25,11 @@ namespace Aurora.Platform.Security.Application.Users.Commands.CreateUser
             RuleFor(p => p.LastName)
                 .NotEmpty().WithMessage("Last name is required.")
                 .MaximumLength(40).WithMessage("The maximum last name length is 40 characters.");
-
-            RuleFor(p => p.Email)
-                .NotEmpty().WithMessage("Email is required.")
-                .MaximumLength(50).WithMessage("The maximum email length is 50 characters.")
-                .Must(EmailIsNotValid).WithMessage("{PropertyName} does not have a valid email.");
         }
 
-        private async Task<bool> LoginNameIsNotAvailableAsync(string loginName, CancellationToken cancellationToken)
+        private async Task<bool> EmailIsNotAvailableAsync(string email, CancellationToken cancellationToken)
         {
-            return await _userRepository.GetAsync(loginName) == null;
+            return await _userRepository.GetAsync(email) == null;
         }
 
         private bool EmailIsNotValid(string email)
