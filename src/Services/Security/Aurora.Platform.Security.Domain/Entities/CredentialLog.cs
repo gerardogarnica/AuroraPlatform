@@ -12,5 +12,15 @@ namespace Aurora.Platform.Security.Domain.Entities
         public DateTime? ExpirationDate { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? EndDate { get; set; }
+
+        public CredentialLog(User user, int currentVersion)
+        {
+            UserId = user.Id;
+            Password = user.Password;
+            PasswordControl = user.PasswordControl;
+            ChangeVersion = currentVersion + 1;
+            ExpirationDate = user.PasswordExpirationDate;
+            CreatedDate = DateTime.UtcNow;
+        }
     }
 }

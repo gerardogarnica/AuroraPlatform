@@ -19,7 +19,7 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
             adminUser = CreateAdminUser();
 
             context.Users.Add(adminUser);
-            context.CredentialLogs.Add(CreateAdminCredentialLog(adminUser));
+            context.CredentialLogs.Add(new CredentialLog(adminUser, 0));
         }
 
         private static User CreateAdminUser()
@@ -46,18 +46,6 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
             user.EncryptPassword("admin123", null);
 
             return user;
-        }
-
-        private static CredentialLog CreateAdminCredentialLog(User user)
-        {
-            return new CredentialLog
-            {
-                UserId = user.Id,
-                Password = user.Password,
-                PasswordControl = user.PasswordControl,
-                ChangeVersion = 1,
-                CreatedDate = DateTime.UtcNow
-            };
         }
     }
 }

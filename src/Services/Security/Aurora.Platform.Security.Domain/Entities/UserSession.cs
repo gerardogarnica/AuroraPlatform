@@ -15,6 +15,14 @@ namespace Aurora.Platform.Security.Domain.Entities
         public DateTime BeginSessionDate { get; set; }
         public DateTime? EndSessionDate { get; set; }
 
+        public UserSession(int userId, string email, TokenInfo tokenInfo)
+        {
+            UserId = userId;
+            Email = email;
+            BeginSessionDate = DateTime.UtcNow;
+            UpdateWithTokenInfo(tokenInfo);
+        }
+
         public void UpdateWithTokenInfo(TokenInfo tokenInfo)
         {
             AccessToken = tokenInfo.AccessToken;
