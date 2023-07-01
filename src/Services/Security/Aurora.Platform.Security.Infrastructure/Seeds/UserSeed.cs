@@ -24,15 +24,11 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
 
         private static User CreateAdminUser()
         {
-            var passwordTuple = User.EncryptPassword("admin123");
-
-            return new User()
+            var user = new User()
             {
                 FirstName = "Administrador",
                 LastName = "Plataforma",
                 Email = adminUserEmail,
-                Password = passwordTuple.Item1,
-                PasswordControl = passwordTuple.Item2,
                 IsDefault = true,
                 IsActive = true,
                 CreatedBy = userBatch,
@@ -46,6 +42,10 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
                     IssuedDate = DateTime.UtcNow,
                 }
             };
+
+            user.EncryptPassword("admin123");
+
+            return user;
         }
 
         private static CredentialLog CreateAdminCredentialLog(User user)
