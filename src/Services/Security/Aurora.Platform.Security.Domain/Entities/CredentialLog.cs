@@ -13,6 +13,8 @@ namespace Aurora.Platform.Security.Domain.Entities
         public DateTime CreatedDate { get; set; }
         public DateTime? EndDate { get; set; }
 
+        public CredentialLog() { }
+
         public CredentialLog(User user, int currentVersion)
         {
             UserId = user.Id;
