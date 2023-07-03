@@ -4,7 +4,7 @@ using Aurora.Framework.Security;
 using Aurora.Platform.Security.Application.Users.Commands.CreateUser;
 using Aurora.Platform.Security.Application.Users.Commands.UpdateUser;
 using Aurora.Platform.Security.Application.Users.Commands.UpdateUserStatus;
-using Aurora.Platform.Security.Application.Users.Queries.GetUserByLogin;
+using Aurora.Platform.Security.Application.Users.Queries.GetUserByEmail;
 using Aurora.Platform.Security.Application.Users.Queries.GetUsers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -25,13 +25,13 @@ namespace Aurora.Platform.Security.API.Controllers
 
         #endregion
 
-        [HttpGet("{loginName}")]
+        [HttpGet("{email}")]
         [ProducesResponseType(typeof(UserInfo), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserInfo>> GetByLoginName(string loginName)
+        public async Task<ActionResult<UserInfo>> GetByEmail(string email)
         {
-            var response = await _mediator.Send(new GetUserByLoginQuery { LoginName = loginName });
+            var response = await _mediator.Send(new GetUserByEmailQuery { Email = email });
             if (response == null) return NoContent();
 
             return Ok(response);
@@ -69,15 +69,15 @@ namespace Aurora.Platform.Security.API.Controllers
             return Accepted(response);
         }
 
-        [HttpPut("{loginName}/activate")]
+        [HttpPut("{email}/activate")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<int>> Activate(string loginName)
+        public async Task<ActionResult<int>> Activate(string email)
         {
             var command = new UpdateUserStatusCommand()
             {
-                LoginName = loginName,
+                Email = email,
                 IsActive = true
             };
 
@@ -85,20 +85,29 @@ namespace Aurora.Platform.Security.API.Controllers
             return Accepted(response);
         }
 
-        [HttpPut("{loginName}/deactivate")]
+        [HttpPut("{email}/deactivate")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<int>> Deactivate(string loginName)
+        public async Task<ActionResult<int>> Deactivate(string email)
         {
             var command = new UpdateUserStatusCommand()
             {
-                LoginName = loginName,
+                Email = email,
                 IsActive = false
             };
 
             var response = await _mediator.Send(command);
             return Accepted(response);
+        }
+
+        [HttpPut("{loginName}/roles/add")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> AddRole(string loginName, [FromBody] int roleId)
+        {
+            return Accepted(string.Empty);
         }
     }
 }
