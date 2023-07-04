@@ -105,7 +105,6 @@ namespace Aurora.Framework.Security
                 new Claim(ClaimTypes.GivenName, user.FirstName),
                 new Claim(ClaimTypes.Surname, user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.LoginName),
                 new Claim(ClaimTypes.UserData, user.InternalUserData)
             };
 
