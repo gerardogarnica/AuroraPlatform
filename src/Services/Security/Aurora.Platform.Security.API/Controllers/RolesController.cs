@@ -1,6 +1,8 @@
 ﻿using Aurora.Framework.Api;
 using Aurora.Framework.Entities;
 using Aurora.Framework.Security;
+using Aurora.Platform.Security.Application.Roles.Commands.CreateRole;
+using Aurora.Platform.Security.Application.Roles.Commands.UpdateRole;
 using Aurora.Platform.Security.Application.Roles.Queries.GetRoleById;
 using Aurora.Platform.Security.Application.Roles.Queries.GetRoles;
 using MediatR;
@@ -46,5 +48,24 @@ namespace Aurora.Platform.Security.API.Controllers
             return Ok(response);
         }
 
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> Create([FromBody] CreateRoleCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Created(string.Empty, response);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> Update([FromBody] UpdateRoleCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Accepted(response);
+        }
     }
 }

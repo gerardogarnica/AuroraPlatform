@@ -3,6 +3,7 @@ using Aurora.Framework.Repositories;
 using Aurora.Framework.Repositories.Extensions;
 using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Aurora.Platform.Security.Infrastructure.Repositories
 {
@@ -25,6 +26,14 @@ namespace Aurora.Platform.Security.Infrastructure.Repositories
         #endregion
 
         #region IRoleRepository implementation
+
+        async Task<Role> IRoleRepository.GetAsync(string application, string name)
+        {
+            return await _context
+                .Roles
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Application.Equals(application) && x.Name.Equals(name));
+        }
 
         async Task<PagedCollection<Role>> IRoleRepository.GetListAsync(PagedViewRequest viewRequest, string application, bool onlyActives)
         {

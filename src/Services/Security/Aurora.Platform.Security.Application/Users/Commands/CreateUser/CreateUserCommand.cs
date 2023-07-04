@@ -39,7 +39,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, int>
     #region IRequestHandler implementation
 
     async Task<int> IRequestHandler<CreateUserCommand, int>.Handle(
-        CreateUserCommand request, CancellationToken cancellationToken)
+        CreateUserCommand request, CancellationToken cancellationToken) 
     {
         // Create user entity
         var user = _mapper.Map<User>(request);
