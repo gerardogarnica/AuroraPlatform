@@ -18,6 +18,8 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
             if (adminRole != null) return;
 
             context.Roles.Add(CreateAdminRole());
+
+            context.SaveChanges();
         }
 
         private static Role CreateAdminRole()
