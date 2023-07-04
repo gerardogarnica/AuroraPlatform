@@ -47,9 +47,6 @@ public class UpdateUserRoleHandler : IRequestHandler<UpdateUserRoleCommand, int>
         // Update user entity
         if (user.UserRoles.Any(x => x.RoleId.Equals(role.Id)))
         {
-            //if (request.IsAddAction) throw new UserAlreadyHasRoleException(user.Email, role.Name);
-            //user.UserRoles.Remove(user.UserRoles.First(x => x.RoleId.Equals(role.Id)));
-
             var userRole = user.UserRoles.First(x => x.RoleId.Equals(role.Id));
             userRole.IsActive = request.IsAddAction;
         }

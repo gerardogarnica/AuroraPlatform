@@ -5,6 +5,7 @@ namespace Aurora.Framework.Security
     public class RoleInfo
     {
         public int RoleId { get; set; }
+        public string Application { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsGlobal { get; set; }
@@ -16,6 +17,7 @@ namespace Aurora.Framework.Security
             {
                 return string.Concat(
                     RoleId, ";",
+                    Application, ";",
                     Name, ";",
                     Description, ";",
                     IsGlobal, ";",
@@ -30,10 +32,11 @@ namespace Aurora.Framework.Security
             var internalDataTokens = claim.Value.Split(";");
 
             RoleId = int.Parse(internalDataTokens[0]);
-            Name = internalDataTokens[1];
-            Description = internalDataTokens[2];
-            IsGlobal = internalDataTokens[3].ToBoolean().Value;
-            IsActive = internalDataTokens[4].ToBoolean().Value;
+            Application = internalDataTokens[1];
+            Name = internalDataTokens[2];
+            Description = internalDataTokens[3];
+            IsGlobal = internalDataTokens[4].ToBoolean().Value;
+            IsActive = internalDataTokens[5].ToBoolean().Value;
         }
     }
 }
