@@ -1,4 +1,5 @@
 ﻿using Aurora.Framework.Entities;
+using Aurora.Platform.Security.Domain.Exceptions;
 
 namespace Aurora.Platform.Security.Domain.Entities
 {
@@ -10,5 +11,12 @@ namespace Aurora.Platform.Security.Domain.Entities
         public string Description { get; set; }
         public bool IsActive { get; set; }
         public List<UserRole> UserRoles { get; set; }
+
+        public void CheckIfIsActive()
+        {
+            if (IsActive) return;
+
+            throw new InactiveRoleException(Name);
+        }
     }
 }

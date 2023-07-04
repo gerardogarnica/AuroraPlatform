@@ -12,6 +12,7 @@ namespace Aurora.Platform.Security.Domain.Exceptions
         protected const string InvalidUserTokenMessage = "The refresh token is invalid.";
         protected const string PasswordExpiredMessage = "The user password has expired. Password must be changed before login.";
         protected const string UnableChangeUserMessage = "The user is unable to be changed.";
+        protected const string UserDoesNotHaveRoleMessage = "The user {0} does not have the '{1}' role.";
 
         public UserException(string message)
             : base("UserException", message) { }
@@ -63,5 +64,11 @@ namespace Aurora.Platform.Security.Domain.Exceptions
     {
         public UnableChangeUserException()
             : base(UnableChangeUserMessage) { }
+    }
+
+    public class UserDoesNotHaveRoleException : UserException
+    {
+        public UserDoesNotHaveRoleException(string email, string roleName)
+            : base(string.Format(UserDoesNotHaveRoleMessage, email, roleName)) { }
     }
 }

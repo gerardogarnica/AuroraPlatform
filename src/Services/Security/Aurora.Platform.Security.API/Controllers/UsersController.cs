@@ -3,6 +3,7 @@ using Aurora.Framework.Entities;
 using Aurora.Framework.Security;
 using Aurora.Platform.Security.Application.Users.Commands.CreateUser;
 using Aurora.Platform.Security.Application.Users.Commands.UpdateUser;
+using Aurora.Platform.Security.Application.Users.Commands.UpdateUserRole;
 using Aurora.Platform.Security.Application.Users.Commands.UpdateUserStatus;
 using Aurora.Platform.Security.Application.Users.Queries.GetUserByEmail;
 using Aurora.Platform.Security.Application.Users.Queries.GetUsers;
@@ -101,13 +102,38 @@ namespace Aurora.Platform.Security.API.Controllers
             return Accepted(response);
         }
 
-        [HttpPut("{loginName}/roles/add")]
+        [HttpPut("{email}/roles/add")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<int>> AddRole(string loginName, [FromBody] int roleId)
+        public async Task<ActionResult<int>> AddRole(string email, [FromBody] int roleId)
         {
-            return Accepted(string.Empty);
+            var command = new UpdateUserRoleCommand()
+            {
+                Email = email,
+                RoleId = roleId,
+                IsAddAction = true
+            };
+
+            var response = await _mediator.Send(command);
+            return Accepted(response);
+        }
+
+        [HttpPut("{email}/roles/remove")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> RemoveRole(string email, [FromBody] int roleId)
+        {
+            var command = new UpdateUserRoleCommand()
+            {
+                Email = email,
+                RoleId = roleId,
+                IsAddAction = false
+            };
+
+            var response = await _mediator.Send(command);
+            return Accepted(response);
         }
     }
 }
