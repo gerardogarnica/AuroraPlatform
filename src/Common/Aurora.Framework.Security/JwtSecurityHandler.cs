@@ -13,6 +13,7 @@ namespace Aurora.Framework.Security
         UserInfo UserInfo { get; }
         TokenInfo GenerateTokenInfo(UserInfo user);
         void ValidateToken(string token);
+        string GetApplicationCode();
     }
 
     public class JwtSecurityHandler : IJwtSecurityHandler
@@ -87,6 +88,16 @@ namespace Aurora.Framework.Security
                 throw new ApiAuthorizationException();
         }
 
+        string IJwtSecurityHandler.GetApplicationCode()
+        {
+            var user = GetUserInfoFromToken();
+
+            if (user == null) return null;
+            if (!user.Roles.Any()) return null;
+
+            return user.Roles.First().Application;
+        }
+
         #endregion
 
         #region Private methods
@@ -116,7 +127,8 @@ namespace Aurora.Framework.Security
             return claims;
         }
 
-        private static SecurityTokenDescriptor CreateTokenDescriptor(IList<Claim> claims, string secretKey, int tokenValidityInMinutes)
+        private static SecurityTokenDescriptor CreateTokenDescriptor(
+            IList<Claim> claims, string secretKey, int tokenValidityInMinutes)
         {
             var key = Encoding.ASCII.GetBytes(secretKey);
 

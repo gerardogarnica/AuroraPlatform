@@ -8,7 +8,7 @@ namespace Aurora.Framework.Security
         public string Application { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool IsGlobal { get; set; }
+        public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
 
         internal string InternalRoleData
@@ -20,7 +20,7 @@ namespace Aurora.Framework.Security
                     Application, ";",
                     Name, ";",
                     Description, ";",
-                    IsGlobal, ";",
+                    IsDefault, ";",
                     IsActive);
             }
         }
@@ -35,7 +35,7 @@ namespace Aurora.Framework.Security
             Application = internalDataTokens[1];
             Name = internalDataTokens[2];
             Description = internalDataTokens[3];
-            IsGlobal = internalDataTokens[4].ToBoolean().Value;
+            IsDefault = internalDataTokens[4].ToBoolean().Value;
             IsActive = internalDataTokens[5].ToBoolean().Value;
         }
     }
