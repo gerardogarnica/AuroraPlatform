@@ -25,13 +25,13 @@ namespace Aurora.Platform.Security.Infrastructure.Repositories
 
         #region IUserSessionRepository implementation
 
-        async Task<UserSession> IUserSessionRepository.GetLastAsync(int userId)
+        async Task<UserSession> IUserSessionRepository.GetLastAsync(int userId, string application)
         {
             return await _context
                 .UserSessions
                 .AsNoTracking()
                 .OrderByDescending(x => x.Id)
-                .FirstOrDefaultAsync(x => x.UserId.Equals(userId));
+                .FirstOrDefaultAsync(x => x.UserId.Equals(userId) && x.Application.Equals(application));
         }
 
         #endregion

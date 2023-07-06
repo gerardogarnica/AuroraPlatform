@@ -32,7 +32,7 @@ namespace Aurora.Platform.Security.Infrastructure.Repositories
             return await _context
                 .Users
                 .AsNoTracking()
-                .Include(x => x.Token)
+                .Include(x => x.Tokens)
                 .Include(x => x.UserRoles)
                 .FirstOrDefaultAsync(x => x.Email.Equals(email));
         }
