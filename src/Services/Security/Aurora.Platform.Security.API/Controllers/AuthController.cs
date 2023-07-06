@@ -29,8 +29,16 @@ namespace Aurora.Platform.Security.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IdentityToken>> Login([FromBody] UserLoginCommand command)
+        public async Task<ActionResult<IdentityToken>> Login(
+            [FromHeader] string application, [FromBody] UserCredentials credentials)
         {
+            var command = new UserLoginCommand
+            {
+                Application = application,
+                Email = credentials.Email,
+                Password = credentials.Password
+            };
+
             var identityAccess = await _mediator.Send(command);
             return Created(string.Empty, identityAccess);
         }
