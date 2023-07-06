@@ -17,7 +17,7 @@ namespace Aurora.Platform.Security.Domain.Entities
         public DateTime? PasswordExpirationDate { get; set; }
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
-        public UserToken Token { get; set; }
+        public List<UserToken> Tokens { get; set; }
         public List<UserRole> UserRoles { get; set; }
 
         public void EncryptPassword(string password, DateTime? expirationDate)

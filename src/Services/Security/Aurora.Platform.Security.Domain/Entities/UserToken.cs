@@ -7,6 +7,8 @@ namespace Aurora.Platform.Security.Domain.Entities
     public class UserToken : EntityBase
     {
         public override int Id { get => base.Id; set => base.Id = value; }
+        public int UserId { get; set; }
+        public string Application { get; set; }
         public string AccessToken { get; set; }
         public DateTime? AccessTokenExpiration { get; set; }
         public string RefreshToken { get; set; }
@@ -47,7 +49,6 @@ namespace Aurora.Platform.Security.Domain.Entities
             AccessTokenExpiration = null;
             RefreshToken = null;
             RefreshTokenExpiration = null;
-            IssuedDate = null;
         }
     }
 }

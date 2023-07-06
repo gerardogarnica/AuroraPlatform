@@ -7,6 +7,7 @@ namespace Aurora.Platform.Security.Domain.Entities
     {
         public override int Id { get => base.Id; set => base.Id = value; }
         public int UserId { get; set; }
+        public string Application { get; set; }
         public string Email { get; set; }
         public string AccessToken { get; set; }
         public DateTime AccessTokenExpiration { get; set; }
@@ -17,9 +18,10 @@ namespace Aurora.Platform.Security.Domain.Entities
 
         public UserSession() { }
 
-        public UserSession(int userId, string email, TokenInfo tokenInfo)
+        public UserSession(int userId, string application, string email, TokenInfo tokenInfo)
         {
             UserId = userId;
+            Application = application;
             Email = email;
             BeginSessionDate = DateTime.UtcNow;
             UpdateWithTokenInfo(tokenInfo);

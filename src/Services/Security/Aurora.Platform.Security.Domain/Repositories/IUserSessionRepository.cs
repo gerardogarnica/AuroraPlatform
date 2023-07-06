@@ -5,6 +5,6 @@ namespace Aurora.Platform.Security.Domain.Repositories
 {
     public interface IUserSessionRepository : IReadableRepository<UserSession>, IWriteableRepository<UserSession>
     {
-        Task<UserSession> GetLastAsync(int userId);
+        Task<UserSession> GetLastAsync(int userId, string application);
     }
 }
