@@ -48,12 +48,29 @@ public class UpdateUserRoleHandler : IRequestHandler<UpdateUserRoleCommand, int>
         if (user.UserRoles.Any(x => x.RoleId.Equals(role.Id)))
         {
             var userRole = user.UserRoles.First(x => x.RoleId.Equals(role.Id));
+
+            if (userRole.IsDefault && !request.IsAddAction)
+                user.CheckIfIsUnableToChange();
+
             userRole.IsActive = request.IsAddAction;
         }
         else
         {
             if (!request.IsAddAction) throw new UserDoesNotHaveRoleException(user.Email, role.Name);
+
+            // Add new role to user
             user.UserRoles.Add(new UserRole(user.Id, role.Id, false, true));
+
+            // Add new token to user
+            if (!user.Tokens.Any(x => x.Application.Equals(role.Application)))
+            {
+                user.Tokens.Add(
+                    new UserToken()
+                    {
+                        Application = role.Application,
+                        IssuedDate = DateTime.UtcNow
+                    });
+            }
         }
 
         // Update user entity
@@ -70,7 +87,6 @@ public class UpdateUserRoleHandler : IRequestHandler<UpdateUserRoleCommand, int>
     private async Task<User> GetUserAsync(string email)
     {
         var user = await _userRepository.GetAsync(email) ?? throw new InvalidUserEmailException(email);
-        user.CheckIfIsUnableToChange();
 
         return user;
     }

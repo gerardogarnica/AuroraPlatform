@@ -14,6 +14,8 @@ public class UserLogoutHandler : IRequestHandler<UserLogoutCommand, int>
     private readonly IUserTokenRepository _userTokenRepository;
     private readonly IUserSessionRepository _userSessionRepository;
 
+    private readonly string applicationCode;
+
     #endregion
 
     #region Constructor
@@ -26,6 +28,8 @@ public class UserLogoutHandler : IRequestHandler<UserLogoutCommand, int>
         _securityHandler = securityHandler;
         _userTokenRepository = userTokenRepository;
         _userSessionRepository = userSessionRepository;
+
+        applicationCode = _securityHandler.GetApplicationCode();
     }
 
     #endregion
@@ -39,14 +43,15 @@ public class UserLogoutHandler : IRequestHandler<UserLogoutCommand, int>
         var user = _securityHandler.UserInfo;
 
         // Get current user token
-        var userToken = await _userTokenRepository.GetByIdAsync(user.UserId);
+        var userToken = await _userTokenRepository
+            .GetAsync(x => x.UserId == user.UserId && x.Application.Equals(applicationCode));
 
         // Update token repository
         userToken.ClearTokenInfo();
         await _userTokenRepository.UpdateAsync(userToken);
 
         // Update user session
-        var userSession = await _userSessionRepository.GetLastAsync(user.UserId);
+        var userSession = await _userSessionRepository.GetLastAsync(user.UserId, applicationCode);
         userSession.EndSessionDate = DateTime.UtcNow;
 
         await _userSessionRepository.UpdateAsync(userSession);

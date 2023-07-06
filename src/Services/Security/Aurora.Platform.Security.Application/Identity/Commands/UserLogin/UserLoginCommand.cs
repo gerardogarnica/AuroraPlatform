@@ -7,10 +7,15 @@ using MediatR;
 
 namespace Aurora.Platform.Security.Application.Identity.Commands.UserLogin;
 
-public record UserLoginCommand : IRequest<IdentityToken>
+public record UserCredentials
 {
     public string Email { get; set; }
     public string Password { get; set; }
+}
+
+public record UserLoginCommand : UserCredentials, IRequest<IdentityToken>
+{
+    public string Application { get; set; }
 }
 
 public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
@@ -51,22 +56,23 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
     async Task<IdentityToken> IRequestHandler<UserLoginCommand, IdentityToken>.Handle(
         UserLoginCommand request, CancellationToken cancellationToken)
     {
-        // Get user and roles
+        // Get user
         var user = await GetUserAsync(request.Email, request.Password);
-        var roles = await GetUserRolesAsync(user.UserRoles);
+
+        // Get user roles
+        var userInfo = _mapper.Map<UserInfo>(user);
+        userInfo.Roles = await GetUserRolesAsync(user.UserRoles, request.Application);
 
         // Get token information
-        var userInfo = _mapper.Map<UserInfo>(user);
-        userInfo.Roles = _mapper.Map<List<RoleInfo>>(roles);
-
         var tokenInfo = _securityHandler.GenerateTokenInfo(userInfo);
 
         // Updates token repository
-        user.Token.UpdateWithTokenInfo(tokenInfo);
-        await _userTokenRepository.UpdateAsync(user.Token);
+        var userToken = user.Tokens.First(x => x.Application.Equals(request.Application));
+        userToken.UpdateWithTokenInfo(tokenInfo);
+        await _userTokenRepository.UpdateAsync(userToken);
 
         // Add user session
-        var userSession = new UserSession(user.Id, user.Email, tokenInfo);
+        var userSession = new UserSession(user.Id, request.Application, user.Email, tokenInfo);
         await _userSessionRepository.AddAsync(userSession);
 
         // Returns identity tokens
@@ -92,16 +98,20 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
         return user;
     }
 
-    private async Task<IList<Role>> GetUserRolesAsync(IList<UserRole> userRoles)
+    private async Task<List<RoleInfo>> GetUserRolesAsync(IList<UserRole> userRoles, string application)
     {
         var roles = new List<Role>();
 
         foreach (var userRole in userRoles)
         {
-            roles.Add(await _roleRepository.GetAsync(x => x.Id == userRole.RoleId));
+            if (!userRole.IsActive) continue;
+
+            var role = await _roleRepository.GetAsync(x => x.Id == userRole.RoleId);
+
+            if (role.Application.Equals(application)) roles.Add(role);
         }
 
-        return roles;
+        return _mapper.Map<List<RoleInfo>>(roles);
     }
 
     #endregion

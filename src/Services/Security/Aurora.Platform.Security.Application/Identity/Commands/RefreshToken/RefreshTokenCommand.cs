@@ -17,6 +17,8 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Identity
     private readonly IUserTokenRepository _userTokenRepository;
     private readonly IUserSessionRepository _userSessionRepository;
 
+    private readonly string applicationCode;
+
     #endregion
 
     #region Constructor
@@ -29,6 +31,8 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Identity
         _securityHandler = securityHandler;
         _userTokenRepository = userTokenRepository;
         _userSessionRepository = userSessionRepository;
+
+        applicationCode = _securityHandler.GetApplicationCode();
     }
 
     #endregion
@@ -45,7 +49,8 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Identity
         var tokenInfo = _securityHandler.GenerateTokenInfo(user);
 
         // Get current user token
-        var userToken = await _userTokenRepository.GetByIdAsync(user.UserId);
+        var userToken = await _userTokenRepository
+            .GetAsync(x => x.UserId == user.UserId && x.Application.Equals(applicationCode));
         userToken.CheckIfRefreshTokenIsValid(request.RefreshToken);
         userToken.CheckIfRefreshTokenIsNotExpired();
 
@@ -54,7 +59,7 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Identity
         await _userTokenRepository.UpdateAsync(userToken);
 
         // Update user session
-        var userSession = await _userSessionRepository.GetLastAsync(user.UserId);
+        var userSession = await _userSessionRepository.GetLastAsync(user.UserId, applicationCode);
         userSession.UpdateWithTokenInfo(tokenInfo);
 
         await _userSessionRepository.UpdateAsync(userSession);

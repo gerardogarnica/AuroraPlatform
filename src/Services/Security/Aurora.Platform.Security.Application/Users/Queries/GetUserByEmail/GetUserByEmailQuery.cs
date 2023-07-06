@@ -58,14 +58,25 @@ public class GetUserByEmailHandler : IRequestHandler<GetUserByEmailQuery, UserIn
 
     private async Task<List<RoleInfo>> GetUserRolesAsync(IList<UserRole> userRoles)
     {
-        var roles = new List<Role>();
+        var roles = new List<RoleInfo>();
 
         foreach (var userRole in userRoles)
         {
-            roles.Add(await _roleRepository.GetAsync(x => x.Id == userRole.RoleId));
+            var role = await _roleRepository.GetAsync(x => x.Id == userRole.RoleId);
+
+            roles.Add(
+                new RoleInfo()
+                {
+                    RoleId = role.Id,
+                    Application = role.Application,
+                    Name = role.Name,
+                    Description = role.Description,
+                    IsDefault = userRole.IsDefault,
+                    IsActive = userRole.IsActive
+                });
         }
 
-        return _mapper.Map<List<RoleInfo>>(roles);
+        return roles;
     }
 
     #endregion

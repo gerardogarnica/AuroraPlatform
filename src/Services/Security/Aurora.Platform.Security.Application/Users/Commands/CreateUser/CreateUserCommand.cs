@@ -39,13 +39,12 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, int>
     #region IRequestHandler implementation
 
     async Task<int> IRequestHandler<CreateUserCommand, int>.Handle(
-        CreateUserCommand request, CancellationToken cancellationToken) 
+        CreateUserCommand request, CancellationToken cancellationToken)
     {
         // Create user entity
         var user = _mapper.Map<User>(request);
         user.IsActive = true;
         user.EncryptPassword(request.Email, DateTime.Today);
-        user.Token = CreateToken();
 
         // Add user repository
         user = await _userRepository.AddAsync(user);
@@ -56,20 +55,6 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, int>
 
         // Returns entity ID
         return user.Id;
-    }
-
-    #endregion
-
-    #region Private methods
-
-    private static UserToken CreateToken()
-    {
-        return new UserToken()
-        {
-            AccessToken = null,
-            RefreshToken = null,
-            IssuedDate = DateTime.UtcNow,
-        };
     }
 
     #endregion

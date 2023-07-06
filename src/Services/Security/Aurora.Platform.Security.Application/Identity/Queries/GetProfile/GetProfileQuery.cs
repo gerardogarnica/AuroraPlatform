@@ -1,5 +1,4 @@
 ﻿using Aurora.Framework.Security;
-using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Repositories;
 using AutoMapper;
 using MediatR;
@@ -46,26 +45,10 @@ public class GetProfileHandler : IRequestHandler<GetProfileQuery, UserInfo>
 
         // Get user roles
         var userInfo = _mapper.Map<UserInfo>(user);
-        userInfo.Roles = await GetUserRolesAsync(user.UserRoles);
+        userInfo.Roles = _securityHandler.UserInfo.Roles;
 
         // Returns user info
         return userInfo;
-    }
-
-    #endregion
-
-    #region Private methods
-
-    private async Task<List<RoleInfo>> GetUserRolesAsync(IList<UserRole> userRoles)
-    {
-        var roles = new List<Role>();
-
-        foreach (var userRole in userRoles)
-        {
-            roles.Add(await _roleRepository.GetAsync(x => x.Id == userRole.RoleId));
-        }
-
-        return _mapper.Map<List<RoleInfo>>(roles);
     }
 
     #endregion
