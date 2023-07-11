@@ -1,5 +1,6 @@
 using Aurora.Framework.Api;
 using Aurora.Framework.Logging;
+using Aurora.Framework.Security;
 using Aurora.Platform.Applications.API.Data;
 using Aurora.Platform.Applications.API.Repositories;
 
@@ -17,6 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenWithApiKey(apiName, apiDescription, 1);
 builder.Services.AddStringEnumConverter();
+builder.Services.AddAuthenticationServices(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 
 // Add Serilog configuration.

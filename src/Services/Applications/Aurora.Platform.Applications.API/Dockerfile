@@ -1,12 +1,11 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Services/Applications/Aurora.Platform.Applications.API/Aurora.Platform.Applications.API.csproj", "Services/Applications/Aurora.Platform.Applications.API/"]
+COPY ["Common/Aurora.Framework.Api/Aurora.Framework.Api.csproj", "Common/Aurora.Framework.Api/"]
 COPY ["Common/Aurora.Framework.Common/Aurora.Framework.Common.csproj", "Common/Aurora.Framework.Common/"]
 COPY ["Common/Aurora.Framework.Entities/Aurora.Framework.Entities.csproj", "Common/Aurora.Framework.Entities/"]
 COPY ["Common/Aurora.Framework.Logging/Aurora.Framework.Logging.csproj", "Common/Aurora.Framework.Logging/"]
