@@ -1,0 +1,35 @@
+version: '3.5'
+
+services:
+  Aurora.Platform.Applications.API:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "MongoDatabaseSettings:ConnectionString=mongodb://192.168.0.100:27017"
+      - "MongoDatabaseSettings:DatabaseName=auroraPlatform"
+      - "MongoDatabaseSettings:CollectionName=applications"
+      - "JWT:SecretKey=KlHxF0sZiCWTtGIk9uOGFR4N8PycMVAfffu2L1Mr"
+      - "JWT:TokenValidityInMinutes=20"
+      - "JWT:RefreshTokenValidityInDays=7"
+      - "ElasticsearchConfiguration:Uri=http://192.168.0.100:9200"
+      - "ElasticsearchConfiguration:IndexName=aurora-platform"
+    ports:
+      - "5002:80"
+      - "50002:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  Aurora.Platform.Security.API:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:SecurityDataConnection=Data Source=192.168.0.100;Database=AuroraPlatform;User ID=sa;Password=admin123;Encrypt=False"
+      - "DataMigrate:Migrate=true"
+      - "DataMigrate:Seed=true"
+      - "JWT:SecretKey=KlHxF0sZiCWTtGIk9uOGFR4N8PycMVAfffu2L1Mr"
+      - "JWT:TokenValidityInMinutes=20"
+      - "JWT:RefreshTokenValidityInDays=7"
+      - "ElasticsearchConfiguration:Uri=http://192.168.0.100:9200"
+      - "ElasticsearchConfiguration:IndexName=aurora-platform"
+    ports:
+      - "5001:80"
+      - "50001:443"
