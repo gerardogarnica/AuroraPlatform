@@ -40,10 +40,17 @@ namespace Aurora.Platform.Security.API.Controllers
         [ProducesResponseType(typeof(RoleInfo), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PagedCollection<RoleInfo>>> GetList(
-            [FromQuery] PagedViewRequest viewRequest, [FromQuery] string application, [FromQuery] bool onlyActives)
+            [FromQuery] PagedViewRequest viewRequest, [FromQuery] string application,
+            [FromQuery] string search, [FromQuery] bool onlyActives)
         {
             var response = await _mediator.Send(
-                new GetRolesQuery { PagedViewRequest = viewRequest, Application = application, OnlyActives = onlyActives });
+                new GetRolesQuery
+                {
+                    PagedViewRequest = viewRequest,
+                    Application = application,
+                    Search = search,
+                    OnlyActives = onlyActives
+                });
 
             return Ok(response);
         }
