@@ -1,11 +1,6 @@
-﻿using Aurora.Framework;
-using Aurora.Framework.Entities;
-using Aurora.Framework.Repositories;
-using Aurora.Framework.Repositories.Extensions;
+﻿using Aurora.Framework.Repositories;
 using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Repositories;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Aurora.Platform.Security.Infrastructure.Repositories
 {

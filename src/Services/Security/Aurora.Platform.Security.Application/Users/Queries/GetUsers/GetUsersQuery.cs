@@ -10,6 +10,7 @@ public record GetUsersQuery : IRequest<PagedCollection<UserInfo>>
 {
     public PagedViewRequest PagedViewRequest { get; init; }
     public int RoleId { get; init; }
+    public string Search { get; init; }
     public bool OnlyActives { get; init; }
 }
 
@@ -40,7 +41,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, PagedCollection<Us
         GetUsersQuery request, CancellationToken cancellationToken)
     {
         var users = await _userRepository
-            .GetListAsync(request.PagedViewRequest, request.RoleId, request.OnlyActives);
+            .GetListAsync(request.PagedViewRequest, request.RoleId, request.Search, request.OnlyActives);
 
         return _mapper.Map<PagedCollection<UserInfo>>(users);
     }

@@ -42,10 +42,17 @@ namespace Aurora.Platform.Security.API.Controllers
         [ProducesResponseType(typeof(UserInfo), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PagedCollection<UserInfo>>> GetList(
-            [FromQuery] PagedViewRequest viewRequest, [FromQuery] int roleId, [FromQuery] bool onlyActives)
+            [FromQuery] PagedViewRequest viewRequest, [FromQuery] int roleId,
+            [FromQuery] string search, [FromQuery] bool onlyActives)
         {
             var response = await _mediator.Send(
-                new GetUsersQuery { PagedViewRequest = viewRequest, RoleId = roleId, OnlyActives = onlyActives });
+                new GetUsersQuery
+                {
+                    PagedViewRequest = viewRequest,
+                    RoleId = roleId,
+                    Search = search,
+                    OnlyActives = onlyActives
+                });
 
             return Ok(response);
         }
