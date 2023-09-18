@@ -20,14 +20,3 @@ app.MapGet("/", () => "Hello World!");
 await app.UseOcelot();
 
 app.Run();
-
-//var router = new AuroraRouter("routes.json");
-
-//app.Run(async (context) =>
-//{
-//    Console.WriteLine($"Request: {context.Request.Path}");
-//    var content = await router.RouteRequest(context.Request);
-//    context.Response.ContentType = "application/json";
-//    context.Response.StatusCode = (int)content.StatusCode;
-//    await context.Response.WriteAsync(await content.Content.ReadAsStringAsync());
-//});

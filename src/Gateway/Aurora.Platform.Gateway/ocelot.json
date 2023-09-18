@@ -7,7 +7,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/auth/login",
@@ -19,7 +19,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/auth/logout",
@@ -31,7 +31,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/auth/recovery",
@@ -43,7 +43,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/auth/change-password",
@@ -55,7 +55,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/auth/refresh-token",
@@ -67,7 +67,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/auth/profile",
@@ -81,7 +81,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/roles",
@@ -93,7 +93,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/roles/{roleId}",
@@ -106,7 +106,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/users",
@@ -118,7 +118,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/users/{email}",
@@ -130,7 +130,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/users/{email}/activate",
@@ -142,7 +142,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/users/{email}/deactivate",
@@ -154,7 +154,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/users/{email}/roles/add",
@@ -166,7 +166,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/security/v1/users/{email}/roles/remove",
@@ -179,7 +179,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50002
+          "Port": 5002
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/applications",
@@ -192,7 +192,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50002
+          "Port": 5002
         }
       ],
       "UpstreamPathTemplate": "/aurora/api/applications/{code}",
@@ -201,6 +201,6 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:50000"
+    "BaseUrl": "http://localhost:5000"
   }
 }
