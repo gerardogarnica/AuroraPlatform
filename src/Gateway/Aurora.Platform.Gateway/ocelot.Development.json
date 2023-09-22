@@ -6,11 +6,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/auth/login",
+      "UpstreamPathTemplate": "/aurora/platform/auth/login",
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
@@ -18,11 +18,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/auth/logout",
+      "UpstreamPathTemplate": "/aurora/platform/auth/logout",
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
@@ -30,11 +30,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/auth/recovery",
+      "UpstreamPathTemplate": "/aurora/platform/auth/recovery",
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
@@ -42,11 +42,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/auth/change-password",
+      "UpstreamPathTemplate": "/aurora/platform/auth/change-password",
       "UpstreamHttpMethod": [ "PUT" ]
     },
     {
@@ -54,11 +54,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/auth/refresh-token",
+      "UpstreamPathTemplate": "/aurora/platform/auth/refresh-token",
       "UpstreamHttpMethod": [ "PUT" ]
     },
     {
@@ -66,11 +66,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/auth/profile",
+      "UpstreamPathTemplate": "/aurora/platform/auth/profile",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 }
     },
@@ -80,11 +80,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/roles",
+      "UpstreamPathTemplate": "/aurora/platform/roles",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
     },
     {
@@ -92,11 +92,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/roles/{roleId}",
+      "UpstreamPathTemplate": "/aurora/platform/roles/{roleId}",
       "UpstreamHttpMethod": [ "GET" ]
     },
     // UsersController
@@ -105,11 +105,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/users",
+      "UpstreamPathTemplate": "/aurora/platform/users",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
     },
     {
@@ -117,11 +117,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/users/{email}",
+      "UpstreamPathTemplate": "/aurora/platform/users/{email}",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
@@ -129,11 +129,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/users/{email}/activate",
+      "UpstreamPathTemplate": "/aurora/platform/users/{email}/activate",
       "UpstreamHttpMethod": [ "PUT" ]
     },
     {
@@ -141,11 +141,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/users/{email}/deactivate",
+      "UpstreamPathTemplate": "/aurora/platform/users/{email}/deactivate",
       "UpstreamHttpMethod": [ "PUT" ]
     },
     {
@@ -153,11 +153,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/users/{email}/roles/add",
+      "UpstreamPathTemplate": "/aurora/platform/users/{email}/roles/add",
       "UpstreamHttpMethod": [ "PUT" ]
     },
     {
@@ -165,11 +165,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/security/v1/users/{email}/roles/remove",
+      "UpstreamPathTemplate": "/aurora/platform/users/{email}/roles/remove",
       "UpstreamHttpMethod": [ "PUT" ]
     },
     // ApplicationsController
@@ -178,11 +178,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5002
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/applications",
+      "UpstreamPathTemplate": "/aurora/platform/applications",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 }
     },
@@ -191,11 +191,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "192.168.3.4",
           "Port": 5002
         }
       ],
-      "UpstreamPathTemplate": "/aurora/api/applications/{code}",
+      "UpstreamPathTemplate": "/aurora/platform/applications/{code}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 }
     }
