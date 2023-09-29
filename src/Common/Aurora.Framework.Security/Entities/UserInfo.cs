@@ -15,6 +15,7 @@ namespace Aurora.Framework.Security
                 return string.Format("{0} {1}", FirstName, LastName).Trim();
             }
         }
+        public Guid Guid { get; set; }
         public bool PasswordMustChange
         {
             get
@@ -23,6 +24,7 @@ namespace Aurora.Framework.Security
             }
         }
         public DateTime? PasswordExpirationDate { get; set; }
+        public string Notes { get; set; }
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
         public List<RoleInfo> Roles { get; set; }
@@ -34,6 +36,7 @@ namespace Aurora.Framework.Security
                 return string.Concat(
                     PasswordMustChange, ";",
                     PasswordExpirationDate.HasValue ? PasswordExpirationDate.Value.ToString(DateFormat.YearMonthDay) : "", ";",
+                    Notes, ";",
                     IsDefault, ";",
                     IsActive);
             }
@@ -47,12 +50,14 @@ namespace Aurora.Framework.Security
             FirstName = claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.GivenName)).Value;
             LastName = claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.Surname)).Value;
             Email = claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.Email)).Value;
+            Guid = new Guid(claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.SerialNumber)).Value);
 
             var internalDataTokens = claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.UserData)).Value.Split(";");
 
             PasswordExpirationDate = internalDataTokens[1].ToDateTime("yyyyMMdd");
-            IsDefault = internalDataTokens[2].ToBoolean().Value;
-            IsActive = internalDataTokens[3].ToBoolean().Value;
+            Notes = internalDataTokens[2];
+            IsDefault = internalDataTokens[3].ToBoolean().Value;
+            IsActive = internalDataTokens[4].ToBoolean().Value;
             Roles = (from claim in claims.Where(x => x.Type.Equals(ClaimTypes.Role))
                      select new RoleInfo(claim)).ToList();
         }

@@ -95,7 +95,7 @@ namespace Aurora.Framework.Security
             if (user == null) return null;
             if (!user.Roles.Any()) return null;
 
-            return user.Roles.First().Application;
+            return user.Roles.First().AppCode;
         }
 
         #endregion
@@ -116,6 +116,7 @@ namespace Aurora.Framework.Security
                 new Claim(ClaimTypes.GivenName, user.FirstName),
                 new Claim(ClaimTypes.Surname, user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.SerialNumber, user.Guid.ToString()),
                 new Claim(ClaimTypes.UserData, user.InternalUserData)
             };
 
