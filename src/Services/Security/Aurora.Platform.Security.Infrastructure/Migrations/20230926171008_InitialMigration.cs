@@ -41,13 +41,16 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                 {
                     RoleId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Application = table.Column<string>(type: "varchar(50)", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(200)", nullable: false),
+                    AppCode = table.Column<string>(type: "varchar(50)", nullable: false),
+                    AppName = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Description = table.Column<string>(type: "varchar(100)", nullable: true),
+                    RoleGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newId()"),
+                    Notes = table.Column<string>(type: "nvarchar(2000)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<string>(type: "varchar(35)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(50)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    LastUpdatedBy = table.Column<string>(type: "varchar(35)", nullable: false),
+                    LastUpdatedBy = table.Column<string>(type: "varchar(50)", nullable: false),
                     LastUpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
@@ -65,14 +68,16 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(40)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(40)", nullable: false),
                     Email = table.Column<string>(type: "varchar(50)", nullable: false),
+                    UserGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newId()"),
                     Password = table.Column<string>(type: "varchar(200)", nullable: false),
                     PasswordControl = table.Column<string>(type: "varchar(1000)", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    Notes = table.Column<string>(type: "nvarchar(2000)", nullable: true),
                     IsDefault = table.Column<bool>(type: "bit", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<string>(type: "varchar(35)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(50)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    LastUpdatedBy = table.Column<string>(type: "varchar(35)", nullable: false),
+                    LastUpdatedBy = table.Column<string>(type: "varchar(50)", nullable: false),
                     LastUpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
@@ -113,9 +118,9 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     IsDefault = table.Column<bool>(type: "bit", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<string>(type: "varchar(35)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(50)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    LastUpdatedBy = table.Column<string>(type: "varchar(35)", nullable: false),
+                    LastUpdatedBy = table.Column<string>(type: "varchar(50)", nullable: false),
                     LastUpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
@@ -168,7 +173,7 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                 name: "UK_Role",
                 schema: "SEC",
                 table: "Role",
-                columns: new[] { "Application", "Name" },
+                columns: new[] { "Name", "AppCode" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

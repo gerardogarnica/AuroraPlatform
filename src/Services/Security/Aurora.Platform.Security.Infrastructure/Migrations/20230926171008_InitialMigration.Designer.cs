@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aurora.Platform.Security.Infrastructure.Migrations
 {
     [DbContext(typeof(SecurityContext))]
-    [Migration("20230706184618_InitialMigration")]
+    [Migration("20230926171008_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -79,14 +79,19 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Application")
+                    b.Property<string>("AppCode")
                         .IsRequired()
                         .HasColumnType("varchar(50)")
-                        .HasColumnName("Application");
+                        .HasColumnName("AppCode");
+
+                    b.Property<string>("AppName")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("AppName");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasColumnType("varchar(35)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("CreatedBy");
 
                     b.Property<DateTime>("CreatedDate")
@@ -94,9 +99,14 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                         .HasColumnName("CreatedDate");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(100)")
                         .HasColumnName("Description");
+
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("RoleGuid")
+                        .HasDefaultValueSql("newId()");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit")
@@ -104,7 +114,7 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .IsRequired()
-                        .HasColumnType("varchar(35)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("LastUpdatedBy");
 
                     b.Property<DateTime?>("LastUpdatedDate")
@@ -117,10 +127,14 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("Name");
 
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("Notes");
+
                     b.HasKey("Id")
                         .HasName("PK_Role");
 
-                    b.HasIndex("Application", "Name")
+                    b.HasIndex("Name", "AppCode")
                         .IsUnique()
                         .HasDatabaseName("UK_Role");
 
@@ -138,7 +152,7 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasColumnType("varchar(35)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("CreatedBy");
 
                     b.Property<DateTime>("CreatedDate")
@@ -155,6 +169,12 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                         .HasColumnType("nvarchar(40)")
                         .HasColumnName("FirstName");
 
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("UserGuid")
+                        .HasDefaultValueSql("newId()");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit")
                         .HasColumnName("IsActive");
@@ -170,13 +190,17 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .IsRequired()
-                        .HasColumnType("varchar(35)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("LastUpdatedBy");
 
                     b.Property<DateTime?>("LastUpdatedDate")
                         .IsRequired()
                         .HasColumnType("datetime")
                         .HasColumnName("LastUpdatedDate");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("Notes");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -213,7 +237,7 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasColumnType("varchar(35)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("CreatedBy");
 
                     b.Property<DateTime>("CreatedDate")
@@ -230,7 +254,7 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .IsRequired()
-                        .HasColumnType("varchar(35)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("LastUpdatedBy");
 
                     b.Property<DateTime?>("LastUpdatedDate")
