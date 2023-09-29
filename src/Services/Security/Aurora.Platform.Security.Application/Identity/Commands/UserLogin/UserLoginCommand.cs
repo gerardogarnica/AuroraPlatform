@@ -108,7 +108,7 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
 
             var role = await _roleRepository.GetAsync(x => x.Id == userRole.RoleId);
 
-            if (role.Application.Equals(application)) roles.Add(role);
+            if (role.AppCode.Equals(application)) roles.Add(role);
         }
 
         return _mapper.Map<List<RoleInfo>>(roles);

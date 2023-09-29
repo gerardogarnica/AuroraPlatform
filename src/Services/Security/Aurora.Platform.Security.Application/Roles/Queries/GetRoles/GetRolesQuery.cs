@@ -43,7 +43,7 @@ public class GetRolesHandler : IRequestHandler<GetRolesQuery, PagedCollection<Ro
     async Task<PagedCollection<RoleInfo>> IRequestHandler<GetRolesQuery, PagedCollection<RoleInfo>>.Handle(
                GetRolesQuery request, CancellationToken cancellationToken)
     {
-        Expression<Func<Role, bool>> predicate = x => x.Application.Equals(request.Application);
+        Expression<Func<Role, bool>> predicate = x => x.AppCode.Equals(request.Application);
 
         if (!string.IsNullOrWhiteSpace(request.Search) && request.Search.Length >= 3)
             predicate = predicate.And(x => x.Name.Contains(request.Search) || x.Description.Contains(request.Search));

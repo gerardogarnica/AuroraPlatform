@@ -68,9 +68,12 @@ public class GetUserByEmailHandler : IRequestHandler<GetUserByEmailQuery, UserIn
                 new RoleInfo()
                 {
                     RoleId = role.Id,
-                    Application = role.Application,
+                    AppCode = role.AppCode,
+                    AppName = role.AppName,
                     Name = role.Name,
                     Description = role.Description,
+                    Guid = role.Guid,
+                    Notes = role.Notes,
                     IsDefault = userRole.IsDefault,
                     IsActive = userRole.IsActive
                 });

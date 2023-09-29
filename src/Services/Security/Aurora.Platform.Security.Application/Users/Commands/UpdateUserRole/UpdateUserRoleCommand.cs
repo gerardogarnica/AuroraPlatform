@@ -62,12 +62,12 @@ public class UpdateUserRoleHandler : IRequestHandler<UpdateUserRoleCommand, int>
             user.UserRoles.Add(new UserRole(user.Id, role.Id, false, true));
 
             // Add new token to user
-            if (!user.Tokens.Any(x => x.Application.Equals(role.Application)))
+            if (!user.Tokens.Any(x => x.Application.Equals(role.AppCode)))
             {
                 user.Tokens.Add(
                     new UserToken()
                     {
-                        Application = role.Application,
+                        Application = role.AppCode,
                         IssuedDate = DateTime.UtcNow
                     });
             }

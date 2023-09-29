@@ -58,7 +58,7 @@ public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, int>
 
     private async void CheckIfNameIsAvailable(string application, string name)
     {
-        var role = await _roleRepository.GetAsync(x => x.Application.Equals(application) && x.Name.Equals(name));
+        var role = await _roleRepository.GetAsync(x => x.AppCode.Equals(application) && x.Name.Equals(name));
         if (role != null)
             throw new RoleNameAlreadyExistsException(application, name);
     }
