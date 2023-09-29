@@ -12,9 +12,11 @@ namespace Aurora.Platform.Security.Domain.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public Guid Guid { get; set; }
         public string Password { get; set; }
         public string PasswordControl { get; set; }
         public DateTime? PasswordExpirationDate { get; set; }
+        public string Notes { get; set; }
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
         public List<UserToken> Tokens { get; set; }
