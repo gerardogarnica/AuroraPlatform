@@ -4,14 +4,14 @@ using Aurora.Platform.Security.Domain.Repositories;
 using AutoMapper;
 using MediatR;
 
-namespace Aurora.Platform.Security.Application.Users.Queries.GetUserByEmail;
+namespace Aurora.Platform.Security.Application.Users.Queries.GetUserByGuid;
 
-public record GetUserByEmailQuery : IRequest<UserInfo>
+public record GetUserByGuidQuery : IRequest<UserInfo>
 {
-    public string Email { get; init; }
+    public string Guid { get; init; }
 }
 
-public class GetUserByEmailHandler : IRequestHandler<GetUserByEmailQuery, UserInfo>
+public class GetUserByGuidQueryHandler : IRequestHandler<GetUserByGuidQuery, UserInfo>
 {
     #region Private members
 
@@ -23,7 +23,7 @@ public class GetUserByEmailHandler : IRequestHandler<GetUserByEmailQuery, UserIn
 
     #region Constructor
 
-    public GetUserByEmailHandler(
+    public GetUserByGuidQueryHandler(
         IMapper mapper,
         IRoleRepository roleRepository,
         IUserRepository userRepository)
@@ -37,11 +37,11 @@ public class GetUserByEmailHandler : IRequestHandler<GetUserByEmailQuery, UserIn
 
     #region IRequestHandler implementation
 
-    async Task<UserInfo> IRequestHandler<GetUserByEmailQuery, UserInfo>.Handle(
-        GetUserByEmailQuery request, CancellationToken cancellationToken)
+    async Task<UserInfo> IRequestHandler<GetUserByGuidQuery, UserInfo>.Handle(
+        GetUserByGuidQuery request, CancellationToken cancellationToken)
     {
         // Get user
-        var user = await _userRepository.GetAsync(request.Email);
+        var user = await _userRepository.GetAsyncByGuid(request.Guid);
         if (user == null) return null;
 
         // Get user roles

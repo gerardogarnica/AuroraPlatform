@@ -5,7 +5,7 @@ using Aurora.Platform.Security.Application.Users.Commands.CreateUser;
 using Aurora.Platform.Security.Application.Users.Commands.UpdateUser;
 using Aurora.Platform.Security.Application.Users.Commands.UpdateUserRole;
 using Aurora.Platform.Security.Application.Users.Commands.UpdateUserStatus;
-using Aurora.Platform.Security.Application.Users.Queries.GetUserByEmail;
+using Aurora.Platform.Security.Application.Users.Queries.GetUserByGuid;
 using Aurora.Platform.Security.Application.Users.Queries.GetUsers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,13 +26,13 @@ namespace Aurora.Platform.Security.API.Controllers
 
         #endregion
 
-        [HttpGet("{email}")]
+        [HttpGet("{guid}")]
         [ProducesResponseType(typeof(UserInfo), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserInfo>> GetByEmail(string email)
+        public async Task<ActionResult<UserInfo>> GetByGuid(string guid)
         {
-            var response = await _mediator.Send(new GetUserByEmailQuery { Email = email });
+            var response = await _mediator.Send(new GetUserByGuidQuery { Guid = guid });
             if (response == null) return NoContent();
 
             return Ok(response);
