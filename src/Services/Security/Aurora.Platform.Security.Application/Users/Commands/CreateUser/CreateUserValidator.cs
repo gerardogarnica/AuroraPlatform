@@ -25,11 +25,14 @@ namespace Aurora.Platform.Security.Application.Users.Commands.CreateUser
             RuleFor(p => p.LastName)
                 .NotEmpty().WithMessage("Last name is required.")
                 .MaximumLength(40).WithMessage("The maximum last name length is 40 characters.");
+
+            RuleFor(p => p.Notes)
+                .MaximumLength(2000).WithMessage("The maximum notes length is 2000 characters.");
         }
 
         private async Task<bool> EmailIsNotAvailableAsync(string email, CancellationToken cancellationToken)
         {
-            return await _userRepository.GetAsync(email) == null;
+            return await _userRepository.GetAsyncByEmail(email) == null;
         }
 
         private bool EmailIsNotValid(string email)

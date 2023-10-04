@@ -7,9 +7,10 @@ namespace Aurora.Platform.Security.Application.Users.Commands.CreateUser;
 
 public record CreateUserCommand : IRequest<int>
 {
+    public string Email { get; init; }
     public string FirstName { get; init; }
     public string LastName { get; init; }
-    public string Email { get; init; }
+    public string Notes { get; init; }
 }
 
 public class CreateUserHandler : IRequestHandler<CreateUserCommand, int>
