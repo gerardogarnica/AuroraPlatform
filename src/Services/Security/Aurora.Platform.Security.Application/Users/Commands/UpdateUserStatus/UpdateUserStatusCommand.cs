@@ -7,7 +7,7 @@ namespace Aurora.Platform.Security.Application.Users.Commands.UpdateUserStatus;
 
 public record UpdateUserStatusCommand : IRequest<int>
 {
-    public string Email { get; init; }
+    public string Guid { get; init; }
     public bool IsActive { get; init; }
 }
 
@@ -34,7 +34,7 @@ public class UpdateUserStatusHandler : IRequestHandler<UpdateUserStatusCommand, 
         UpdateUserStatusCommand request, CancellationToken cancellationToken)
     {
         // Get user
-        var user = await GetUserAsync(request.Email);
+        var user = await GetUserAsync(request.Guid);
 
         // Update user entity
         user.IsActive = request.IsActive;
@@ -49,9 +49,9 @@ public class UpdateUserStatusHandler : IRequestHandler<UpdateUserStatusCommand, 
 
     #region Private methods
 
-    private async Task<User> GetUserAsync(string email)
+    private async Task<User> GetUserAsync(string guid)
     {
-        var user = await _userRepository.GetAsync(email) ?? throw new InvalidUserEmailException(email);
+        var user = await _userRepository.GetAsyncByGuid(guid) ?? throw new InvalidUserGuidException(guid);
         user.CheckIfIsUnableToChange();
 
         return user;

@@ -7,7 +7,7 @@ namespace Aurora.Platform.Security.Application.Users.Commands.UpdateUserRole;
 
 public record UpdateUserRoleCommand : IRequest<int>
 {
-    public string Email { get; init; }
+    public string Guid { get; init; }
     public int RoleId { get; init; }
     public bool IsAddAction { get; init; }
 }
@@ -39,7 +39,7 @@ public class UpdateUserRoleHandler : IRequestHandler<UpdateUserRoleCommand, int>
         UpdateUserRoleCommand request, CancellationToken cancellationToken)
     {
         // Get user
-        var user = await GetUserAsync(request.Email);
+        var user = await GetUserAsync(request.Guid);
 
         // Get role
         var role = await GetRoleAsync(request.RoleId);
@@ -84,9 +84,9 @@ public class UpdateUserRoleHandler : IRequestHandler<UpdateUserRoleCommand, int>
 
     #region Private methods
 
-    private async Task<User> GetUserAsync(string email)
+    private async Task<User> GetUserAsync(string guid)
     {
-        var user = await _userRepository.GetAsync(email) ?? throw new InvalidUserEmailException(email);
+        var user = await _userRepository.GetAsyncByGuid(guid) ?? throw new InvalidUserGuidException(guid);
 
         return user;
     }

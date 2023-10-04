@@ -77,15 +77,15 @@ namespace Aurora.Platform.Security.API.Controllers
             return Accepted(response);
         }
 
-        [HttpPut("{email}/activate")]
+        [HttpPut("{guid}/activate")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<int>> Activate(string email)
+        public async Task<ActionResult<int>> Activate(string guid)
         {
             var command = new UpdateUserStatusCommand()
             {
-                Email = email,
+                Guid = guid,
                 IsActive = true
             };
 
@@ -93,15 +93,15 @@ namespace Aurora.Platform.Security.API.Controllers
             return Accepted(response);
         }
 
-        [HttpPut("{email}/deactivate")]
+        [HttpPut("{guid}/deactivate")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<int>> Deactivate(string email)
+        public async Task<ActionResult<int>> Deactivate(string guid)
         {
             var command = new UpdateUserStatusCommand()
             {
-                Email = email,
+                Guid = guid,
                 IsActive = false
             };
 
@@ -109,15 +109,15 @@ namespace Aurora.Platform.Security.API.Controllers
             return Accepted(response);
         }
 
-        [HttpPut("{email}/roles/add")]
+        [HttpPut("{guid}/roles/add")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<int>> AddRole(string email, [FromBody] int roleId)
+        public async Task<ActionResult<int>> AddRole(string guid, [FromBody] int roleId)
         {
             var command = new UpdateUserRoleCommand()
             {
-                Email = email,
+                Guid = guid,
                 RoleId = roleId,
                 IsAddAction = true
             };
@@ -126,15 +126,15 @@ namespace Aurora.Platform.Security.API.Controllers
             return Accepted(response);
         }
 
-        [HttpPut("{email}/roles/remove")]
+        [HttpPut("{guid}/roles/remove")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<int>> RemoveRole(string email, [FromBody] int roleId)
+        public async Task<ActionResult<int>> RemoveRole(string guid, [FromBody] int roleId)
         {
             var command = new UpdateUserRoleCommand()
             {
-                Email = email,
+                Guid = guid,
                 RoleId = roleId,
                 IsAddAction = false
             };

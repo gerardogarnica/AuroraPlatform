@@ -9,6 +9,7 @@ namespace Aurora.Platform.Security.Domain.Exceptions
         protected const string InactiveUserMessage = "The user {0} is not active.";
         protected const string InvalidCredentialsMessage = "The email or password are incorrect.";
         protected const string InvalidEmailMessage = "The user email '{0}' does not exist.";
+        protected const string InvalidGuidMessage = "The user guid '{0}' does not exist.";
         protected const string InvalidUserTokenMessage = "The refresh token is invalid.";
         protected const string PasswordExpiredMessage = "The user password has expired. Password must be changed before login.";
         protected const string UnableChangeUserMessage = "The user is unable to be changed.";
@@ -46,6 +47,12 @@ namespace Aurora.Platform.Security.Domain.Exceptions
     {
         public InvalidUserEmailException(string email)
             : base(string.Format(InvalidEmailMessage, email)) { }
+    }
+
+    public class InvalidUserGuidException : UserException
+    {
+        public InvalidUserGuidException(string guid)
+            : base(string.Format(InvalidGuidMessage, guid)) { }
     }
 
     public class InvalidUserTokenException : UserException
