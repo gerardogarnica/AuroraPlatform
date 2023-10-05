@@ -4,17 +4,6 @@ namespace Aurora.Platform.Security.Domain.Exceptions
 {
     public class UserException : BusinessException
     {
-        protected const string UserNullMessage = "The record of the user cannot be null.";
-        protected const string ExpiredUserTokenMessage = "The refresh token is expired.";
-        protected const string InactiveUserMessage = "The user {0} is not active.";
-        protected const string InvalidCredentialsMessage = "The email or password are incorrect.";
-        protected const string InvalidEmailMessage = "The user email '{0}' does not exist.";
-        protected const string InvalidGuidMessage = "The user guid '{0}' does not exist.";
-        protected const string InvalidUserTokenMessage = "The refresh token is invalid.";
-        protected const string PasswordExpiredMessage = "The user password has expired. Password must be changed before login.";
-        protected const string UnableChangeUserMessage = "The user is unable to be changed.";
-        protected const string UserDoesNotHaveRoleMessage = "The user {0} does not have the '{1}' role.";
-
         public UserException(string message)
             : base("UserException", message) { }
     }
@@ -22,60 +11,60 @@ namespace Aurora.Platform.Security.Domain.Exceptions
     public class UserNullException : UserException
     {
         public UserNullException()
-            : base(UserNullMessage) { }
+            : base("The record of the user cannot be null.") { }
     }
 
     public class ExpiredUserTokenException : UserException
     {
         public ExpiredUserTokenException()
-            : base(ExpiredUserTokenMessage) { }
+            : base("The refresh token is expired.") { }
     }
 
     public class InvalidCredentialsException : UserException
     {
         public InvalidCredentialsException()
-            : base(InvalidCredentialsMessage) { }
+            : base("The email or password are incorrect.") { }
     }
 
     public class InactiveUserException : UserException
     {
         public InactiveUserException(string email)
-            : base(string.Format(InactiveUserMessage, email)) { }
+            : base($"The user '{email}' is not active.") { }
     }
 
     public class InvalidUserEmailException : UserException
     {
         public InvalidUserEmailException(string email)
-            : base(string.Format(InvalidEmailMessage, email)) { }
+            : base($"The user email '{email}' does not exist.") { }
     }
 
     public class InvalidUserGuidException : UserException
     {
         public InvalidUserGuidException(string guid)
-            : base(string.Format(InvalidGuidMessage, guid)) { }
+            : base($"The user guid '{guid}' does not exist.") { }
     }
 
     public class InvalidUserTokenException : UserException
     {
         public InvalidUserTokenException()
-            : base(InvalidUserTokenMessage) { }
+            : base("The refresh token is invalid.") { }
     }
 
     public class PasswordExpiredException : UserException
     {
         public PasswordExpiredException()
-            : base(PasswordExpiredMessage) { }
+            : base("The user password has expired. Password must be changed before login.") { }
     }
 
     public class UnableChangeUserException : UserException
     {
         public UnableChangeUserException()
-            : base(UnableChangeUserMessage) { }
+            : base("The user is unable to be changed.") { }
     }
 
     public class UserDoesNotHaveRoleException : UserException
     {
         public UserDoesNotHaveRoleException(string email, string roleName)
-            : base(string.Format(UserDoesNotHaveRoleMessage, email, roleName)) { }
+            : base($"The user '{email}' does not have the '{roleName}' role.") { }
     }
 }

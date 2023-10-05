@@ -28,7 +28,7 @@ namespace Aurora.Platform.Security.Domain.Exceptions
 
     public class RoleNameAlreadyExistsException : RoleException
     {
-        public RoleNameAlreadyExistsException(string application, string name)
+        public RoleNameAlreadyExistsException(string name, string application)
             : base($"The role name '{name}' already exists in the application '{application}'.") { }
     }
 }

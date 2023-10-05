@@ -36,7 +36,7 @@ namespace Aurora.Platform.Security.Infrastructure.Repositories
 
         async Task<User> IUserRepository.GetAsyncByGuid(string guid)
         {
-            return await GetAsync(x => x.Guid.Equals(guid));
+            return await GetAsync(x => x.Guid.ToString().Equals(guid));
         }
 
         async Task<PagedCollection<User>> IUserRepository.GetListAsync(
