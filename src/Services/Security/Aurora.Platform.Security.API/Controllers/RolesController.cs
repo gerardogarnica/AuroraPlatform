@@ -3,7 +3,7 @@ using Aurora.Framework.Entities;
 using Aurora.Framework.Security;
 using Aurora.Platform.Security.Application.Roles.Commands.CreateRole;
 using Aurora.Platform.Security.Application.Roles.Commands.UpdateRole;
-using Aurora.Platform.Security.Application.Roles.Queries.GetRoleById;
+using Aurora.Platform.Security.Application.Roles.Queries.GetRoleByGuid;
 using Aurora.Platform.Security.Application.Roles.Queries.GetRoles;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -24,13 +24,13 @@ namespace Aurora.Platform.Security.API.Controllers
 
         #endregion
 
-        [HttpGet("{roleId}")]
+        [HttpGet("{guid}")]
         [ProducesResponseType(typeof(RoleInfo), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<RoleInfo>> GetById(int roleId)
+        public async Task<ActionResult<RoleInfo>> GetByGuid(string guid)
         {
-            var response = await _mediator.Send(new GetRoleByIdQuery { RoleId = roleId });
+            var response = await _mediator.Send(new GetRoleByGuidQuery { Guid = guid });
             if (response == null) return NoContent();
 
             return Ok(response);

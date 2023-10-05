@@ -42,7 +42,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, PagedCollection<Us
     {
         var users = request.RoleId == 0
             ? await _userRepository.GetListAsync(request.PagedViewRequest, request.Search, request.OnlyActives)
-            : await _userRepository.GetListAsync(request.PagedViewRequest, request.RoleId, request.Search, request.OnlyActives):
+            : await _userRepository.GetListAsync(request.PagedViewRequest, request.RoleId, request.Search, request.OnlyActives);
 
         return _mapper.Map<PagedCollection<UserInfo>>(users);
     }

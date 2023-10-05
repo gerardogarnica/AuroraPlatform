@@ -3,14 +3,14 @@ using Aurora.Platform.Security.Domain.Repositories;
 using AutoMapper;
 using MediatR;
 
-namespace Aurora.Platform.Security.Application.Roles.Queries.GetRoleById;
+namespace Aurora.Platform.Security.Application.Roles.Queries.GetRoleByGuid;
 
-public record GetRoleByIdQuery : IRequest<RoleInfo>
+public record GetRoleByGuidQuery : IRequest<RoleInfo>
 {
-    public int RoleId { get; init; }
+    public string Guid { get; init; }
 }
 
-public class GetRoleByIdHandler : IRequestHandler<GetRoleByIdQuery, RoleInfo>
+public class GetRoleByRoleHandler : IRequestHandler<GetRoleByGuidQuery, RoleInfo>
 {
     #region Private members
 
@@ -21,7 +21,7 @@ public class GetRoleByIdHandler : IRequestHandler<GetRoleByIdQuery, RoleInfo>
 
     #region Constructor
 
-    public GetRoleByIdHandler(
+    public GetRoleByRoleHandler(
         IMapper mapper,
         IRoleRepository roleRepository)
     {
@@ -33,11 +33,11 @@ public class GetRoleByIdHandler : IRequestHandler<GetRoleByIdQuery, RoleInfo>
 
     #region IRequestHandler implementation
 
-    async Task<RoleInfo> IRequestHandler<GetRoleByIdQuery, RoleInfo>.Handle(
-        GetRoleByIdQuery request, CancellationToken cancellationToken)
+    async Task<RoleInfo> IRequestHandler<GetRoleByGuidQuery, RoleInfo>.Handle(
+        GetRoleByGuidQuery request, CancellationToken cancellationToken)
     {
         // Get role
-        var role = await _roleRepository.GetByIdAsync(request.RoleId);
+        var role = await _roleRepository.GetAsync(x => x.Guid.ToString().Equals(request.Guid));
         if (role == null) return null;
 
         // Returns role info
