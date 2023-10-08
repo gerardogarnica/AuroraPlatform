@@ -41,7 +41,6 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, int>
         // Update user entity
         user.FirstName = request.FirstName;
         user.LastName = request.LastName;
-        user.Email = request.Email;
         user.Notes = request.Notes;
 
         user = await _userRepository.UpdateAsync(user);
