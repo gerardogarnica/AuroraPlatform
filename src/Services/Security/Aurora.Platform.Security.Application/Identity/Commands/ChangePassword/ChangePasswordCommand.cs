@@ -72,7 +72,7 @@ public class ChangePasswordHandler : IRequestHandler<ChangePasswordCommand, bool
     private async Task<User> GetUserAsync(string password)
     {
         var email = _securityHandler.UserInfo.Email;
-        var user = await _userRepository.GetAsync(email) ?? throw new InvalidUserEmailException(email);
+        var user = await _userRepository.GetAsyncByEmail(email) ?? throw new InvalidUserEmailException(email);
 
         user.CheckIfPasswordMatches(password);
         user.CheckIfIsActive();

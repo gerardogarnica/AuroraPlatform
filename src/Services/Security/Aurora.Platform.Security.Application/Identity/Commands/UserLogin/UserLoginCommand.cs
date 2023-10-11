@@ -89,7 +89,7 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
 
     private async Task<User> GetUserAsync(string email, string password)
     {
-        var user = await _userRepository.GetAsync(email) ?? throw new InvalidCredentialsException();
+        var user = await _userRepository.GetAsyncByEmail(email) ?? throw new InvalidCredentialsException();
 
         user.CheckIfPasswordMatches(password);
         user.CheckIfIsActive();

@@ -40,7 +40,7 @@ public class GetProfileHandler : IRequestHandler<GetProfileQuery, UserInfo>
         GetProfileQuery request, CancellationToken cancellationToken)
     {
         // Get user
-        var user = await _userRepository.GetAsync(_securityHandler.UserInfo.Email);
+        var user = await _userRepository.GetAsyncByGuid(_securityHandler.UserInfo.Guid.ToString());
         if (user == null) return null;
 
         // Get user roles
