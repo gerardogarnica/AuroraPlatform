@@ -26,6 +26,12 @@ namespace Aurora.Platform.Security.Domain.Exceptions
             : base($"The role '{name}' is not active.") { }
     }
 
+    public class InvalidRoleGuidException : RoleException
+    {
+        public InvalidRoleGuidException(string guid)
+            : base($"The role guid '{guid}' does not exist.") { }
+    }
+
     public class RoleNameAlreadyExistsException : RoleException
     {
         public RoleNameAlreadyExistsException(string name, string application)

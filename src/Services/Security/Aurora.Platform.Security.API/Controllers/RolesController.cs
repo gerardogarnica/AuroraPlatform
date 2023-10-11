@@ -3,6 +3,7 @@ using Aurora.Framework.Entities;
 using Aurora.Framework.Security;
 using Aurora.Platform.Security.Application.Roles.Commands.CreateRole;
 using Aurora.Platform.Security.Application.Roles.Commands.UpdateRole;
+using Aurora.Platform.Security.Application.Roles.Commands.UpdateRoleStatus;
 using Aurora.Platform.Security.Application.Roles.Queries.GetRoleByGuid;
 using Aurora.Platform.Security.Application.Roles.Queries.GetRoles;
 using MediatR;
@@ -71,6 +72,38 @@ namespace Aurora.Platform.Security.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<int>> Update([FromBody] UpdateRoleCommand command)
         {
+            var response = await _mediator.Send(command);
+            return Accepted(response);
+        }
+
+        [HttpPut("{guid}/activate")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> Activate(string guid)
+        {
+            var command = new UpdateRoleStatusCommand()
+            {
+                Guid = guid,
+                IsActive = true
+            };
+
+            var response = await _mediator.Send(command);
+            return Accepted(response);
+        }
+
+        [HttpPut("{guid}/deactivate")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> Deactivate(string guid)
+        {
+            var command = new UpdateRoleStatusCommand()
+            {
+                Guid = guid,
+                IsActive = false
+            };
+
             var response = await _mediator.Send(command);
             return Accepted(response);
         }
