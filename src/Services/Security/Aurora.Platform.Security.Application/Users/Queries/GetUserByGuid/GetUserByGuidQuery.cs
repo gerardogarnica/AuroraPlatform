@@ -46,7 +46,7 @@ public class GetUserByGuidQueryHandler : IRequestHandler<GetUserByGuidQuery, Use
 
         // Get user roles
         var userInfo = _mapper.Map<UserInfo>(user);
-        userInfo.Roles = await GetUserRolesAsync(user.UserRoles);
+        userInfo.Roles = await GetUserRolesAsync(user.Id, user.UserRoles);
 
         // Returns user info
         return userInfo;
@@ -56,30 +56,20 @@ public class GetUserByGuidQueryHandler : IRequestHandler<GetUserByGuidQuery, Use
 
     #region Private methods
 
-    private async Task<List<RoleInfo>> GetUserRolesAsync(IList<UserRole> userRoles)
+    private async Task<List<RoleInfo>> GetUserRolesAsync(int userId, IList<UserRole> userRoles)
     {
-        var roles = new List<RoleInfo>();
+        var roles = await _roleRepository.GetListAsync(userId);
+        var rolesInfo = _mapper.Map<List<RoleInfo>>(roles);
 
-        foreach (var userRole in userRoles)
+        foreach (var roleInfo in rolesInfo)
         {
-            var role = await _roleRepository.GetAsync(x => x.Id == userRole.RoleId);
+            if (!userRoles.Any(x => x.RoleId == roleInfo.RoleId)) continue;
 
-            roles.Add(
-                new RoleInfo()
-                {
-                    RoleId = role.Id,
-                    AppCode = role.AppCode,
-                    AppName = role.AppName,
-                    Name = role.Name,
-                    Description = role.Description,
-                    Guid = role.Guid,
-                    Notes = role.Notes,
-                    IsDefault = userRole.IsDefault,
-                    IsActive = userRole.IsActive
-                });
+            roleInfo.IsDefault = userRoles.First(x => x.RoleId == roleInfo.RoleId).IsDefault;
+            roleInfo.IsActive = userRoles.First(x => x.RoleId == roleInfo.RoleId).IsActive;
         }
 
-        return roles;
+        return rolesInfo;
     }
 
     #endregion
