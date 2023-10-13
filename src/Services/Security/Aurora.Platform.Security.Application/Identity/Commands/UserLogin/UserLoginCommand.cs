@@ -61,7 +61,7 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
 
         // Get user roles
         var userInfo = _mapper.Map<UserInfo>(user);
-        userInfo.Roles = await GetUserRolesAsync(user.UserRoles, request.Application);
+        userInfo.Roles = await GetUserRolesAsync(user.Id, request.Application, user.UserRoles);
 
         // Get token information
         var tokenInfo = _securityHandler.GenerateTokenInfo(userInfo);
@@ -98,20 +98,21 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
         return user;
     }
 
-    private async Task<List<RoleInfo>> GetUserRolesAsync(IList<UserRole> userRoles, string application)
+    private async Task<List<RoleInfo>> GetUserRolesAsync(int userId, string application, IList<UserRole> userRoles)
     {
-        var roles = new List<Role>();
+        var roles = await _roleRepository.GetListAsync(userId);
+        roles = roles.Where(x => x.AppCode.Equals(application)).ToList();
 
-        foreach (var userRole in userRoles)
+        var rolesInfo = _mapper.Map<List<RoleInfo>>(roles);
+        foreach (var roleInfo in rolesInfo)
         {
-            if (!userRole.IsActive) continue;
+            if (!userRoles.Any(x => x.RoleId == roleInfo.RoleId)) continue;
 
-            var role = await _roleRepository.GetAsync(x => x.Id == userRole.RoleId);
-
-            if (role.AppCode.Equals(application)) roles.Add(role);
+            roleInfo.IsDefault = userRoles.First(x => x.RoleId == roleInfo.RoleId).IsDefault;
+            roleInfo.IsActive = userRoles.First(x => x.RoleId == roleInfo.RoleId).IsActive;
         }
 
-        return _mapper.Map<List<RoleInfo>>(roles);
+        return rolesInfo;
     }
 
     #endregion
