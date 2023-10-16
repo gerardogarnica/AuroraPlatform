@@ -6,6 +6,7 @@ using Aurora.Platform.Security.Application.Roles.Commands.UpdateRole;
 using Aurora.Platform.Security.Application.Roles.Commands.UpdateRoleStatus;
 using Aurora.Platform.Security.Application.Roles.Queries.GetRoleByGuid;
 using Aurora.Platform.Security.Application.Roles.Queries.GetRoles;
+using Aurora.Platform.Security.Application.Users.Commands.UpdateUserRole;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -102,6 +103,40 @@ namespace Aurora.Platform.Security.API.Controllers
             {
                 Guid = guid,
                 IsActive = false
+            };
+
+            var response = await _mediator.Send(command);
+            return Accepted(response);
+        }
+
+        [HttpPut("{guid}/users/add")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> AddUser(string guid, [FromBody] string userGuid)
+        {
+            var command = new UpdateUserRoleCommand()
+            {
+                UserGuid = userGuid,
+                RoleGuid = guid,
+                IsAddAction = true
+            };
+
+            var response = await _mediator.Send(command);
+            return Accepted(response);
+        }
+
+        [HttpPut("{guid}/users/remove")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> RemoveUser(string guid, [FromBody] string userGuid)
+        {
+            var command = new UpdateUserRoleCommand()
+            {
+                UserGuid = userGuid,
+                RoleGuid = guid,
+                IsAddAction = false
             };
 
             var response = await _mediator.Send(command);
