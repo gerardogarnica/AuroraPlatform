@@ -7,8 +7,8 @@ namespace Aurora.Platform.Security.Application.Users.Commands.UpdateUserRole;
 
 public record UpdateUserRoleCommand : IRequest<int>
 {
-    public string Guid { get; init; }
-    public int RoleId { get; init; }
+    public string UserGuid { get; init; }
+    public string RoleGuid { get; init; }
     public bool IsAddAction { get; init; }
 }
 
@@ -39,41 +39,18 @@ public class UpdateUserRoleHandler : IRequestHandler<UpdateUserRoleCommand, int>
         UpdateUserRoleCommand request, CancellationToken cancellationToken)
     {
         // Get user
-        var user = await GetUserAsync(request.Guid);
+        var user = await GetUserAsync(request.UserGuid);
 
         // Get role
-        var role = await GetRoleAsync(request.RoleId);
+        var role = await GetRoleAsync(request.RoleGuid);
 
         // Update user entity
-        if (user.UserRoles.Any(x => x.RoleId.Equals(role.Id)))
-        {
-            var userRole = user.UserRoles.First(x => x.RoleId.Equals(role.Id));
-
-            if (userRole.IsDefault && !request.IsAddAction)
-                user.CheckIfIsUnableToChange();
-
-            userRole.IsActive = request.IsAddAction;
-        }
+        var userRole = user.GetUserRole(role.Id);
+        if (userRole == null)
+            user.AddUserRole(role, request.IsAddAction);
         else
-        {
-            if (!request.IsAddAction) throw new UserDoesNotHaveRoleException(user.Email, role.Name);
+            userRole.UpdateStatus(request.IsAddAction);
 
-            // Add new role to user
-            user.UserRoles.Add(new UserRole(user.Id, role.Id, false, true));
-
-            // Add new token to user
-            if (!user.Tokens.Any(x => x.Application.Equals(role.AppCode)))
-            {
-                user.Tokens.Add(
-                    new UserToken()
-                    {
-                        Application = role.AppCode,
-                        IssuedDate = DateTime.UtcNow
-                    });
-            }
-        }
-
-        // Update user entity
         user = await _userRepository.UpdateAsync(user);
 
         // Returns entity ID
@@ -91,9 +68,10 @@ public class UpdateUserRoleHandler : IRequestHandler<UpdateUserRoleCommand, int>
         return user;
     }
 
-    private async Task<Role> GetRoleAsync(int roleId)
+    private async Task<Role> GetRoleAsync(string roleGuid)
     {
-        var role = await _roleRepository.GetByIdAsync(roleId) ?? throw new InvalidRoleIdentifierException(roleId);
+        var role = await _roleRepository.GetAsync(x => x.Guid.ToString().Equals(roleGuid))
+            ?? throw new InvalidRoleGuidException(roleGuid);
         role.CheckIfIsActive();
 
         return role;

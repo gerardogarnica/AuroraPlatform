@@ -1,6 +1,7 @@
 ﻿using Aurora.Framework.Cryptography;
 using Aurora.Framework.Entities;
 using Aurora.Platform.Security.Domain.Exceptions;
+using System.Data;
 
 namespace Aurora.Platform.Security.Domain.Entities
 {
@@ -32,15 +33,6 @@ namespace Aurora.Platform.Security.Domain.Entities
             PasswordExpirationDate = expirationDate;
         }
 
-        public void CheckIfPasswordMatches(string password)
-        {
-            var decryptPassword = SymmetricEncryptionProvider
-                .Unprotect(Password, PasswordControl, defaultPasswordControl);
-
-            if (password != decryptPassword)
-                throw new InvalidCredentialsException();
-        }
-
         public void CheckIfIsActive()
         {
             if (IsActive) return;
@@ -61,6 +53,41 @@ namespace Aurora.Platform.Security.Domain.Entities
 
             if (DateTime.UtcNow > PasswordExpirationDate.Value.Date)
                 throw new PasswordExpiredException();
+        }
+
+        public void CheckIfPasswordMatches(string password)
+        {
+            var decryptPassword = SymmetricEncryptionProvider
+                .Unprotect(Password, PasswordControl, defaultPasswordControl);
+
+            if (password != decryptPassword)
+                throw new InvalidCredentialsException();
+        }
+
+        public void AddUserRole(Role role, bool isAddAction)
+        {
+            if (!isAddAction) throw new UserDoesNotHaveRoleException(Email, role.Name);
+
+            // Add new role to user
+            UserRoles.Add(new UserRole(Id, role.Id, false, true));
+
+            // Add new token to user
+            if (!Tokens.Any(x => x.Application.Equals(role.AppCode)))
+            {
+                Tokens.Add(
+                    new UserToken()
+                    {
+                        Application = role.AppCode,
+                        IssuedDate = DateTime.UtcNow
+                    });
+            }
+        }
+
+        public UserRole GetUserRole(int roleId)
+        {
+            if (UserRoles.Any(x => x.RoleId.Equals(roleId))) return null;
+
+            return UserRoles.First(x => x.RoleId.Equals(roleId));
         }
     }
 }

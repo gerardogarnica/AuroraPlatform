@@ -113,12 +113,12 @@ namespace Aurora.Platform.Security.API.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<int>> AddRole(string guid, [FromBody] int roleId)
+        public async Task<ActionResult<int>> AddRole(string guid, [FromBody] string roleGuid)
         {
             var command = new UpdateUserRoleCommand()
             {
-                Guid = guid,
-                RoleId = roleId,
+                UserGuid = guid,
+                RoleGuid = roleGuid,
                 IsAddAction = true
             };
 
@@ -130,12 +130,12 @@ namespace Aurora.Platform.Security.API.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<int>> RemoveRole(string guid, [FromBody] int roleId)
+        public async Task<ActionResult<int>> RemoveRole(string guid, [FromBody] string roleGuid)
         {
             var command = new UpdateUserRoleCommand()
             {
-                Guid = guid,
-                RoleId = roleId,
+                UserGuid = guid,
+                RoleGuid = roleGuid,
                 IsAddAction = false
             };
 

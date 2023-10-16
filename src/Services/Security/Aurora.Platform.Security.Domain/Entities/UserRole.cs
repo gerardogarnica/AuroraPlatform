@@ -21,5 +21,12 @@ namespace Aurora.Platform.Security.Domain.Entities
             IsDefault = isDefault;
             IsActive = isActive;
         }
+
+        public void UpdateStatus(bool isAddAction)
+        {
+            if (IsDefault && !isAddAction) User.CheckIfIsUnableToChange();
+
+            IsActive = isAddAction;
+        }
     }
 }
