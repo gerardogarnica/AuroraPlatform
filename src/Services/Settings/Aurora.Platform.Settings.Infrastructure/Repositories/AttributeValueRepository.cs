@@ -33,7 +33,7 @@ namespace Aurora.Platform.Settings.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.AttributeSetting.Code == code && x.RelationshipId == relationshipId);
         }
 
-        async Task<IList<AttributeValue>> IAttributeValueRepository.GetListAsync(string scopeType, int relationshipId)
+        async Task<IReadOnlyList<AttributeValue>> IAttributeValueRepository.GetListAsync(string scopeType, int relationshipId)
         {
             return await _context
                 .AttributeValues

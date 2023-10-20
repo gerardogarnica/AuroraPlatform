@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Aurora.Platform.Settings.Infrastructure.Repositories
 {
-    public class OptionsListRepository : RepositoryBase<OptionsList>, IOptionsListRepository
+    public class OptionsCatalogRepository : RepositoryBase<OptionsCatalog>, IOptionsCatalogRepository
     {
         #region Private members
 
@@ -15,7 +15,7 @@ namespace Aurora.Platform.Settings.Infrastructure.Repositories
 
         #region Constructors
 
-        public OptionsListRepository(SettingsContext context)
+        public OptionsCatalogRepository(SettingsContext context)
             : base(context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -23,15 +23,15 @@ namespace Aurora.Platform.Settings.Infrastructure.Repositories
 
         #endregion
 
-        #region IOptionsListRepository implementation
+        #region IOptionsCatalogRepository implementation
 
-        async Task<OptionsList> IOptionsListRepository.GetByCodeAsync(string code)
+        async Task<OptionsCatalog> IOptionsCatalogRepository.GetByCodeAsync(string code)
         {
             return await _context
                 .Options
                 .AsNoTracking()
                 .Include(x => x.Items)
-                .FirstOrDefaultAsync(x => x.Code == code);
+                .FirstOrDefaultAsync(x => x.Code.Equals(code));
         }
 
         #endregion

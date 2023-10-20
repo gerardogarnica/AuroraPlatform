@@ -1,4 +1,5 @@
-﻿using Aurora.Platform.Settings.Domain.Entities;
+﻿using Aurora.Framework.Repositories;
+using Aurora.Platform.Settings.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,13 +13,11 @@ namespace Aurora.Platform.Settings.Infrastructure.Configuration
 
             builder.HasKey(e => e.Id).HasName("PK_AttributeValue");
 
-            builder.Property(e => e.Id).HasColumnName("AttributeId").IsRequired().HasColumnType("int");
-            builder.Property(e => e.RelationshipId).HasColumnName("RelationshipId").IsRequired().HasColumnType("int");
-            builder.Property(e => e.Value).HasColumnName("Value").IsRequired().HasColumnType("xml");
-            builder.Property(e => e.CreatedBy).HasColumnName("CreatedBy").IsRequired().HasColumnType("varchar(35)");
-            builder.Property(e => e.CreatedDate).HasColumnName("CreatedDate").IsRequired().HasColumnType("datetime");
-            builder.Property(e => e.LastUpdatedBy).HasColumnName("LastUpdatedBy").IsRequired().HasColumnType("varchar(35)");
-            builder.Property(e => e.LastUpdatedDate).HasColumnName("LastUpdatedDate").IsRequired().HasColumnType("datetime");
+            builder.Property(e => e.Id).HasColumnName("AttributeId").IsRequired().HasColumnType(SqlDataType.Int32);
+            builder.Property(e => e.RelationshipId).HasColumnName("RelationshipId").IsRequired().HasColumnType(SqlDataType.Int32);
+            builder.Property(e => e.Value).HasColumnName("Value").IsRequired().HasColumnType(SqlDataType.Xml);
+            builder.Property(e => e.Notes).HasColumnName("Notes").HasColumnType(SqlDataType.Notes);
+            builder.AddAuditableProperties();
 
             builder.HasIndex(e => new { e.Id, e.RelationshipId }).IsUnique().HasDatabaseName("UK_AttributeValue");
 

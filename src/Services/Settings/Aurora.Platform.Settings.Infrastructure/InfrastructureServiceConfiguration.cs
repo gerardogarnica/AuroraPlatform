@@ -12,12 +12,14 @@ namespace Aurora.Platform.Settings.Infrastructure
         {
             // Connection string
             services.AddDbContext<SettingsContext>(
-                o => o.UseSqlServer(configuration.GetConnectionString("SettingsDataConnection")));
+                options => options.UseSqlServer(
+                    configuration.GetConnectionString("SettingsDataConnection"),
+                    x => x.MigrationsHistoryTable("__EFMigrationsHistory", "SET")));
 
             // Repositories implementations
             services.AddScoped<IAttributeSettingRepository, AttributeSettingRepository>();
             services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
-            services.AddScoped<IOptionsListRepository, OptionsListRepository>();
+            services.AddScoped<IOptionsCatalogRepository, OptionsCatalogRepository>();
 
             return services;
         }

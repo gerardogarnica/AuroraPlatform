@@ -10,6 +10,6 @@ namespace Aurora.Platform.Settings.Domain.Entities
         public string Description { get; set; }
         public bool IsEditable { get; set; }
         public bool IsActive { get; set; }
-        public OptionsCatalog List { get; set; }
+        public OptionsCatalog Catalog { get; set; }
     }
 }

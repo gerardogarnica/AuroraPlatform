@@ -10,8 +10,8 @@ namespace Aurora.Platform.Settings.Infrastructure
 
         public DbSet<AttributeSetting> AttributeSettings { get; set; }
         public DbSet<AttributeValue> AttributeValues { get; set; }
-        public DbSet<OptionsList> Options { get; set; }
-        public DbSet<OptionsListItem> OptionItems { get; set; }
+        public DbSet<OptionsCatalog> Options { get; set; }
+        public DbSet<OptionsCatalogItem> OptionItems { get; set; }
 
         #endregion
 
@@ -22,14 +22,14 @@ namespace Aurora.Platform.Settings.Infrastructure
 
         #endregion
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
 
-            builder.ApplyConfiguration(new AttributeSettingConfiguration());
-            builder.ApplyConfiguration(new AttributeValueConfiguration());
-            builder.ApplyConfiguration(new OptionsListConfiguration());
-            builder.ApplyConfiguration(new OptionsListItemConfiguration());
+            modelBuilder.ApplyConfiguration(new AttributeSettingConfiguration());
+            modelBuilder.ApplyConfiguration(new AttributeValueConfiguration());
+            modelBuilder.ApplyConfiguration(new OptionsCatalogConfiguration());
+            modelBuilder.ApplyConfiguration(new OptionsCatalogItemConfiguration());
         }
     }
 }
