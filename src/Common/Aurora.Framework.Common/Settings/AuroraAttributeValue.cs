@@ -6,7 +6,7 @@
         public IntegerAttributeValue IntegerValue { get; set; }
         public MoneyAttributeValue MoneyValue { get; set; }
         public NumericAttributeValue NumericValue { get; set; }
-        public OptionsListAttributeValue OptionsListValue { get; set; }
+        public OptionsCatalogAttributeValue OptionsCatalogValue { get; set; }
         public TextAttributeValue TextValue { get; set; }
 
         public string GetValueString(AuroraAttributeSetting setting)
@@ -29,9 +29,9 @@
                     if (NumericValue == null) throw new PlatformException(ExceptionMessages.InvalidNumericAttributeSetting);
                     return NumericValue.GetValueWrapper(setting.NumericSetting);
 
-                case AuroraDataType.OptionsList:
-                    if (OptionsListValue == null) throw new PlatformException(ExceptionMessages.InvalidOptionsListAttributeSetting);
-                    return OptionsListValue.GetValueWrapper(setting.OptionsListSetting);
+                case AuroraDataType.OptionsCatalog:
+                    if (OptionsCatalogValue == null) throw new PlatformException(ExceptionMessages.InvalidOptionsCatalogAttributeSetting);
+                    return OptionsCatalogValue.GetValueWrapper(setting.OptionsCatalogSetting);
 
                 case AuroraDataType.Text:
                     if (TextValue == null) throw new PlatformException(ExceptionMessages.InvalidTextAttributeSetting);
