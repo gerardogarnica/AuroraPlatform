@@ -1,5 +1,4 @@
 ﻿using Aurora.Framework.Validations;
-using Aurora.Platform.Settings.Application.Queries;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,10 +10,6 @@ namespace Aurora.Platform.Settings.Application
     {
         public static IServiceCollection AddSettingsApplicationServices(this IServiceCollection services)
         {
-            // Queries interfaces
-            services.AddScoped<IAttributeQueries, AttributeQueries>();
-            services.AddScoped<IOptionsListQueries, OptionsListQueries>();
-
             // AutoMapper
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

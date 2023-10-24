@@ -1,20 +1,19 @@
-﻿using Aurora.Platform.Settings.Application.Queries;
-using MediatR;
-
-namespace Aurora.Platform.Settings.Application.Commands
+﻿namespace Aurora.Platform.Settings.Application.Options
 {
-    public class CreateOptionsListCommand : IRequest<OptionsListViewModel>
+    public class OptionsCatalogModel
     {
+        public int Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsVisible { get; set; }
         public bool IsEditable { get; set; }
-        public IList<CreateOptionsListItem> Items { get; set; } = new List<CreateOptionsListItem>();
+        public List<OptionsCatalogItem> Items { get; set; }
     }
 
-    public class CreateOptionsListItem
+    public class OptionsCatalogItem
     {
+        public int Id { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
         public bool IsEditable { get; set; }

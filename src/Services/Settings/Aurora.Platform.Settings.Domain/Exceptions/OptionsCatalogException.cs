@@ -8,15 +8,15 @@ namespace Aurora.Platform.Settings.Domain.Exceptions
             : base("OptionsListException", message) { }
     }
 
-    public class OptionsListNullException : OptionsCatalogException
+    public class OptionsCatalogNullException : OptionsCatalogException
     {
-        public OptionsListNullException()
-            : base("The record of the options list cannot be null.") { }
+        public OptionsCatalogNullException()
+            : base("The record of the options catalog cannot be null.") { }
     }
 
-    public class ExistsOptionsListCodeException : OptionsCatalogException
+    public class OptionsCodeAlreadyExistsException : OptionsCatalogException
     {
-        public ExistsOptionsListCodeException(string code)
-            : base($"The options list code {code} already exists and cannot be created again.") { }
+        public OptionsCodeAlreadyExistsException(string code)
+            : base($"The options catalog code '{code}' already exists and cannot be created again.") { }
     }
 }

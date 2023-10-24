@@ -1,14 +1,15 @@
 ﻿using Aurora.Framework;
 using Aurora.Framework.Entities;
 using Aurora.Framework.Settings;
-using Aurora.Platform.Settings.Application.Commands;
-using Aurora.Platform.Settings.Application.Queries;
+using Aurora.Platform.Settings.Application.Attributes;
+using Aurora.Platform.Settings.Application.Options;
+using Aurora.Platform.Settings.Application.Options.Commands.CreateOption;
 using Aurora.Platform.Settings.Domain.Entities;
 using AutoMapper;
-using OptionsListItem = Aurora.Platform.Settings.Domain.Entities.OptionsListItem;
-using OptionsListItemViewModel = Aurora.Platform.Settings.Application.Queries.OptionsListItem;
+using OptionsCatalogItemEntity = Aurora.Platform.Settings.Domain.Entities.OptionsCatalogItem;
+using OptionsCatalogItemModel = Aurora.Platform.Settings.Application.Options.OptionsCatalogItem;
 
-namespace Aurora.Platform.Settings.Application.Mappings
+namespace Aurora.Platform.Settings.Application
 {
     public class MapperProfile : Profile
     {
@@ -20,7 +21,7 @@ namespace Aurora.Platform.Settings.Application.Mappings
                 .ForMember(d => d.IntegerSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Integer.ToString() ? new IntegerAttributeSetting(o.Configuration) : null))
                 .ForMember(d => d.MoneySetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Money.ToString() ? new MoneyAttributeSetting(o.Configuration) : null))
                 .ForMember(d => d.NumericSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Numeric.ToString() ? new NumericAttributeSetting(o.Configuration) : null))
-                .ForMember(d => d.OptionsListSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.OptionsList.ToString() ? new OptionsListAttributeSetting(o.Configuration) : null))
+                .ForMember(d => d.OptionsCatalogSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.OptionsCatalog.ToString() ? new OptionsCatalogAttributeSetting(o.Configuration) : null))
                 .ForMember(d => d.TextSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Text.ToString() ? new TextAttributeSetting(o.Configuration) : null));
 
             CreateMap<PagedCollection<AttributeSetting>, PagedCollection<AttributeSettingModel>>();
@@ -32,19 +33,19 @@ namespace Aurora.Platform.Settings.Application.Mappings
                 .ForMember(d => d.IntegerValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Integer.ToString() ? new IntegerAttributeValue(o.Value) : null))
                 .ForMember(d => d.MoneyValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Money.ToString() ? new MoneyAttributeValue(o.Value) : null))
                 .ForMember(d => d.NumericValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Numeric.ToString() ? new NumericAttributeValue(o.Value) : null))
-                .ForMember(d => d.OptionsListValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.OptionsList.ToString() ? new OptionsListAttributeValue(o.Value) : null))
+                .ForMember(d => d.OptionsCatalogValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.OptionsCatalog.ToString() ? new OptionsCatalogAttributeValue(o.Value) : null))
                 .ForMember(d => d.TextValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Text.ToString() ? new TextAttributeValue(o.Value) : null));
 
-            CreateMap<OptionsList, OptionsListViewModel>();
-            CreateMap<OptionsListItem, OptionsListItemViewModel>();
+            CreateMap<OptionsCatalog, OptionsCatalogModel>();
+            CreateMap<OptionsCatalogItemEntity, OptionsCatalogItemModel>();
 
             // Source: command. Destination: entity.
-            CreateMap<CreateOptionsListCommand, OptionsList>()
+            CreateMap<CreateOptionCommand, OptionsCatalog>()
                 .ForMember(d => d.Code, o => o.MapFrom(o => o.Code != null ? o.Code.Trim() : string.Empty))
                 .ForMember(d => d.Name, o => o.MapFrom(o => o.Name != null ? o.Name.Trim() : string.Empty))
                 .ForMember(d => d.Description, o => o.MapFrom(o => o.Description != null ? o.Description.Trim() : string.Empty));
 
-            CreateMap<CreateOptionsListItem, OptionsListItem>();
+            CreateMap<CreateOptionItem, OptionsCatalogItemEntity>();
         }
     }
 }
