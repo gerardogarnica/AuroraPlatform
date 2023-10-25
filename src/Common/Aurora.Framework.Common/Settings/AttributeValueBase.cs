@@ -8,7 +8,8 @@ namespace Aurora.Framework.Settings
 
         public AttributeValueBase(string xmlValue)
         {
-            XDocument = XDocument.Parse(xmlValue);
+            if (!string.IsNullOrWhiteSpace(xmlValue))
+                XDocument = XDocument.Parse(xmlValue);
         }
     }
 }
