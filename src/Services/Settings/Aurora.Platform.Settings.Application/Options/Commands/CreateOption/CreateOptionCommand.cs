@@ -4,21 +4,21 @@ namespace Aurora.Platform.Settings.Application.Options.Commands.CreateOption;
 
 public record CreateOptionCommand : IRequest<OptionsCatalogModel>
 {
-    public string Code { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public bool IsGlobal { get; set; }
-    public string AppCode { get; set; }
-    public string AppName { get; set; }
-    public bool IsVisible { get; set; }
-    public bool IsEditable { get; set; }
-    public List<CreateOptionItem> Items { get; set; }
+    public string Code { get; init; }
+    public string Name { get; init; }
+    public string Description { get; init; }
+    public bool IsGlobal { get; init; }
+    public string AppCode { get; init; }
+    public string AppName { get; init; }
+    public bool IsVisible { get; init; }
+    public bool IsEditable { get; init; }
+    public List<CreateOptionItem> Items { get; init; }
 }
 
 public record CreateOptionItem
 {
-    public string Code { get; set; }
-    public string Description { get; set; }
-    public bool IsEditable { get; set; }
-    public bool IsActive { get; set; }
+    public string Code { get; init; }
+    public string Description { get; init; }
+    public bool IsEditable { get; init; }
+    public bool IsActive { get; init; }
 }

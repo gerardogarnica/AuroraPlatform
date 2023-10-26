@@ -1,6 +1,7 @@
 ﻿using Aurora.Framework.Api;
 using Aurora.Framework.Entities;
 using Aurora.Platform.Settings.Application.Attributes;
+using Aurora.Platform.Settings.Application.Attributes.Commands.SaveValue;
 using Aurora.Platform.Settings.Application.Attributes.Queries.GetSettingByCode;
 using Aurora.Platform.Settings.Application.Attributes.Queries.GetSettings;
 using Aurora.Platform.Settings.Application.Attributes.Queries.GetValueByCode;
@@ -70,7 +71,7 @@ namespace Aurora.Platform.Settings.API.Controllers
         }
 
         [HttpGet("values/{scopeType}/{relationshipId}")]
-        [ProducesResponseType(typeof(AttributeSettingModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AttributeValueModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IList<AttributeValueModel>>> GetValues(string scopeType, int relationshipId)
         {
@@ -82,6 +83,16 @@ namespace Aurora.Platform.Settings.API.Controllers
                 });
 
             return Ok(response);
+        }
+
+        [HttpPost("values")]
+        [ProducesResponseType(typeof(AttributeValueModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<AttributeValueModel>> SaveValue([FromBody] SaveValueCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Created(string.Empty, response);
         }
     }
 }

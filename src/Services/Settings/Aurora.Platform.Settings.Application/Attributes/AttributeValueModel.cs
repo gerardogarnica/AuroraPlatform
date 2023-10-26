@@ -10,5 +10,6 @@ namespace Aurora.Platform.Settings.Application.Attributes
         public string Code { get; set; }
         public string Notes { get; set; }
         public AuroraDataType DataType { get; set; }
+        public AttributeSettingModel Setting { get; set; }
     }
 }

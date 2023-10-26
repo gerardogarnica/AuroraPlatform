@@ -29,6 +29,7 @@ namespace Aurora.Platform.Settings.Application
             CreateMap<AttributeValue, AttributeValueModel>()
                 .ForMember(d => d.Code, o => o.MapFrom(o => o.AttributeSetting.Code))
                 .ForMember(d => d.DataType, o => o.MapFrom(o => o.AttributeSetting.DataType))
+                .ForMember(d => d.Setting, o => o.MapFrom(o => o.AttributeSetting))
                 .ForMember(d => d.BooleanValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Boolean.ToString() ? new BooleanAttributeValue(o.Value) : null))
                 .ForMember(d => d.IntegerValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Integer.ToString() ? new IntegerAttributeValue(o.Value) : null))
                 .ForMember(d => d.MoneyValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Money.ToString() ? new MoneyAttributeValue(o.Value) : null))

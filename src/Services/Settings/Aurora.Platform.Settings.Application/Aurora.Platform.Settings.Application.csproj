@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Aurora.Platform.Settings.Domain\Aurora.Platform.Settings.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Attributes\Commands\" />
-  </ItemGroup>
-
 </Project>
