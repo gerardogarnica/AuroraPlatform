@@ -40,7 +40,8 @@ public class GetValuesHandler : IRequestHandler<GetValuesQuery, IReadOnlyList<At
         GetValuesQuery request, CancellationToken cancellationToken)
     {
         // Get values
-        var values = await _valueRepository.GetListAsync(request.ScopeType, request.RelationshipId);
+        var list = await _valueRepository.GetListAsync(request.ScopeType, request.RelationshipId);
+        var values = list.ToList();
 
         // Get settings
         var settings = await _settingRepository.GetListAsync(x => x.ScopeType.Equals(request.ScopeType), x => x.Name);
@@ -54,7 +55,7 @@ public class GetValuesHandler : IRequestHandler<GetValuesQuery, IReadOnlyList<At
             if (settingModel == null) continue;
 
             // Get default value
-            _ = values.Append(settingModel.GetDefaultAttributeValue(setting, request.RelationshipId));
+            values.Add(settingModel.GetDefaultAttributeValue(setting, request.RelationshipId));
         }
 
         // Returns values list model

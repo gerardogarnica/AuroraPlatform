@@ -43,7 +43,7 @@ public class GetSettingsHandler : IRequestHandler<GetSettingsQuery, PagedCollect
         // Add filters
         Expression<Func<AttributeSetting, bool>> predicate = x => x.Equals(x);
         if (!string.IsNullOrWhiteSpace(request.Scope))
-            predicate.And(x => x.ScopeType.Equals(request.Scope));
+            predicate = predicate.And(x => x.ScopeType.Equals(request.Scope));
 
         // Get settings
         var settings = await _settingRepository
