@@ -2,7 +2,7 @@
 
 namespace Aurora.Framework.Settings
 {
-    public class OptionsCatalogAttributeSetting : AttributeSettingBase
+    public class OptionsAttributeSetting : AttributeSettingBase
     {
         public string Code { get; set; }
         public bool AllowMultipleValues { get; set; }
@@ -10,10 +10,10 @@ namespace Aurora.Framework.Settings
         public IList<string> DefaultItemCodes { get; set; }
         public bool ShowInactiveItems { get; set; }
 
-        public OptionsCatalogAttributeSetting()
+        public OptionsAttributeSetting()
             : base(null) { }
 
-        public OptionsCatalogAttributeSetting(string xmlSetting)
+        public OptionsAttributeSetting(string xmlSetting)
             : base(xmlSetting)
         {
             var q = from b in XDocument.Descendants("catalogSetting")

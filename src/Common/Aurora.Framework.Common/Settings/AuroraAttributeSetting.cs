@@ -7,7 +7,7 @@
         public IntegerAttributeSetting IntegerSetting { get; set; }
         public MoneyAttributeSetting MoneySetting { get; set; }
         public NumericAttributeSetting NumericSetting { get; set; }
-        public OptionsCatalogAttributeSetting OptionsCatalogSetting { get; set; }
+        public OptionsAttributeSetting OptionsSetting { get; set; }
         public TextAttributeSetting TextSetting { get; set; }
 
         public string GetSettingString()
@@ -30,9 +30,9 @@
                     if (NumericSetting == null) throw new PlatformException(ExceptionMessages.InvalidNumericAttributeSetting);
                     return NumericSetting.GetSettingWrapper();
 
-                case AuroraDataType.OptionsCatalog:
-                    if (OptionsCatalogSetting == null) throw new PlatformException(ExceptionMessages.InvalidOptionsCatalogAttributeSetting);
-                    return OptionsCatalogSetting.GetSettingWrapper();
+                case AuroraDataType.Options:
+                    if (OptionsSetting == null) throw new PlatformException(ExceptionMessages.InvalidOptionsAttributeSetting);
+                    return OptionsSetting.GetSettingWrapper();
 
                 case AuroraDataType.Text:
                     if (TextSetting == null) throw new PlatformException(ExceptionMessages.InvalidTextAttributeSetting);

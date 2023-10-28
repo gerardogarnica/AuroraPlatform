@@ -2,14 +2,14 @@
 
 namespace Aurora.Framework.Settings
 {
-    public class OptionsCatalogAttributeValue : AttributeValueBase
+    public class OptionsAttributeValue : AttributeValueBase
     {
         public IList<string> ItemCodes { get; set; }
 
-        public OptionsCatalogAttributeValue()
+        public OptionsAttributeValue()
             : base(null) { }
 
-        public OptionsCatalogAttributeValue(string xmlValue)
+        public OptionsAttributeValue(string xmlValue)
             : base(xmlValue)
         {
             var q = from b in XDocument.Descendants("catalogValue")
@@ -21,11 +21,11 @@ namespace Aurora.Framework.Settings
             ItemCodes = q.FirstOrDefault().ItemCodes.Split(";").ToList();
         }
 
-        public string GetValueWrapper(OptionsCatalogAttributeSetting setting)
+        public string GetValueWrapper(OptionsAttributeSetting setting)
         {
             if (setting.AllowMultipleValues && ItemCodes.Count > setting.MaxSelectedItems)
             {
-                ThrowException(string.Format(ExceptionMessages.InvalidOptionsCatalogItemAttributeValue, setting.MaxSelectedItems));
+                ThrowException(string.Format(ExceptionMessages.InvalidOptionsItemAttributeValue, setting.MaxSelectedItems));
             }
 
             var codes = string.Join(";", ItemCodes.ToArray());

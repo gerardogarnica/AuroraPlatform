@@ -6,7 +6,7 @@
         Integer,
         Money,
         Numeric,
-        OptionsCatalog,
+        Options,
         Text
     }
 }
