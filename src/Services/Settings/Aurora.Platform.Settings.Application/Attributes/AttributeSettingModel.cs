@@ -58,12 +58,12 @@ namespace Aurora.Platform.Settings.Application.Attributes
                     };
                     return numericValue.GetValueWrapper(NumericSetting);
 
-                case AuroraDataType.OptionsCatalog:
-                    var optionListValue = new OptionsCatalogAttributeValue()
+                case AuroraDataType.Options:
+                    var optionListValue = new OptionsAttributeValue()
                     {
-                        ItemCodes = OptionsCatalogSetting.DefaultItemCodes
+                        ItemCodes = OptionsSetting.DefaultItemCodes
                     };
-                    return optionListValue.GetValueWrapper(OptionsCatalogSetting);
+                    return optionListValue.GetValueWrapper(OptionsSetting);
 
                 case AuroraDataType.Text:
                     var textValue = new TextAttributeValue()

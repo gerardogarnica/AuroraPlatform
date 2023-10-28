@@ -21,7 +21,7 @@ namespace Aurora.Platform.Settings.Application
                 .ForMember(d => d.IntegerSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Integer.ToString() ? new IntegerAttributeSetting(o.Configuration) : null))
                 .ForMember(d => d.MoneySetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Money.ToString() ? new MoneyAttributeSetting(o.Configuration) : null))
                 .ForMember(d => d.NumericSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Numeric.ToString() ? new NumericAttributeSetting(o.Configuration) : null))
-                .ForMember(d => d.OptionsCatalogSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.OptionsCatalog.ToString() ? new OptionsCatalogAttributeSetting(o.Configuration) : null))
+                .ForMember(d => d.OptionsSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Options.ToString() ? new OptionsAttributeSetting(o.Configuration) : null))
                 .ForMember(d => d.TextSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Text.ToString() ? new TextAttributeSetting(o.Configuration) : null));
 
             CreateMap<PagedCollection<AttributeSetting>, PagedCollection<AttributeSettingModel>>();
@@ -34,7 +34,7 @@ namespace Aurora.Platform.Settings.Application
                 .ForMember(d => d.IntegerValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Integer.ToString() ? new IntegerAttributeValue(o.Value) : null))
                 .ForMember(d => d.MoneyValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Money.ToString() ? new MoneyAttributeValue(o.Value) : null))
                 .ForMember(d => d.NumericValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Numeric.ToString() ? new NumericAttributeValue(o.Value) : null))
-                .ForMember(d => d.OptionsCatalogValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.OptionsCatalog.ToString() ? new OptionsCatalogAttributeValue(o.Value) : null))
+                .ForMember(d => d.OptionsValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Options.ToString() ? new OptionsAttributeValue(o.Value) : null))
                 .ForMember(d => d.TextValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Text.ToString() ? new TextAttributeValue(o.Value) : null));
 
             CreateMap<OptionsCatalog, OptionsCatalogModel>();
