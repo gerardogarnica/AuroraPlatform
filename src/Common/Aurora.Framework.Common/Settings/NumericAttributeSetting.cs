@@ -34,12 +34,12 @@ namespace Aurora.Framework.Settings
         {
             if (MaxValue < MinValue)
             {
-                throw new PlatformException(string.Format(ExceptionMessages.InvalidRangeValueAttributeSetting, MinValue, MaxValue));
+                ThrowException(string.Format(ExceptionMessages.InvalidRangeValueAttributeSetting, MinValue, MaxValue));
             }
 
             if (!DefaultValue.IsIntoInterval(MinValue, MaxValue))
             {
-                throw new PlatformException(string.Format(ExceptionMessages.InvalidDefaultValueAttributeSetting, DefaultValue, MinValue, MaxValue));
+                ThrowException(string.Format(ExceptionMessages.InvalidDefaultValueAttributeSetting, DefaultValue, MinValue, MaxValue));
             }
 
             var document = new XDocument(

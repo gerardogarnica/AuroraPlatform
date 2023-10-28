@@ -25,8 +25,7 @@ namespace Aurora.Framework.Settings
         {
             if (!Value.IsIntoInterval(setting.MinValue, setting.MaxValue))
             {
-                throw new PlatformException(
-                    string.Format(ExceptionMessages.InvalidRangeAttributeValue, Value, setting.MinValue, setting.MaxValue));
+                ThrowException(string.Format(ExceptionMessages.InvalidRangeAttributeValue, Value, setting.MinValue, setting.MaxValue));
             }
 
             var document = new XDocument(

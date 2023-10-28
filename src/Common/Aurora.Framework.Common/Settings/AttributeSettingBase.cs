@@ -12,5 +12,10 @@ namespace Aurora.Framework.Settings
         }
 
         public abstract string GetSettingWrapper();
+
+        protected void ThrowException(string message)
+        {
+            throw new BusinessException("AttributeSetting", message);
+        }
     }
 }

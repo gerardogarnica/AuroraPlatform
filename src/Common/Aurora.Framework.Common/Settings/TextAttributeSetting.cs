@@ -35,20 +35,20 @@ namespace Aurora.Framework.Settings
         {
             if (MaxLength < MinLength)
             {
-                throw new PlatformException(string.Format(ExceptionMessages.InvalidLengthRangeValueAttributeSetting, MinLength, MaxLength));
+                ThrowException(string.Format(ExceptionMessages.InvalidLengthRangeValueAttributeSetting, MinLength, MaxLength));
             }
 
             if (!string.IsNullOrWhiteSpace(DefaultValue))
             {
                 if (!DefaultValue.Length.IsIntoInterval(MinLength, MaxLength))
                 {
-                    throw new PlatformException(string.Format(ExceptionMessages.InvalidLengthDefaultValueAttributeSetting, DefaultValue, MinLength, MaxLength));
+                    ThrowException(string.Format(ExceptionMessages.InvalidLengthDefaultValueAttributeSetting, DefaultValue, MinLength, MaxLength));
                 }
 
                 if (!string.IsNullOrWhiteSpace(Pattern))
                 {
                     if (Regex.IsMatch(DefaultValue, Pattern))
-                        throw new PlatformException(string.Format(ExceptionMessages.InvalidPatternValueAttributeSetting, DefaultValue, Pattern));
+                        ThrowException(string.Format(ExceptionMessages.InvalidPatternValueAttributeSetting, DefaultValue, Pattern));
                 }
             }
 

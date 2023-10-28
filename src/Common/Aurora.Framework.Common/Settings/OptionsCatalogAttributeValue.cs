@@ -25,8 +25,7 @@ namespace Aurora.Framework.Settings
         {
             if (setting.AllowMultipleValues && ItemCodes.Count > setting.MaxSelectedItems)
             {
-                throw new PlatformException(
-                    string.Format(ExceptionMessages.InvalidOptionsCatalogItemAttributeValue, setting.MaxSelectedItems));
+                ThrowException(string.Format(ExceptionMessages.InvalidOptionsCatalogItemAttributeValue, setting.MaxSelectedItems));
             }
 
             var codes = string.Join(";", ItemCodes.ToArray());

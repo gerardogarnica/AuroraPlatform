@@ -11,5 +11,10 @@ namespace Aurora.Framework.Settings
             if (!string.IsNullOrWhiteSpace(xmlValue))
                 XDocument = XDocument.Parse(xmlValue);
         }
+
+        protected void ThrowException(string message)
+        {
+            throw new BusinessException("AttributeValue", message);
+        }
     }
 }

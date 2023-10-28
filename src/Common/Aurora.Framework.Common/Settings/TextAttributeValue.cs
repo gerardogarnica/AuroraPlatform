@@ -28,14 +28,13 @@ namespace Aurora.Framework.Settings
             {
                 if (!Value.Length.IsIntoInterval(setting.MinLength, setting.MaxLength))
                 {
-                    throw new PlatformException(
-                        string.Format(ExceptionMessages.InvalidLengthAttributeValue, Value, setting.MinLength, setting.MaxLength));
+                    ThrowException(string.Format(ExceptionMessages.InvalidLengthAttributeValue, Value, setting.MinLength, setting.MaxLength));
                 }
 
                 if (!string.IsNullOrWhiteSpace(setting.Pattern))
                 {
                     if (Regex.IsMatch(Value, setting.Pattern))
-                        throw new PlatformException(string.Format(ExceptionMessages.InvalidPatternAttributeValue, Value, setting.Pattern));
+                        ThrowException(string.Format(ExceptionMessages.InvalidPatternAttributeValue, Value, setting.Pattern));
                 }
             }
 
