@@ -1,4 +1,4 @@
-﻿using Aurora.Framework.Security;
+﻿using Aurora.Framework.Identity;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -13,7 +13,7 @@ namespace Aurora.Framework.Api
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context, IJwtSecurityHandler securityHandler)
+        public async Task InvokeAsync(HttpContext context, IIdentityHandler identityHandler)
         {
             try
             {
@@ -23,8 +23,8 @@ namespace Aurora.Framework.Api
                 {
                     var token = requestHeader.FirstOrDefault().GetLastSplit(" ");
 
-                    securityHandler.ValidateToken(token);
-                    context.Items["UserInfo"] = securityHandler.UserInfo;
+                    identityHandler.ValidateToken(token);
+                    context.Items["UserInfo"] = identityHandler.UserInfo;
                 }
 
                 await _next(context);

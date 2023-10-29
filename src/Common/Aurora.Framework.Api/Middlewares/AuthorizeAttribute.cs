@@ -1,4 +1,4 @@
-﻿using Aurora.Framework.Security;
+﻿using Aurora.Framework.Identity;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Aurora.Framework.Api
