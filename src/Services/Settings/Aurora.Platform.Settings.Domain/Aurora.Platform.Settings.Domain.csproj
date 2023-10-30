@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Aurora.Framework.Common\Aurora.Framework.Common.csproj" />
-    <ProjectReference Include="..\..\..\Common\Aurora.Framework.Entities\Aurora.Framework.Entities.csproj" />
     <ProjectReference Include="..\..\..\Common\Aurora.Framework.Repositories\Aurora.Framework.Repositories.csproj" />
   </ItemGroup>
 

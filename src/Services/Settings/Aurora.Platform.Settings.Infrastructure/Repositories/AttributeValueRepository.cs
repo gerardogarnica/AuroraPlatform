@@ -1,4 +1,5 @@
-﻿using Aurora.Framework.Repositories;
+﻿using Aurora.Framework.Identity;
+using Aurora.Framework.Repositories;
 using Aurora.Platform.Settings.Domain.Entities;
 using Aurora.Platform.Settings.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +16,8 @@ namespace Aurora.Platform.Settings.Infrastructure.Repositories
 
         #region Constructors
 
-        public AttributeValueRepository(SettingsContext context)
-            : base(context)
+        public AttributeValueRepository(SettingsContext context, IIdentityHandler identityHandler)
+            : base(context, identityHandler)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
