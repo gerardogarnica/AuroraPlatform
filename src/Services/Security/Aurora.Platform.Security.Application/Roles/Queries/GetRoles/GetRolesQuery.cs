@@ -1,6 +1,6 @@
 ﻿using Aurora.Framework;
 using Aurora.Framework.Entities;
-using Aurora.Framework.Security;
+using Aurora.Framework.Identity;
 using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Repositories;
 using AutoMapper;

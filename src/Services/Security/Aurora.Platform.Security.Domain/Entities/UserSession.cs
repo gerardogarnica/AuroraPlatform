@@ -1,5 +1,5 @@
 ﻿using Aurora.Framework.Entities;
-using Aurora.Framework.Security;
+using Aurora.Framework.Identity;
 
 namespace Aurora.Platform.Security.Domain.Entities
 {

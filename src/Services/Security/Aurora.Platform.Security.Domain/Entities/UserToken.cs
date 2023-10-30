@@ -1,5 +1,5 @@
 ﻿using Aurora.Framework.Entities;
-using Aurora.Framework.Security;
+using Aurora.Framework.Identity;
 using Aurora.Platform.Security.Domain.Exceptions;
 
 namespace Aurora.Platform.Security.Domain.Entities

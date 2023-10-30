@@ -50,7 +50,8 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
                 CreatedDate = DateTime.UtcNow,
                 LastUpdatedBy = userBatch,
                 LastUpdatedDate = DateTime.UtcNow,
-                Tokens = new List<UserToken> {
+                Tokens = new List<UserToken>
+                {
                     new UserToken()
                     {
                         Application = applicationCode,

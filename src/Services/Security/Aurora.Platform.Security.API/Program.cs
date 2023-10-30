@@ -1,7 +1,6 @@
 using Aurora.Framework.Api;
 using Aurora.Framework.Logging;
 using Aurora.Framework.Repositories;
-using Aurora.Framework.Security;
 using Aurora.Platform.Security.Application;
 using Aurora.Platform.Security.Infrastructure;
 

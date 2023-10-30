@@ -1,4 +1,4 @@
-﻿using Aurora.Framework.Security;
+﻿using Aurora.Framework.Identity;
 using Aurora.Platform.Security.Domain.Repositories;
 using AutoMapper;
 using MediatR;

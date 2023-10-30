@@ -1,4 +1,4 @@
-﻿using Aurora.Framework.Security;
+﻿using Aurora.Framework.Identity;
 using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Exceptions;
 using Aurora.Platform.Security.Domain.Repositories;
@@ -9,13 +9,13 @@ namespace Aurora.Platform.Security.Application.Identity.Commands.UserLogin;
 
 public record UserCredentials
 {
-    public string Email { get; set; }
-    public string Password { get; set; }
+    public string Email { get; init; }
+    public string Password { get; init; }
 }
 
 public record UserLoginCommand : UserCredentials, IRequest<IdentityToken>
 {
-    public string Application { get; set; }
+    public string Application { get; init; }
 }
 
 public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
@@ -23,7 +23,7 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
     #region Private members
 
     private readonly IMapper _mapper;
-    private readonly IJwtSecurityHandler _securityHandler;
+    private readonly IIdentityHandler _identityHandler;
     private readonly IRoleRepository _roleRepository;
     private readonly IUserRepository _userRepository;
     private readonly IUserSessionRepository _userSessionRepository;
@@ -35,14 +35,14 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
 
     public UserLoginHandler(
         IMapper mapper,
-        IJwtSecurityHandler securityHandler,
+        IIdentityHandler identityHandler,
         IUserRepository userRepository,
         IRoleRepository roleRepository,
         IUserSessionRepository userSessionRepository,
         IUserTokenRepository userTokenRepository)
     {
         _mapper = mapper;
-        _securityHandler = securityHandler;
+        _identityHandler = identityHandler;
         _userRepository = userRepository;
         _roleRepository = roleRepository;
         _userSessionRepository = userSessionRepository;
@@ -64,7 +64,7 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
         userInfo.Roles = await GetUserRolesAsync(user.Id, request.Application, user.UserRoles);
 
         // Get token information
-        var tokenInfo = _securityHandler.GenerateTokenInfo(userInfo);
+        var tokenInfo = _identityHandler.GenerateTokenInfo(userInfo);
 
         // Updates token repository
         var userToken = user.Tokens.First(x => x.Application.Equals(request.Application));

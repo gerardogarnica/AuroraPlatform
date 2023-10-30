@@ -1,7 +1,6 @@
 ﻿using Aurora.Framework.Cryptography;
 using Aurora.Framework.Entities;
 using Aurora.Platform.Security.Domain.Exceptions;
-using System.Data;
 
 namespace Aurora.Platform.Security.Domain.Entities
 {

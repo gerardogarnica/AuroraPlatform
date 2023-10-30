@@ -1,4 +1,4 @@
-﻿using Aurora.Framework.Security;
+﻿using Aurora.Framework.Identity;
 using Aurora.Platform.Security.Domain.Repositories;
 using AutoMapper;
 using MediatR;
@@ -11,7 +11,7 @@ public class GetProfileHandler : IRequestHandler<GetProfileQuery, UserInfo>
 {
     #region Private members
 
-    private readonly IJwtSecurityHandler _securityHandler;
+    private readonly IIdentityHandler _identityHandler;
     private readonly IMapper _mapper;
     private readonly IRoleRepository _roleRepository;
     private readonly IUserRepository _userRepository;
@@ -21,12 +21,12 @@ public class GetProfileHandler : IRequestHandler<GetProfileQuery, UserInfo>
     #region Constructor
 
     public GetProfileHandler(
-        IJwtSecurityHandler securityHandler,
+        IIdentityHandler identityHandler,
         IMapper mapper,
         IRoleRepository roleRepository,
         IUserRepository userRepository)
     {
-        _securityHandler = securityHandler;
+        _identityHandler = identityHandler;
         _mapper = mapper;
         _roleRepository = roleRepository;
         _userRepository = userRepository;
@@ -40,12 +40,12 @@ public class GetProfileHandler : IRequestHandler<GetProfileQuery, UserInfo>
         GetProfileQuery request, CancellationToken cancellationToken)
     {
         // Get user
-        var user = await _userRepository.GetAsyncByGuid(_securityHandler.UserInfo.Guid.ToString());
+        var user = await _userRepository.GetAsyncByGuid(_identityHandler.UserInfo.Guid.ToString());
         if (user == null) return null;
 
         // Get user roles
         var userInfo = _mapper.Map<UserInfo>(user);
-        userInfo.Roles = _securityHandler.UserInfo.Roles;
+        userInfo.Roles = _identityHandler.UserInfo.Roles;
 
         // Returns user info
         return userInfo;

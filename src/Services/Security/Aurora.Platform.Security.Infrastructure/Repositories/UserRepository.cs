@@ -1,5 +1,6 @@
 ﻿using Aurora.Framework;
 using Aurora.Framework.Entities;
+using Aurora.Framework.Identity;
 using Aurora.Framework.Repositories;
 using Aurora.Framework.Repositories.Extensions;
 using Aurora.Platform.Security.Domain.Entities;
@@ -19,8 +20,8 @@ namespace Aurora.Platform.Security.Infrastructure.Repositories
 
         #region Constructors
 
-        public UserRepository(SecurityContext context)
-            : base(context)
+        public UserRepository(SecurityContext context, IIdentityHandler identityHandler)
+            : base(context, identityHandler)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

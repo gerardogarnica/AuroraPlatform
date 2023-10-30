@@ -1,4 +1,4 @@
-﻿using Aurora.Framework.Security;
+﻿using Aurora.Framework.Identity;
 using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Exceptions;
 using Aurora.Platform.Security.Domain.Repositories;
@@ -16,7 +16,7 @@ public class ChangePasswordHandler : IRequestHandler<ChangePasswordCommand, bool
 {
     #region Private members
 
-    private readonly IJwtSecurityHandler _securityHandler;
+    private readonly IIdentityHandler _identityHandler;
     private readonly IUserRepository _userRepository;
     private readonly ICredentialLogRepository _credentialLogRepository;
 
@@ -25,11 +25,11 @@ public class ChangePasswordHandler : IRequestHandler<ChangePasswordCommand, bool
     #region Constructor
 
     public ChangePasswordHandler(
-        IJwtSecurityHandler securityHandler,
+        IIdentityHandler identityHandler,
         IUserRepository userRepository,
         ICredentialLogRepository credentialLogRepository)
     {
-        _securityHandler = securityHandler;
+        _identityHandler = identityHandler;
         _userRepository = userRepository;
         _credentialLogRepository = credentialLogRepository;
     }
@@ -71,7 +71,7 @@ public class ChangePasswordHandler : IRequestHandler<ChangePasswordCommand, bool
 
     private async Task<User> GetUserAsync(string password)
     {
-        var email = _securityHandler.UserInfo.Email;
+        var email = _identityHandler.UserInfo.Email;
         var user = await _userRepository.GetAsyncByEmail(email) ?? throw new InvalidUserEmailException(email);
 
         user.CheckIfPasswordMatches(password);

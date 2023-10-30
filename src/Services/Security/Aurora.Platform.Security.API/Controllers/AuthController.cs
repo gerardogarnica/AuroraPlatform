@@ -1,5 +1,5 @@
 using Aurora.Framework.Api;
-using Aurora.Framework.Security;
+using Aurora.Framework.Identity;
 using Aurora.Platform.Security.Application.Identity.Commands.ChangePassword;
 using Aurora.Platform.Security.Application.Identity.Commands.RefreshToken;
 using Aurora.Platform.Security.Application.Identity.Commands.UserLogin;

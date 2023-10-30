@@ -1,4 +1,5 @@
-﻿using Aurora.Framework.Repositories;
+﻿using Aurora.Framework.Identity;
+using Aurora.Framework.Repositories;
 using Aurora.Platform.Security.Domain.Entities;
 using Aurora.Platform.Security.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +16,8 @@ namespace Aurora.Platform.Security.Infrastructure.Repositories
 
         #region Constructors
 
-        public CredentialLogRepository(SecurityContext context)
-            : base(context)
+        public CredentialLogRepository(SecurityContext context, IIdentityHandler identityHandler)
+            : base(context, identityHandler)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
