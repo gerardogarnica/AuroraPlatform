@@ -1,7 +1,7 @@
 ﻿using Aurora.Framework.Entities;
+using Aurora.Framework.Identity;
 using Aurora.Framework.Repositories.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
 namespace Aurora.Framework.Repositories
@@ -11,14 +11,16 @@ namespace Aurora.Framework.Repositories
         #region Private members
 
         private readonly DbContext _context;
+        private readonly IIdentityHandler _identityHandler;
 
         #endregion
 
         #region Constructors
 
-        public RepositoryBase(DbContext context)
+        public RepositoryBase(DbContext context, IIdentityHandler identityHandler)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _identityHandler = identityHandler ?? throw new ArgumentNullException(nameof(identityHandler));
         }
 
         #endregion
@@ -143,8 +145,12 @@ namespace Aurora.Framework.Repositories
 
         #endregion
 
+        #region Private methods
+
         private void AddAuditableData()
         {
+            var userGuid = _identityHandler.UserInfo.Guid.ToString().Trim().ToUpper();
+
             foreach (var entry in _context
                 .ChangeTracker
                 .Entries()
@@ -154,13 +160,15 @@ namespace Aurora.Framework.Repositories
 
                 if (entry.State == EntityState.Added)
                 {
-                    entity.CreatedBy = "admin";
+                    entity.CreatedBy = userGuid;
                     entity.CreatedDate = DateTime.UtcNow;
                 }
 
-                entity.LastUpdatedBy = "admin";
+                entity.LastUpdatedBy = userGuid;
                 entity.LastUpdatedDate = DateTime.UtcNow;
             }
         }
+
+        #endregion
     }
 }
