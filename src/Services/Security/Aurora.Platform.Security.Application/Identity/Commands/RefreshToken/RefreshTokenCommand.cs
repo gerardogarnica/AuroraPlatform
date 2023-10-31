@@ -17,8 +17,6 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Identity
     private readonly IUserTokenRepository _userTokenRepository;
     private readonly IUserSessionRepository _userSessionRepository;
 
-    private readonly ApplicationInfo _application;
-
     #endregion
 
     #region Constructor
@@ -31,8 +29,6 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Identity
         _identityHandler = identityHandler;
         _userTokenRepository = userTokenRepository;
         _userSessionRepository = userSessionRepository;
-
-        _application = _identityHandler.ApplicationInfo;
     }
 
     #endregion
@@ -45,12 +41,15 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Identity
         // Get logged user
         var user = _identityHandler.UserInfo;
 
+        // Set the application code
+        var appCode = _identityHandler.ApplicationInfo.Code;
+
         // Get token information
-        var tokenInfo = _identityHandler.GenerateTokenInfo(user);
+        var tokenInfo = _identityHandler.GenerateTokenInfo(user, _identityHandler.ApplicationInfo);
 
         // Get current user token
         var userToken = await _userTokenRepository
-            .GetAsync(x => x.UserId == user.UserId && x.Application.Equals(_application.Code));
+            .GetAsync(x => x.UserId == user.UserId && x.Application.Equals(appCode));
         userToken.CheckIfRefreshTokenIsValid(request.RefreshToken);
         userToken.CheckIfRefreshTokenIsNotExpired();
 
@@ -59,7 +58,7 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Identity
         await _userTokenRepository.UpdateAsync(userToken);
 
         // Update user session
-        var userSession = await _userSessionRepository.GetLastAsync(user.UserId, _application.Code);
+        var userSession = await _userSessionRepository.GetLastAsync(user.UserId, appCode);
         userSession.UpdateWithTokenInfo(tokenInfo);
 
         await _userSessionRepository.UpdateAsync(userSession);

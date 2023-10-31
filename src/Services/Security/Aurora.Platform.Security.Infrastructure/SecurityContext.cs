@@ -8,6 +8,7 @@ namespace Aurora.Platform.Security.Infrastructure
     {
         #region DbSet properties
 
+        public DbSet<Application> Applications { get; set; }
         public DbSet<CredentialLog> CredentialLogs { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
@@ -28,6 +29,7 @@ namespace Aurora.Platform.Security.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfiguration(new ApplicationConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleConfiguration());

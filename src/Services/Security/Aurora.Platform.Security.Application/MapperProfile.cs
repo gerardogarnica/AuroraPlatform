@@ -12,6 +12,9 @@ namespace Aurora.Platform.Security.Application
         public MapperProfile()
         {
             // Source: entity. Destination: view model.
+            CreateMap<Domain.Entities.Application, ApplicationInfo>()
+                .ForMember(d => d.ApplicationId, o => o.MapFrom(o => o.Id));
+
             CreateMap<Role, RoleInfo>()
                 .ForMember(d => d.RoleId, o => o.MapFrom(o => o.Id));
 

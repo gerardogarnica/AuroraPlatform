@@ -24,6 +24,7 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
 
     private readonly IMapper _mapper;
     private readonly IIdentityHandler _identityHandler;
+    private readonly IApplicationRepository _applicationRepository;
     private readonly IRoleRepository _roleRepository;
     private readonly IUserRepository _userRepository;
     private readonly IUserSessionRepository _userSessionRepository;
@@ -36,6 +37,7 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
     public UserLoginHandler(
         IMapper mapper,
         IIdentityHandler identityHandler,
+        IApplicationRepository applicationRepository,
         IUserRepository userRepository,
         IRoleRepository roleRepository,
         IUserSessionRepository userSessionRepository,
@@ -43,6 +45,7 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
     {
         _mapper = mapper;
         _identityHandler = identityHandler;
+        _applicationRepository = applicationRepository;
         _userRepository = userRepository;
         _roleRepository = roleRepository;
         _userSessionRepository = userSessionRepository;
@@ -59,20 +62,24 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
         // Get user
         var user = await GetUserAsync(request.Email, request.Password);
 
+        // Get application
+        var application = await GetApplicationAsync(request.Application);
+        var applicationInfo = _mapper.Map<ApplicationInfo>(application);
+
         // Get user roles
         var userInfo = _mapper.Map<UserInfo>(user);
-        userInfo.Roles = await GetUserRolesAsync(user.Id, request.Application, user.UserRoles);
+        userInfo.Roles = await GetUserRolesAsync(user.Id, applicationInfo.Code, user.UserRoles);
 
         // Get token information
-        var tokenInfo = _identityHandler.GenerateTokenInfo(userInfo);
+        var tokenInfo = _identityHandler.GenerateTokenInfo(userInfo, applicationInfo);
 
         // Updates token repository
-        var userToken = user.Tokens.First(x => x.Application.Equals(request.Application));
+        var userToken = user.Tokens.First(x => x.Application.Equals(applicationInfo.Code));
         userToken.UpdateWithTokenInfo(tokenInfo);
         await _userTokenRepository.UpdateAsync(userToken);
 
         // Add user session
-        var userSession = new UserSession(user.Id, request.Application, user.Email, tokenInfo);
+        var userSession = new UserSession(user.Id, applicationInfo.Code, user.Email, tokenInfo);
         await _userSessionRepository.AddAsync(userSession);
 
         // Returns identity tokens
@@ -86,6 +93,13 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
     #endregion
 
     #region Private methods
+
+    private async Task<Domain.Entities.Application> GetApplicationAsync(string code)
+    {
+        var application = await _applicationRepository.GetAsync(x => x.Code.Equals(code)) ?? throw new InvalidApplicationCodeException(code);
+
+        return application;
+    }
 
     private async Task<User> GetUserAsync(string email, string password)
     {

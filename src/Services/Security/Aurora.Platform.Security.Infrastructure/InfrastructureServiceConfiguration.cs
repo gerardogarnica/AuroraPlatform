@@ -17,6 +17,7 @@ namespace Aurora.Platform.Security.Infrastructure
                     x => x.MigrationsHistoryTable("__EFMigrationsHistory", "SEC")));
 
             // Repository implementations
+            services.AddScoped<IApplicationRepository, ApplicationRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserSessionRepository, UserSessionRepository>();
