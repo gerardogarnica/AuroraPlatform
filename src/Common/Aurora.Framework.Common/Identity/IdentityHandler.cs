@@ -12,7 +12,7 @@ namespace Aurora.Framework.Identity
     {
         ApplicationInfo ApplicationInfo { get; }
         UserInfo UserInfo { get; }
-        TokenInfo GenerateTokenInfo(UserInfo user);
+        TokenInfo GenerateTokenInfo(UserInfo user, ApplicationInfo application);
         void ValidateToken(string token);
     }
 
@@ -43,12 +43,12 @@ namespace Aurora.Framework.Identity
 
         UserInfo IIdentityHandler.UserInfo => GetUserInfoFromToken();
 
-        TokenInfo IIdentityHandler.GenerateTokenInfo(UserInfo user)
+        TokenInfo IIdentityHandler.GenerateTokenInfo(UserInfo user, ApplicationInfo application)
         {
             try
             {
                 // Create claims from user
-                var claims = CreateClaims(user);
+                var claims = CreateClaims(user, application);
 
                 // Get the token descriptor
                 var tokenDescriptor = CreateTokenDescriptor(claims, _configuration.Key, _configuration.TokenValidityInMinutes);
@@ -94,11 +94,16 @@ namespace Aurora.Framework.Identity
 
         #region Private methods
 
-        private static IList<Claim> CreateClaims(UserInfo user)
+        private static IList<Claim> CreateClaims(UserInfo user, ApplicationInfo application)
         {
             if (user == null)
             {
                 throw new PlatformException("The user cannot be null.");
+            }
+
+            if (application == null)
+            {
+                throw new PlatformException("The application cannot be null.");
             }
 
             var claims = new List<Claim>()
@@ -109,7 +114,7 @@ namespace Aurora.Framework.Identity
                 new Claim(ClaimTypes.Surname, user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.SerialNumber, user.Guid.ToString()),
-                new Claim(ClaimTypes.Locality, "appCode;appName"),
+                new Claim(ClaimTypes.Locality, $"{application.Code};{application.Name}"),
                 new Claim(ClaimTypes.UserData, user.InternalUserData)
             };
 
