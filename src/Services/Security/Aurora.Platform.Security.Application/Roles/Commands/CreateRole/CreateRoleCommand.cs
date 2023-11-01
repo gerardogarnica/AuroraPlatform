@@ -9,8 +9,7 @@ namespace Aurora.Platform.Security.Application.Roles.Commands.CreateRole;
 public record CreateRoleCommand : IRequest<int>
 {
     public string Name { get; init; }
-    public string AppCode { get; init; }
-    public string AppName { get; init; }
+    public string Application { get; init; }
     public string Description { get; init; }
     public string Notes { get; init; }
 }
@@ -41,7 +40,7 @@ public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, int>
     async Task<int> IRequestHandler<CreateRoleCommand, int>.Handle(
         CreateRoleCommand request, CancellationToken cancellationToken)
     {
-        CheckIfNameIsAvailable(request.Name, request.AppCode, request.AppName);
+        CheckIfNameIsAvailable(request.Name, request.Application);
 
         // Create role entity
         var role = _mapper.Map<Role>(request);
@@ -58,11 +57,11 @@ public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, int>
 
     #region Private methods
 
-    private async void CheckIfNameIsAvailable(string name, string appCode, string appName)
+    private async void CheckIfNameIsAvailable(string name, string application)
     {
-        var role = await _roleRepository.GetAsync(x => x.Name.Equals(name) && x.AppCode.Equals(appCode));
+        var role = await _roleRepository.GetAsync(x => x.Name.Equals(name) && x.Application.Equals(application));
         if (role != null)
-            throw new RoleNameAlreadyExistsException(name, appName);
+            throw new RoleNameAlreadyExistsException(name, application);
     }
 
     #endregion

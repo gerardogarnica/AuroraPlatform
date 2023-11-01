@@ -20,7 +20,7 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
 
             var adminRole = context
                 .Roles
-                .FirstOrDefault(x => x.AppCode.Equals(applicationCode) && x.Name.Equals(adminRoleName));
+                .FirstOrDefault(x => x.Application.Equals(applicationCode) && x.Name.Equals(adminRoleName));
 
             adminUser = CreateAdminUser();
 

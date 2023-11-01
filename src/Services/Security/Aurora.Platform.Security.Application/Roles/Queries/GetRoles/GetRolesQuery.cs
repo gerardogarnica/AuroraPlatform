@@ -46,7 +46,7 @@ public class GetRolesHandler : IRequestHandler<GetRolesQuery, PagedCollection<Ro
         Expression<Func<Role, bool>> predicate = x => x.Id == x.Id;
 
         if (!string.IsNullOrWhiteSpace(request.Application))
-            predicate = predicate.And(x => x.AppCode.Equals(request.Application));
+            predicate = predicate.And(x => x.Application.Equals(request.Application));
         if (!string.IsNullOrWhiteSpace(request.Search) && request.Search.Length >= 3)
             predicate = predicate.And(x => x.Name.Contains(request.Search) || x.Description.Contains(request.Search));
         if (request.OnlyActives)

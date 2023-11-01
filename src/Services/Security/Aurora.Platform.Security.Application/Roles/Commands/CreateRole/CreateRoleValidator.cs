@@ -10,13 +10,9 @@ namespace Aurora.Platform.Security.Application.Roles.Commands.CreateRole
                 .NotEmpty().WithMessage("Name is required.")
                 .MaximumLength(50).WithMessage("The maximum name length is 50 characters.");
 
-            RuleFor(p => p.AppCode)
+            RuleFor(p => p.Application)
                 .NotEmpty().WithMessage("Application code is required.")
-                .MaximumLength(50).WithMessage("The maximum application code length is 50 characters.");
-
-            RuleFor(p => p.AppName)
-                .NotEmpty().WithMessage("Application name is required.")
-                .MaximumLength(50).WithMessage("The maximum application name length is 50 characters.");
+                .MaximumLength(40).WithMessage("The maximum application code length is 50 characters.");
 
             RuleFor(p => p.Description)
                 .NotEmpty().WithMessage("Description is required.")

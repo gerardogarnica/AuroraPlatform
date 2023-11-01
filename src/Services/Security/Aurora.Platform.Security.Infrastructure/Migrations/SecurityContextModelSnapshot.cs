@@ -22,6 +22,43 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Aurora.Platform.Security.Domain.Entities.Application", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ApplicationId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("varchar(40)")
+                        .HasColumnName("Code");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("Description");
+
+                    b.Property<bool>("HasCustomConfig")
+                        .HasColumnType("bit")
+                        .HasColumnName("HasCustomConfig");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("Name");
+
+                    b.HasKey("Id")
+                        .HasName("PK_Application");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("UK_Application");
+
+                    b.ToTable("Application", "SEC");
+                });
+
             modelBuilder.Entity("Aurora.Platform.Security.Domain.Entities.CredentialLog", b =>
                 {
                     b.Property<int>("Id")
@@ -76,15 +113,10 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppCode")
+                    b.Property<string>("Application")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("AppCode");
-
-                    b.Property<string>("AppName")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("AppName");
+                        .HasColumnType("varchar(40)")
+                        .HasColumnName("Application");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -131,7 +163,7 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Role");
 
-                    b.HasIndex("Name", "AppCode")
+                    b.HasIndex("Name", "Application")
                         .IsUnique()
                         .HasDatabaseName("UK_Role");
 
@@ -299,7 +331,7 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
 
                     b.Property<string>("Application")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("varchar(40)")
                         .HasColumnName("Application");
 
                     b.Property<DateTime>("BeginSessionDate")
@@ -353,7 +385,7 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
 
                     b.Property<string>("Application")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("varchar(40)")
                         .HasColumnName("Application");
 
                     b.Property<DateTime?>("IssuedDate")

@@ -58,8 +58,8 @@ public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand, int>
     {
         var role = await _roleRepository.GetByIdAsync(roleId) ?? throw new InvalidRoleIdentifierException(roleId);
 
-        var anotherExistingRole = await _roleRepository.GetAsync(x => x.Id != role.Id && x.Name.Equals(name) && x.AppCode.Equals(role.AppCode));
-        if (anotherExistingRole != null) throw new RoleNameAlreadyExistsException(name, role.AppName);
+        var anotherExistingRole = await _roleRepository.GetAsync(x => x.Id != role.Id && x.Name.Equals(name) && x.Application.Equals(role.Application));
+        if (anotherExistingRole != null) throw new RoleNameAlreadyExistsException(name, role.Application);
 
         role.CheckIfIsActive();
 

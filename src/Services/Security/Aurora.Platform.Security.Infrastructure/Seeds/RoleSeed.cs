@@ -7,14 +7,13 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
     {
         const string adminRoleName = "Administradores";
         const string applicationCode = "DBB1F084-0E5C-488F-8990-EA1FDF223A94";
-        const string applicationName = "Aurora Soft applications platform";
         const string userBatch = "BATCH-USR";
 
         public void Seed(SecurityContext context)
         {
             var adminRole = context
                 .Roles
-                .FirstOrDefault(x => x.AppCode.Equals(applicationCode) && x.Name.Equals(adminRoleName));
+                .FirstOrDefault(x => x.Application.Equals(applicationCode) && x.Name.Equals(adminRoleName));
 
             if (adminRole != null) return;
 
@@ -28,8 +27,7 @@ namespace Aurora.Platform.Security.Infrastructure.Seeds
             return new Role()
             {
                 Name = adminRoleName,
-                AppCode = applicationCode,
-                AppName = applicationName,
+                Application = applicationCode,
                 Description = "Administradores de la Plataforma",
                 IsActive = true,
                 CreatedBy = userBatch,

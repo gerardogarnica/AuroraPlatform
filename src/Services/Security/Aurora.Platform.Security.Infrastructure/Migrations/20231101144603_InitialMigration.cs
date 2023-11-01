@@ -15,6 +15,23 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                 name: "SEC");
 
             migrationBuilder.CreateTable(
+                name: "Application",
+                schema: "SEC",
+                columns: table => new
+                {
+                    ApplicationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "varchar(40)", nullable: false),
+                    Name = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Description = table.Column<string>(type: "varchar(100)", nullable: true),
+                    HasCustomConfig = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Application", x => x.ApplicationId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CredentialLog",
                 schema: "SEC",
                 columns: table => new
@@ -42,8 +59,7 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                     RoleId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(50)", nullable: false),
-                    AppCode = table.Column<string>(type: "varchar(50)", nullable: false),
-                    AppName = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Application = table.Column<string>(type: "varchar(40)", nullable: false),
                     Description = table.Column<string>(type: "varchar(100)", nullable: true),
                     RoleGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newId()"),
                     Notes = table.Column<string>(type: "nvarchar(2000)", nullable: true),
@@ -93,7 +109,7 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                     SessionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Application = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Application = table.Column<string>(type: "varchar(40)", nullable: false),
                     Email = table.Column<string>(type: "varchar(50)", nullable: false),
                     AccessToken = table.Column<string>(type: "varchar(4000)", nullable: false),
                     AccessTokenExpiration = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -150,7 +166,7 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                     TokenId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Application = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Application = table.Column<string>(type: "varchar(40)", nullable: false),
                     AccessToken = table.Column<string>(type: "varchar(4000)", nullable: true),
                     AccessTokenExpiration = table.Column<DateTime>(type: "datetime", nullable: true),
                     RefreshToken = table.Column<string>(type: "varchar(200)", nullable: true),
@@ -170,10 +186,17 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "UK_Application",
+                schema: "SEC",
+                table: "Application",
+                column: "Code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "UK_Role",
                 schema: "SEC",
                 table: "Role",
-                columns: new[] { "Name", "AppCode" },
+                columns: new[] { "Name", "Application" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -207,6 +230,10 @@ namespace Aurora.Platform.Security.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Application",
+                schema: "SEC");
+
             migrationBuilder.DropTable(
                 name: "CredentialLog",
                 schema: "SEC");

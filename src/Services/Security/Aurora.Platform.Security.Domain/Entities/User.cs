@@ -71,12 +71,12 @@ namespace Aurora.Platform.Security.Domain.Entities
             UserRoles.Add(new UserRole(Id, role.Id, false, true));
 
             // Add new token to user
-            if (!Tokens.Any(x => x.Application.Equals(role.AppCode)))
+            if (!Tokens.Any(x => x.Application.Equals(role.Application)))
             {
                 Tokens.Add(
                     new UserToken()
                     {
-                        Application = role.AppCode,
+                        Application = role.Application,
                         IssuedDate = DateTime.UtcNow
                     });
             }

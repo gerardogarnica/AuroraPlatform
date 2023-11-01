@@ -15,7 +15,7 @@ namespace Aurora.Platform.Security.Infrastructure.Configurations
 
             builder.Property(e => e.Id).HasColumnName("SessionId").IsRequired().HasColumnType(SqlDataType.Int32).UseIdentityColumn();
             builder.Property(e => e.UserId).HasColumnName("UserId").IsRequired().HasColumnType(SqlDataType.Int32);
-            builder.Property(e => e.Application).HasColumnName("Application").IsRequired().HasColumnType(SqlDataType.VarChar50);
+            builder.Property(e => e.Application).HasColumnName("Application").IsRequired().HasColumnType(SqlDataType.Code);
             builder.Property(e => e.Email).HasColumnName("Email").IsRequired().HasColumnType(SqlDataType.Email);
             builder.Property(e => e.AccessToken).HasColumnName("AccessToken").IsRequired().HasColumnType(SqlDataType.VarChar4000);
             builder.Property(e => e.AccessTokenExpiration).HasColumnName("AccessTokenExpiration").IsRequired().HasColumnType(SqlDataType.DateTime);

@@ -115,7 +115,7 @@ public class UserLoginHandler : IRequestHandler<UserLoginCommand, IdentityToken>
     private async Task<List<RoleInfo>> GetUserRolesAsync(int userId, string application, IList<UserRole> userRoles)
     {
         var roles = await _roleRepository.GetListAsync(userId);
-        roles = roles.Where(x => x.AppCode.Equals(application)).ToList();
+        roles = roles.Where(x => x.Application.Equals(application)).ToList();
 
         var rolesInfo = _mapper.Map<List<RoleInfo>>(roles);
         foreach (var roleInfo in rolesInfo)
