@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aurora.Platform.Settings.Infrastructure.Migrations
 {
     [DbContext(typeof(SettingsContext))]
-    [Migration("20231024201955_InitialMigration")]
+    [Migration("20231101210559_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -142,13 +142,9 @@ namespace Aurora.Platform.Settings.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppCode")
+                    b.Property<string>("Application")
                         .HasColumnType("varchar(40)")
                         .HasColumnName("AppCode");
-
-                    b.Property<string>("AppName")
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("AppName");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -179,7 +175,7 @@ namespace Aurora.Platform.Settings.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("PK_OptionsCatalog");
 
-                    b.HasIndex("Code", "AppCode")
+                    b.HasIndex("Code", "Application")
                         .IsUnique()
                         .HasDatabaseName("UK_OptionsCatalog")
                         .HasFilter("[AppCode] IS NOT NULL");

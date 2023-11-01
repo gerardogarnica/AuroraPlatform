@@ -9,8 +9,7 @@ namespace Aurora.Platform.Settings.Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsGlobal { get; set; }
-        public string AppCode { get; set; }
-        public string AppName { get; set; }
+        public string Application { get; set; }
         public bool IsVisible { get; set; }
         public bool IsEditable { get; set; }
         public List<OptionsCatalogItem> Items { get; set; }

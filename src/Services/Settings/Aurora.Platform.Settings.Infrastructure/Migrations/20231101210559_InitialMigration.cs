@@ -48,7 +48,6 @@ namespace Aurora.Platform.Settings.Infrastructure.Migrations
                     Description = table.Column<string>(type: "varchar(100)", nullable: true),
                     IsGlobal = table.Column<bool>(type: "bit", nullable: false),
                     AppCode = table.Column<string>(type: "varchar(40)", nullable: true),
-                    AppName = table.Column<string>(type: "varchar(50)", nullable: true),
                     IsVisible = table.Column<bool>(type: "bit", nullable: false),
                     IsEditable = table.Column<bool>(type: "bit", nullable: false)
                 },

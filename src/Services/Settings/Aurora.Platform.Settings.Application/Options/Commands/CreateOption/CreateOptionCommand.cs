@@ -8,8 +8,7 @@ public record CreateOptionCommand : IRequest<OptionsCatalogModel>
     public string Name { get; init; }
     public string Description { get; init; }
     public bool IsGlobal { get; init; }
-    public string AppCode { get; init; }
-    public string AppName { get; init; }
+    public string Application { get; init; }
     public bool IsVisible { get; init; }
     public bool IsEditable { get; init; }
     public List<CreateOptionItem> Items { get; init; }

@@ -28,8 +28,7 @@ namespace Aurora.Platform.Settings.Infrastructure.Seeds
                 Name = "Attribute Types",
                 Description = "Level or scope of attribute settings.",
                 IsGlobal = true,
-                AppCode = string.Empty,
-                AppName = string.Empty,
+                Application = string.Empty,
                 IsVisible = true,
                 IsEditable = false,
                 Items = new List<OptionsCatalogItem>

@@ -32,7 +32,7 @@ public class CreateOptionHandler : IRequestHandler<CreateOptionCommand, OptionsC
     async Task<OptionsCatalogModel> IRequestHandler<CreateOptionCommand, OptionsCatalogModel>.Handle(
         CreateOptionCommand request, CancellationToken cancellationToken)
     {
-        CheckIfCodeIsAvailable(request.Code, request.AppCode);
+        CheckIfCodeIsAvailable(request.Code, request.Application);
 
         // Create option entity
         var option = _mapper.Map<OptionsCatalog>(request);
@@ -50,7 +50,7 @@ public class CreateOptionHandler : IRequestHandler<CreateOptionCommand, OptionsC
 
     private async void CheckIfCodeIsAvailable(string code, string appCode)
     {
-        var option = await _optionsRepository.GetAsync(x => x.Code.Equals(code) && x.AppCode.Equals(appCode));
+        var option = await _optionsRepository.GetAsync(x => x.Code.Equals(code) && x.Application.Equals(appCode));
         if (option != null)
             throw new OptionsCodeAlreadyExistsException(code);
     }
