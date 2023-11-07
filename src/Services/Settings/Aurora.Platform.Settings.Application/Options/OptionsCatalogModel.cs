@@ -2,7 +2,7 @@
 {
     public class OptionsCatalogModel
     {
-        public int Id { get; set; }
+        public int OptionsId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -13,7 +13,7 @@
 
     public class OptionsCatalogItem
     {
-        public int Id { get; set; }
+        public int ItemId { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
         public bool IsEditable { get; set; }

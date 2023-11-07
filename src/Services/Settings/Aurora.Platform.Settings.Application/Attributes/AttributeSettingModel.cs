@@ -6,7 +6,7 @@ namespace Aurora.Platform.Settings.Application.Attributes
 {
     public class AttributeSettingModel : AuroraAttributeSetting
     {
-        public int Id { get; set; }
+        public int AttributeId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -19,7 +19,7 @@ namespace Aurora.Platform.Settings.Application.Attributes
         {
             return new AttributeValue()
             {
-                Id = Id,
+                Id = AttributeId,
                 RelationshipId = relationshipId,
                 Value = GetDefaultValue(),
                 AttributeSetting = setting

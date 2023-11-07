@@ -46,7 +46,7 @@ public class SaveValueHandler : IRequestHandler<SaveValueCommand, AttributeValue
             // Create value entity
             value = new AttributeValue()
             {
-                Id = settingModel.Id,
+                Id = settingModel.AttributeId,
                 RelationshipId = request.RelationshipId,
                 Value = request.GetValueString(settingModel),
                 Notes = request.Notes

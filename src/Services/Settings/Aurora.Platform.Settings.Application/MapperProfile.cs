@@ -17,6 +17,7 @@ namespace Aurora.Platform.Settings.Application
         {
             // Source: entity. Destination: view model.
             CreateMap<AttributeSetting, AttributeSettingModel>()
+                .ForMember(d => d.AttributeId, o => o.MapFrom(o => o.Id))
                 .ForMember(d => d.BooleanSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Boolean.ToString() ? new BooleanAttributeSetting(o.Configuration) : null))
                 .ForMember(d => d.IntegerSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Integer.ToString() ? new IntegerAttributeSetting(o.Configuration) : null))
                 .ForMember(d => d.MoneySetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Money.ToString() ? new MoneyAttributeSetting(o.Configuration) : null))
@@ -27,6 +28,7 @@ namespace Aurora.Platform.Settings.Application
             CreateMap<PagedCollection<AttributeSetting>, PagedCollection<AttributeSettingModel>>();
 
             CreateMap<AttributeValue, AttributeValueModel>()
+                .ForMember(d => d.AttributeId, o => o.MapFrom(o => o.Id))
                 .ForMember(d => d.Code, o => o.MapFrom(o => o.AttributeSetting.Code))
                 .ForMember(d => d.DataType, o => o.MapFrom(o => o.AttributeSetting.DataType))
                 .ForMember(d => d.Setting, o => o.MapFrom(o => o.AttributeSetting))
@@ -37,8 +39,8 @@ namespace Aurora.Platform.Settings.Application
                 .ForMember(d => d.OptionsValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Options.ToString() ? new OptionsAttributeValue(o.Value) : null))
                 .ForMember(d => d.TextValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Text.ToString() ? new TextAttributeValue(o.Value) : null));
 
-            CreateMap<OptionsCatalog, OptionsCatalogModel>();
-            CreateMap<OptionsCatalogItemEntity, OptionsCatalogItemModel>();
+            CreateMap<OptionsCatalog, OptionsCatalogModel>().ForMember(d => d.OptionsId, o => o.MapFrom(o => o.Id));
+            CreateMap<OptionsCatalogItemEntity, OptionsCatalogItemModel>().ForMember(d => d.ItemId, o => o.MapFrom(o => o.Id));
 
             // Source: command. Destination: entity.
             CreateMap<CreateOptionCommand, OptionsCatalog>()
