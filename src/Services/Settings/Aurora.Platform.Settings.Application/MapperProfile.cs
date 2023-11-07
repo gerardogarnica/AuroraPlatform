@@ -41,6 +41,7 @@ namespace Aurora.Platform.Settings.Application
 
             CreateMap<OptionsCatalog, OptionsCatalogModel>().ForMember(d => d.OptionsId, o => o.MapFrom(o => o.Id));
             CreateMap<OptionsCatalogItemEntity, OptionsCatalogItemModel>().ForMember(d => d.ItemId, o => o.MapFrom(o => o.Id));
+            CreateMap<PagedCollection<OptionsCatalog>, PagedCollection<OptionsCatalogModel>>();
 
             // Source: command. Destination: entity.
             CreateMap<CreateOptionCommand, OptionsCatalog>()

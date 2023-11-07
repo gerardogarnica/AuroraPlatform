@@ -1,7 +1,9 @@
 ﻿using Aurora.Framework.Api;
+using Aurora.Framework.Entities;
 using Aurora.Platform.Settings.Application.Options;
 using Aurora.Platform.Settings.Application.Options.Commands.CreateOption;
 using Aurora.Platform.Settings.Application.Options.Queries.GetOptionByCode;
+using Aurora.Platform.Settings.Application.Options.Queries.GetOptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +36,26 @@ namespace Aurora.Platform.Settings.API.Controllers
                     OnlyActiveItems = onlyGetActiveItems
                 });
             if (response == null) return NoContent();
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(OptionsCatalogModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<PagedCollection<OptionsCatalogModel>>> GetList(
+            [FromQuery] PagedViewRequest viewRequest, [FromQuery] string application,
+            [FromQuery] string search, [FromQuery] bool excludeGlobals, [FromQuery] bool onlyVisibles)
+        {
+            var response = await _mediator.Send(
+                new GetOptionsQuery
+                {
+                    PagedViewRequest = viewRequest,
+                    Application = application,
+                    Search = search,
+                    ExcludeGlobals = excludeGlobals,
+                    OnlyVisibles = onlyVisibles
+                });
 
             return Ok(response);
         }
