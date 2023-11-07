@@ -1,13 +1,13 @@
-﻿using Aurora.Platform.Security.Domain.Repositories;
+﻿using Aurora.Framework.Identity;
+using Aurora.Platform.Security.Domain.Repositories;
 using AutoMapper;
 using MediatR;
-using ApplicationEntity = Aurora.Platform.Security.Domain.Entities.Application;
 
 namespace Aurora.Platform.Security.Application.Applications.Queries.GetApplications;
 
-public record GetApplicationsQuery : IRequest<IReadOnlyList<ApplicationEntity>> { }
+public record GetApplicationsQuery : IRequest<IReadOnlyList<ApplicationInfo>> { }
 
-public class GetApplicationsHandler : IRequestHandler<GetApplicationsQuery, IReadOnlyList<ApplicationEntity>>
+public class GetApplicationsHandler : IRequestHandler<GetApplicationsQuery, IReadOnlyList<ApplicationInfo>>
 {
     #region Private members
 
@@ -30,12 +30,12 @@ public class GetApplicationsHandler : IRequestHandler<GetApplicationsQuery, IRea
 
     #region IRequestHandler implementation
 
-    async Task<IReadOnlyList<ApplicationEntity>> IRequestHandler<GetApplicationsQuery, IReadOnlyList<ApplicationEntity>>.Handle(
+    async Task<IReadOnlyList<ApplicationInfo>> IRequestHandler<GetApplicationsQuery, IReadOnlyList<ApplicationInfo>>.Handle(
         GetApplicationsQuery request, CancellationToken cancellationToken)
     {
         var applications = await _applicationRepository.GetListAsync(x => x.Id == x.Id, x => x.Name);
 
-        return _mapper.Map<IReadOnlyList<ApplicationEntity>>(applications);
+        return _mapper.Map<IReadOnlyList<ApplicationInfo>>(applications);
     }
 
     #endregion

@@ -1,8 +1,8 @@
 ﻿using Aurora.Framework.Api;
+using Aurora.Framework.Identity;
 using Aurora.Platform.Security.Application.Applications.Queries.GetApplications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ApplicationEntity = Aurora.Platform.Security.Domain.Entities.Application;
 
 namespace Aurora.Platform.Security.API.Controllers
 {
@@ -21,9 +21,9 @@ namespace Aurora.Platform.Security.API.Controllers
         #endregion
 
         [HttpGet]
-        [ProducesResponseType(typeof(IReadOnlyList<ApplicationEntity>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IReadOnlyList<ApplicationInfo>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IReadOnlyList<ApplicationEntity>>> GetList()
+        public async Task<ActionResult<IReadOnlyList<ApplicationInfo>>> GetList()
         {
             var response = await _mediator.Send(new GetApplicationsQuery());
             return Ok(response);
