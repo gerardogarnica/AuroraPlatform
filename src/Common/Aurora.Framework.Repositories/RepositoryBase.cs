@@ -149,14 +149,16 @@ namespace Aurora.Framework.Repositories
 
         private void AddAuditableData()
         {
-            var userGuid = _identityHandler.UserInfo.Guid.ToString().Trim().ToUpper();
-
             foreach (var entry in _context
                 .ChangeTracker
                 .Entries()
                 .Where(x => x.Entity is AuditableEntity))
             {
                 if (entry.Entity is not AuditableEntity entity) continue;
+
+                var userGuid = "BATCH-USR";
+                if (_identityHandler.UserInfo != null)
+                    userGuid = _identityHandler.UserInfo.Guid.ToString().Trim().ToUpper();
 
                 if (entry.State == EntityState.Added)
                 {

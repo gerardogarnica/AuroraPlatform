@@ -170,6 +170,7 @@ namespace Aurora.Framework.Identity
         {
             var principal = _contextAccessor.HttpContext.User;
             if (principal == null) return null;
+            if (!principal.Claims.Any()) return null;
 
             return new UserInfo(principal.Claims.ToList());
         }
