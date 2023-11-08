@@ -37,7 +37,7 @@ public class CreateOptionHandler : IRequestHandler<CreateOptionCommand, OptionsC
         // Create option entity
         var option = _mapper.Map<OptionsCatalog>(request);
 
-        // Add option repository
+        // Add option entity to repository
         option = await _optionsRepository.AddAsync(option);
 
         // Returns option model
@@ -48,9 +48,9 @@ public class CreateOptionHandler : IRequestHandler<CreateOptionCommand, OptionsC
 
     #region Private methods
 
-    private async void CheckIfCodeIsAvailable(string code, string appCode)
+    private async void CheckIfCodeIsAvailable(string code, string application)
     {
-        var option = await _optionsRepository.GetAsync(x => x.Code.Equals(code) && x.Application.Equals(appCode));
+        var option = await _optionsRepository.GetAsync(x => x.Code.Equals(code) && x.Application.Equals(application));
         if (option != null)
             throw new OptionsCodeAlreadyExistsException(code);
     }

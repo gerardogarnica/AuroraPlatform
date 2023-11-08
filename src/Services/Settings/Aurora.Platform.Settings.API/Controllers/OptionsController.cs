@@ -2,6 +2,7 @@
 using Aurora.Framework.Entities;
 using Aurora.Platform.Settings.Application.Options;
 using Aurora.Platform.Settings.Application.Options.Commands.CreateOption;
+using Aurora.Platform.Settings.Application.Options.Commands.UpdateOption;
 using Aurora.Platform.Settings.Application.Options.Queries.GetOptionByCode;
 using Aurora.Platform.Settings.Application.Options.Queries.GetOptions;
 using MediatR;
@@ -68,6 +69,16 @@ namespace Aurora.Platform.Settings.API.Controllers
         {
             var response = await _mediator.Send(command);
             return Created(string.Empty, response);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(OptionsCatalogModel), StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<OptionsCatalogModel>> Update([FromBody] UpdateOptionCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Accepted(string.Empty, response);
         }
     }
 }

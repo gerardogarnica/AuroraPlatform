@@ -1,4 +1,5 @@
 ﻿using Aurora.Framework.Entities;
+using Aurora.Platform.Settings.Domain.Exceptions;
 
 namespace Aurora.Platform.Settings.Domain.Entities
 {
@@ -13,5 +14,12 @@ namespace Aurora.Platform.Settings.Domain.Entities
         public bool IsVisible { get; set; }
         public bool IsEditable { get; set; }
         public List<OptionsCatalogItem> Items { get; set; }
+
+        public void CheckIfIsEditable()
+        {
+            if (IsEditable) return;
+
+            throw new NonEditableOptionsCatalogException(Name);
+        }
     }
 }
