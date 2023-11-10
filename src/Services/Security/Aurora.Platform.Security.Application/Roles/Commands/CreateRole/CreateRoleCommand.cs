@@ -40,7 +40,7 @@ public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, int>
     async Task<int> IRequestHandler<CreateRoleCommand, int>.Handle(
         CreateRoleCommand request, CancellationToken cancellationToken)
     {
-        CheckIfNameIsAvailable(request.Name, request.Application);
+        await CheckIfNameIsAvailable(request.Name, request.Application);
 
         // Create role entity
         var role = _mapper.Map<Role>(request);
@@ -57,7 +57,7 @@ public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, int>
 
     #region Private methods
 
-    private async void CheckIfNameIsAvailable(string name, string application)
+    private async Task CheckIfNameIsAvailable(string name, string application)
     {
         var role = await _roleRepository.GetAsync(x => x.Name.Equals(name) && x.Application.Equals(application));
         if (role != null)
