@@ -46,8 +46,6 @@ namespace Aurora.Platform.Settings.Infrastructure.Migrations
                     Code = table.Column<string>(type: "varchar(40)", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", nullable: false),
                     Description = table.Column<string>(type: "varchar(100)", nullable: true),
-                    IsGlobal = table.Column<bool>(type: "bit", nullable: false),
-                    AppCode = table.Column<string>(type: "varchar(40)", nullable: true),
                     IsVisible = table.Column<bool>(type: "bit", nullable: false),
                     IsEditable = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -129,9 +127,8 @@ namespace Aurora.Platform.Settings.Infrastructure.Migrations
                 name: "UK_OptionsCatalog",
                 schema: "SET",
                 table: "OptionsCatalog",
-                columns: new[] { "Code", "AppCode" },
-                unique: true,
-                filter: "[AppCode] IS NOT NULL");
+                column: "Code",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UK_OptionsCatalogItem",

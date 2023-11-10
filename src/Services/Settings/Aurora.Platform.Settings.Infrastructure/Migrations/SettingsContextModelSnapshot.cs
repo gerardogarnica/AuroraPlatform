@@ -139,10 +139,6 @@ namespace Aurora.Platform.Settings.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Application")
-                        .HasColumnType("varchar(40)")
-                        .HasColumnName("AppCode");
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("varchar(40)")
@@ -156,10 +152,6 @@ namespace Aurora.Platform.Settings.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("IsEditable");
 
-                    b.Property<bool>("IsGlobal")
-                        .HasColumnType("bit")
-                        .HasColumnName("IsGlobal");
-
                     b.Property<bool>("IsVisible")
                         .HasColumnType("bit")
                         .HasColumnName("IsVisible");
@@ -172,10 +164,9 @@ namespace Aurora.Platform.Settings.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("PK_OptionsCatalog");
 
-                    b.HasIndex("Code", "Application")
+                    b.HasIndex("Code")
                         .IsUnique()
-                        .HasDatabaseName("UK_OptionsCatalog")
-                        .HasFilter("[AppCode] IS NOT NULL");
+                        .HasDatabaseName("UK_OptionsCatalog");
 
                     b.ToTable("OptionsCatalog", "SET");
                 });

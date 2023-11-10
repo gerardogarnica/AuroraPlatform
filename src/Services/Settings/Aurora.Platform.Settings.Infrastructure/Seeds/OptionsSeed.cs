@@ -9,12 +9,9 @@ namespace Aurora.Platform.Settings.Infrastructure.Seeds
 
         public void Seed(SettingsContext context)
         {
-            var globalOptions = context
-                .Options
-                .Where(x => x.IsGlobal)
-                .ToList();
+            var options = context.Options.ToList();
 
-            if (!globalOptions.Any(x => x.Code.Equals("AttributeType")))
+            if (!options.Any(x => x.Code.Equals("AttributeType")))
                 context.Options.Add(CreateAttributeTypeOption());
 
             context.SaveChanges();
@@ -27,8 +24,6 @@ namespace Aurora.Platform.Settings.Infrastructure.Seeds
                 Code = "AttributeType",
                 Name = "Attribute Types",
                 Description = "Level or scope of attribute settings.",
-                IsGlobal = true,
-                Application = string.Empty,
                 IsVisible = true,
                 IsEditable = false,
                 Items = new List<OptionsCatalogItem>

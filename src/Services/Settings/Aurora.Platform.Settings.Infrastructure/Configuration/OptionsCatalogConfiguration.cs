@@ -17,12 +17,10 @@ namespace Aurora.Platform.Settings.Infrastructure.Configuration
             builder.Property(e => e.Code).HasColumnName("Code").IsRequired().HasColumnType(SqlDataType.Code);
             builder.Property(e => e.Name).HasColumnName("Name").IsRequired().HasColumnType(SqlDataType.Name);
             builder.Property(e => e.Description).HasColumnName("Description").HasColumnType(SqlDataType.Description);
-            builder.Property(e => e.IsGlobal).HasColumnName("IsGlobal").IsRequired().HasColumnType(SqlDataType.Boolean);
-            builder.Property(e => e.Application).HasColumnName("AppCode").HasColumnType(SqlDataType.Code);
             builder.Property(e => e.IsVisible).HasColumnName("IsVisible").IsRequired().HasColumnType(SqlDataType.Boolean);
             builder.Property(e => e.IsEditable).HasColumnName("IsEditable").IsRequired().HasColumnType(SqlDataType.Boolean);
 
-            builder.HasIndex(e => new { e.Code, e.Application }).IsUnique().HasDatabaseName("UK_OptionsCatalog");
+            builder.HasIndex(e => e.Code).IsUnique().HasDatabaseName("UK_OptionsCatalog");
         }
     }
 }
