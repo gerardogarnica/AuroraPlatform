@@ -14,21 +14,27 @@ namespace Aurora.Platform.Settings.Domain.Exceptions
             : base("The record of the options catalog cannot be null.") { }
     }
 
-    public class OptionsCodeAlreadyExistsException : OptionsCatalogException
+    public class OptionCodeAlreadyExistsException : OptionsCatalogException
     {
-        public OptionsCodeAlreadyExistsException(string code)
-            : base($"The options catalog '{code}' already exists and cannot be created again.") { }
+        public OptionCodeAlreadyExistsException(string code)
+            : base($"Option catalog '{code}' already exists and cannot be created again.") { }
     }
 
-    public class InvalidOptionsCodeException : OptionsCatalogException
+    public class InvalidOptionCodeException : OptionsCatalogException
     {
-        public InvalidOptionsCodeException(string code)
-            : base($"The options catalog code '{code}' does not exist.") { }
+        public InvalidOptionCodeException(string code)
+            : base($"Option catalog code '{code}' does not exist.") { }
     }
 
-    public class NonEditableOptionsCatalogException : OptionsCatalogException
+    public class InvalidOptionItemCodeException : OptionsCatalogException
     {
-        public NonEditableOptionsCatalogException(string name)
-            : base($"The options catalog '{name}' is not editable.") { }
+        public InvalidOptionItemCodeException(string optionCode, string itemCode)
+            : base($"Item '{itemCode}' does not exist in option catalog '{optionCode}'.") { }
+    }
+
+    public class NonEditableOptionCatalogException : OptionsCatalogException
+    {
+        public NonEditableOptionCatalogException(string name)
+            : base($"Option catalog '{name}' is not editable.") { }
     }
 }

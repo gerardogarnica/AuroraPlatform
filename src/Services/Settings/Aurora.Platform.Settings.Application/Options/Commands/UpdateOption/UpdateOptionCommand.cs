@@ -64,7 +64,7 @@ public class UpdateOptionHandler : IRequestHandler<UpdateOptionCommand, OptionsC
     {
         var option = await
             _optionsRepository.GetByCodeAsync(code)
-            ?? throw new InvalidOptionsCodeException(code);
+            ?? throw new InvalidOptionCodeException(code);
 
         option.CheckIfIsEditable();
 

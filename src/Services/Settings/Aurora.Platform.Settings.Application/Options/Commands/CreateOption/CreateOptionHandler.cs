@@ -53,7 +53,7 @@ public class CreateOptionHandler : IRequestHandler<CreateOptionCommand, OptionsC
     {
         var option = await _optionsRepository.GetByCodeAsync(code);
         if (option != null)
-            throw new OptionsCodeAlreadyExistsException(code);
+            throw new OptionCodeAlreadyExistsException(code);
     }
 
     #endregion

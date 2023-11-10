@@ -17,7 +17,7 @@ namespace Aurora.Platform.Settings.Domain.Entities
         {
             if (IsEditable) return;
 
-            throw new NonEditableOptionsCatalogException(Name);
+            throw new NonEditableOptionCatalogException(Name);
         }
     }
 }

@@ -78,7 +78,7 @@ public class SaveItemHandler : IRequestHandler<SaveItemCommand, OptionsCatalogMo
     {
         var option = await
             _optionsRepository.GetByCodeAsync(code)
-            ?? throw new InvalidOptionsCodeException(code);
+            ?? throw new InvalidOptionCodeException(code);
 
         return option;
     }
