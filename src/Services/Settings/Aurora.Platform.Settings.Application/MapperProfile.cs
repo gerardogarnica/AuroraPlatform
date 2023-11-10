@@ -2,6 +2,7 @@
 using Aurora.Framework.Entities;
 using Aurora.Framework.Settings;
 using Aurora.Platform.Settings.Application.Attributes;
+using Aurora.Platform.Settings.Application.Attributes.Commands.CreateSetting;
 using Aurora.Platform.Settings.Application.Options;
 using Aurora.Platform.Settings.Application.Options.Commands.CreateOption;
 using Aurora.Platform.Settings.Application.Options.Commands.SaveItem;
@@ -45,6 +46,14 @@ namespace Aurora.Platform.Settings.Application
             CreateMap<PagedCollection<OptionsCatalog>, PagedCollection<OptionsCatalogModel>>();
 
             // Source: command. Destination: entity.
+            CreateMap<CreateSettingCommand, AttributeSetting>()
+                .ForMember(d => d.Code, o => o.MapFrom(o => o.Code != null ? o.Code.Trim() : string.Empty))
+                .ForMember(d => d.Name, o => o.MapFrom(o => o.Name != null ? o.Name.Trim() : string.Empty))
+                .ForMember(d => d.Description, o => o.MapFrom(o => o.Description != null ? o.Description.Trim() : string.Empty))
+                .ForMember(d => d.ScopeType, o => o.MapFrom(o => o.ScopeType != null ? o.ScopeType.Trim() : string.Empty))
+                .ForMember(d => d.DataType, o => o.MapFrom(o => o.DataType.ToString()))
+                .ForMember(d => d.Configuration, o => o.MapFrom(o => o.GetSettingString()));
+
             CreateMap<CreateOptionCommand, OptionsCatalog>()
                 .ForMember(d => d.Code, o => o.MapFrom(o => o.Code != null ? o.Code.Trim() : string.Empty))
                 .ForMember(d => d.Name, o => o.MapFrom(o => o.Name != null ? o.Name.Trim() : string.Empty))

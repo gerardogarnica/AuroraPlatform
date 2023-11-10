@@ -14,9 +14,15 @@ namespace Aurora.Platform.Settings.Domain.Exceptions
             : base("The record of the attribute cannot be null.") { }
     }
 
+    public class SettingCodeAlreadyExistsException : AttributeException
+    {
+        public SettingCodeAlreadyExistsException(string code, string scopeType)
+            : base($"The attribute setting code '{code}' already exists in '{scopeType}' and cannot be created again.") { }
+    }
+
     public class InvalidSettingCodeException : AttributeException
     {
         public InvalidSettingCodeException(string code)
-            : base($"The code '{code}' does not exist.") { }
+            : base($"The attribute setting code '{code}' does not exist.") { }
     }
 }

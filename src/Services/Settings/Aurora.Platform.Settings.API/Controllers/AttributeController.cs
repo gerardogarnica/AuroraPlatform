@@ -1,6 +1,7 @@
 ﻿using Aurora.Framework.Api;
 using Aurora.Framework.Entities;
 using Aurora.Platform.Settings.Application.Attributes;
+using Aurora.Platform.Settings.Application.Attributes.Commands.CreateSetting;
 using Aurora.Platform.Settings.Application.Attributes.Commands.SaveValue;
 using Aurora.Platform.Settings.Application.Attributes.Queries.GetSettingByCode;
 using Aurora.Platform.Settings.Application.Attributes.Queries.GetSettings;
@@ -51,6 +52,16 @@ namespace Aurora.Platform.Settings.API.Controllers
                 });
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(AttributeSettingModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<AttributeSettingModel>> CreateSetting([FromBody] CreateSettingCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Created(string.Empty, response);
         }
 
         [HttpGet("values/{code}")]
