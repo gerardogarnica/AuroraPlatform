@@ -4,6 +4,7 @@ using Aurora.Framework.Settings;
 using Aurora.Platform.Settings.Application.Attributes;
 using Aurora.Platform.Settings.Application.Options;
 using Aurora.Platform.Settings.Application.Options.Commands.CreateOption;
+using Aurora.Platform.Settings.Application.Options.Commands.SaveItem;
 using Aurora.Platform.Settings.Domain.Entities;
 using AutoMapper;
 using OptionsCatalogItemEntity = Aurora.Platform.Settings.Domain.Entities.OptionsCatalogItem;
@@ -49,7 +50,13 @@ namespace Aurora.Platform.Settings.Application
                 .ForMember(d => d.Name, o => o.MapFrom(o => o.Name != null ? o.Name.Trim() : string.Empty))
                 .ForMember(d => d.Description, o => o.MapFrom(o => o.Description != null ? o.Description.Trim() : string.Empty));
 
-            CreateMap<CreateOptionItem, OptionsCatalogItemEntity>();
+            CreateMap<CreateOptionItem, OptionsCatalogItemEntity>()
+                .ForMember(d => d.Code, o => o.MapFrom(o => o.Code != null ? o.Code.Trim() : string.Empty))
+                .ForMember(d => d.Description, o => o.MapFrom(o => o.Description != null ? o.Description.Trim() : string.Empty));
+
+            CreateMap<SaveItemCommand, OptionsCatalogItemEntity>()
+                .ForMember(d => d.Code, o => o.MapFrom(o => o.ItemCode != null ? o.ItemCode.Trim() : string.Empty))
+                .ForMember(d => d.Description, o => o.MapFrom(o => o.Description != null ? o.Description.Trim() : string.Empty));
         }
     }
 }

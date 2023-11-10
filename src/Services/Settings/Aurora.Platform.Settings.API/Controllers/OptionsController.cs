@@ -2,6 +2,7 @@
 using Aurora.Framework.Entities;
 using Aurora.Platform.Settings.Application.Options;
 using Aurora.Platform.Settings.Application.Options.Commands.CreateOption;
+using Aurora.Platform.Settings.Application.Options.Commands.SaveItem;
 using Aurora.Platform.Settings.Application.Options.Commands.UpdateOption;
 using Aurora.Platform.Settings.Application.Options.Queries.GetOptionByCode;
 using Aurora.Platform.Settings.Application.Options.Queries.GetOptions;
@@ -45,16 +46,13 @@ namespace Aurora.Platform.Settings.API.Controllers
         [ProducesResponseType(typeof(OptionsCatalogModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PagedCollection<OptionsCatalogModel>>> GetList(
-            [FromQuery] PagedViewRequest viewRequest, [FromQuery] string application,
-            [FromQuery] string search, [FromQuery] bool excludeGlobals, [FromQuery] bool onlyVisibles)
+            [FromQuery] PagedViewRequest viewRequest, [FromQuery] string search, [FromQuery] bool onlyVisibles)
         {
             var response = await _mediator.Send(
                 new GetOptionsQuery
                 {
                     PagedViewRequest = viewRequest,
-                    Application = application,
                     Search = search,
-                    ExcludeGlobals = excludeGlobals,
                     OnlyVisibles = onlyVisibles
                 });
 
@@ -79,6 +77,16 @@ namespace Aurora.Platform.Settings.API.Controllers
         {
             var response = await _mediator.Send(command);
             return Accepted(string.Empty, response);
+        }
+
+        [HttpPost("item")]
+        [ProducesResponseType(typeof(OptionsCatalogItem), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<OptionsCatalogItem>> SaveItem([FromBody] SaveItemCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Created(string.Empty, response);
         }
     }
 }

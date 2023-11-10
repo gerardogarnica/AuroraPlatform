@@ -19,9 +19,8 @@ namespace Aurora.Platform.Settings.Application.Options.Commands.CreateOption
             RuleFor(p => p.Description)
                 .MaximumLength(100).WithMessage("The maximum description length is 100 characters.");
 
-            RuleFor(p => p.Application)
-                .NotEmpty().WithMessage("Application code is required.")
-                .MaximumLength(40).WithMessage("The maximum application code length is 40 characters.");
+            RuleFor(p => p.Items)
+                .Must(p => p.Any()).WithMessage("The option must have at least one element.");
         }
     }
 }

@@ -20,10 +20,10 @@ namespace Aurora.Platform.Settings.Domain.Exceptions
             : base($"The options catalog '{code}' already exists and cannot be created again.") { }
     }
 
-    public class InvalidOptionsIdentifierException : OptionsCatalogException
+    public class InvalidOptionsCodeException : OptionsCatalogException
     {
-        public InvalidOptionsIdentifierException(int optionsId)
-            : base($"The options catalog ID '{optionsId}' does not exist.") { }
+        public InvalidOptionsCodeException(string code)
+            : base($"The options catalog code '{code}' does not exist.") { }
     }
 
     public class NonEditableOptionsCatalogException : OptionsCatalogException

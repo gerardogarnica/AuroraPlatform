@@ -8,7 +8,7 @@ namespace Aurora.Platform.Settings.Application.Options.Commands.UpdateOption;
 
 public record UpdateOptionCommand : IRequest<OptionsCatalogModel>
 {
-    public int OptionsId { get; init; }
+    public string Code { get; init; }
     public string Name { get; init; }
     public string Description { get; init; }
     public bool IsVisible { get; init; }
@@ -42,7 +42,7 @@ public class UpdateOptionHandler : IRequestHandler<UpdateOptionCommand, OptionsC
         UpdateOptionCommand request, CancellationToken cancellationToken)
     {
         // Get option
-        var option = await GetOptionAsync(request.OptionsId);
+        var option = await GetOptionAsync(request.Code);
 
         // Update option entity in repository
         option.Name = request.Name.Trim();
@@ -60,11 +60,11 @@ public class UpdateOptionHandler : IRequestHandler<UpdateOptionCommand, OptionsC
 
     #region Private methods
 
-    private async Task<OptionsCatalog> GetOptionAsync(int optionsId)
+    private async Task<OptionsCatalog> GetOptionAsync(string code)
     {
         var option = await
-            _optionsRepository.GetAsync(x => x.Id.Equals(optionsId))
-            ?? throw new InvalidOptionsIdentifierException(optionsId);
+            _optionsRepository.GetByCodeAsync(code)
+            ?? throw new InvalidOptionsCodeException(code);
 
         option.CheckIfIsEditable();
 
