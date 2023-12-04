@@ -8,7 +8,8 @@ namespace Aurora.Framework.Settings
 
         public AttributeSettingBase(string xmlSetting)
         {
-            XDocument = XDocument.Parse(xmlSetting);
+            if (!string.IsNullOrWhiteSpace(xmlSetting))
+                XDocument = XDocument.Parse(xmlSetting);
         }
 
         public abstract string GetSettingWrapper();

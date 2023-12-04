@@ -17,7 +17,7 @@ namespace Aurora.Platform.Settings.Domain.Exceptions
     public class SettingCodeAlreadyExistsException : AttributeException
     {
         public SettingCodeAlreadyExistsException(string code, string scopeType)
-            : base($"The attribute setting code '{code}' already exists in '{scopeType}' and cannot be created again.") { }
+            : base($"The attribute setting code '{code}' already exists in '{scopeType}' scope and cannot be created again.") { }
     }
 
     public class InvalidSettingCodeException : AttributeException
