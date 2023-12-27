@@ -6,7 +6,21 @@
     <Nullable>disable</Nullable>
     <RootNamespace>Aurora.Framework</RootNamespace>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <Authors>Aurora Soft</Authors>
+    <Company>Aurora Soft</Company>
+    <Version>1.0.0</Version>
+    <Product>Aurora Framework</Product>
+    <Description>Base library of common Aurora Platform components for Aurora Soft products.</Description>
+    <PackageIcon>aurorasoftico.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\aurorasoftico.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
