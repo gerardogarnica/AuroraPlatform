@@ -1,15 +1,18 @@
 ﻿using Aurora.Framework;
 using Aurora.Framework.Entities;
 using Aurora.Framework.Settings;
-using Aurora.Platform.Settings.Application.Attributes;
 using Aurora.Platform.Settings.Application.Attributes.Commands.CreateSetting;
-using Aurora.Platform.Settings.Application.Options;
 using Aurora.Platform.Settings.Application.Options.Commands.CreateOption;
 using Aurora.Platform.Settings.Application.Options.Commands.SaveItem;
-using Aurora.Platform.Settings.Domain.Entities;
 using AutoMapper;
+using AttributeSettingEntity = Aurora.Platform.Settings.Domain.Entities.AttributeSetting;
+using AttributeSettingModel = Aurora.Framework.Platform.Attributes.AttributeSetting;
+using AttributeValueEntity = Aurora.Platform.Settings.Domain.Entities.AttributeValue;
+using AttributeValueModel = Aurora.Framework.Platform.Attributes.AttributeValue;
+using OptionsCatalogEntity = Aurora.Platform.Settings.Domain.Entities.OptionsCatalog;
 using OptionsCatalogItemEntity = Aurora.Platform.Settings.Domain.Entities.OptionsCatalogItem;
-using OptionsCatalogItemModel = Aurora.Platform.Settings.Application.Options.OptionsCatalogItem;
+using OptionsCatalogItemModel = Aurora.Framework.Platform.Options.OptionsCatalogItem;
+using OptionsCatalogModel = Aurora.Framework.Platform.Options.OptionsCatalog;
 
 namespace Aurora.Platform.Settings.Application
 {
@@ -18,7 +21,7 @@ namespace Aurora.Platform.Settings.Application
         public MapperProfile()
         {
             // Source: entity. Destination: view model.
-            CreateMap<AttributeSetting, AttributeSettingModel>()
+            CreateMap<AttributeSettingEntity, AttributeSettingModel>()
                 .ForMember(d => d.AttributeId, o => o.MapFrom(o => o.Id))
                 .ForMember(d => d.BooleanSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Boolean.ToString() ? new BooleanAttributeSetting(o.Configuration) : null))
                 .ForMember(d => d.IntegerSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Integer.ToString() ? new IntegerAttributeSetting(o.Configuration) : null))
@@ -27,9 +30,9 @@ namespace Aurora.Platform.Settings.Application
                 .ForMember(d => d.OptionsSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Options.ToString() ? new OptionsAttributeSetting(o.Configuration) : null))
                 .ForMember(d => d.TextSetting, o => o.MapFrom(o => o.DataType == AuroraDataType.Text.ToString() ? new TextAttributeSetting(o.Configuration) : null));
 
-            CreateMap<PagedCollection<AttributeSetting>, PagedCollection<AttributeSettingModel>>();
+            CreateMap<PagedCollection<AttributeSettingEntity>, PagedCollection<AttributeSettingModel>>();
 
-            CreateMap<AttributeValue, AttributeValueModel>()
+            CreateMap<AttributeValueEntity, AttributeValueModel>()
                 .ForMember(d => d.AttributeId, o => o.MapFrom(o => o.Id))
                 .ForMember(d => d.Code, o => o.MapFrom(o => o.AttributeSetting.Code))
                 .ForMember(d => d.DataType, o => o.MapFrom(o => o.AttributeSetting.DataType))
@@ -41,12 +44,12 @@ namespace Aurora.Platform.Settings.Application
                 .ForMember(d => d.OptionsValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Options.ToString() ? new OptionsAttributeValue(o.Value) : null))
                 .ForMember(d => d.TextValue, o => o.MapFrom(o => o.AttributeSetting.DataType == AuroraDataType.Text.ToString() ? new TextAttributeValue(o.Value) : null));
 
-            CreateMap<OptionsCatalog, OptionsCatalogModel>().ForMember(d => d.OptionsId, o => o.MapFrom(o => o.Id));
+            CreateMap<OptionsCatalogEntity, OptionsCatalogModel>().ForMember(d => d.OptionsId, o => o.MapFrom(o => o.Id));
             CreateMap<OptionsCatalogItemEntity, OptionsCatalogItemModel>().ForMember(d => d.ItemId, o => o.MapFrom(o => o.Id));
-            CreateMap<PagedCollection<OptionsCatalog>, PagedCollection<OptionsCatalogModel>>();
+            CreateMap<PagedCollection<OptionsCatalogEntity>, PagedCollection<OptionsCatalogModel>>();
 
             // Source: command. Destination: entity.
-            CreateMap<CreateSettingCommand, AttributeSetting>()
+            CreateMap<CreateSettingCommand, AttributeSettingEntity>()
                 .ForMember(d => d.Code, o => o.MapFrom(o => o.Code != null ? o.Code.Trim() : string.Empty))
                 .ForMember(d => d.Name, o => o.MapFrom(o => o.Name != null ? o.Name.Trim() : string.Empty))
                 .ForMember(d => d.Description, o => o.MapFrom(o => o.Description != null ? o.Description.Trim() : string.Empty))
@@ -54,7 +57,7 @@ namespace Aurora.Platform.Settings.Application
                 .ForMember(d => d.DataType, o => o.MapFrom(o => o.DataType.ToString()))
                 .ForMember(d => d.Configuration, o => o.MapFrom(o => o.GetSettingString()));
 
-            CreateMap<CreateOptionCommand, OptionsCatalog>()
+            CreateMap<CreateOptionCommand, OptionsCatalogEntity>()
                 .ForMember(d => d.Code, o => o.MapFrom(o => o.Code != null ? o.Code.Trim() : string.Empty))
                 .ForMember(d => d.Name, o => o.MapFrom(o => o.Name != null ? o.Name.Trim() : string.Empty))
                 .ForMember(d => d.Description, o => o.MapFrom(o => o.Description != null ? o.Description.Trim() : string.Empty));

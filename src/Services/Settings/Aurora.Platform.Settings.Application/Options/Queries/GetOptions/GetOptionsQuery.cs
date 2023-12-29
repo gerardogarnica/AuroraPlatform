@@ -5,6 +5,7 @@ using Aurora.Platform.Settings.Domain.Repositories;
 using AutoMapper;
 using MediatR;
 using System.Linq.Expressions;
+using OptionsCatalogModel = Aurora.Framework.Platform.Options.OptionsCatalog;
 
 namespace Aurora.Platform.Settings.Application.Options.Queries.GetOptions;
 

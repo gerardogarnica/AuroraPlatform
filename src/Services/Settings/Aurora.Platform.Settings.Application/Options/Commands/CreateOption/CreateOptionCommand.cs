@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using OptionsCatalogModel = Aurora.Framework.Platform.Options.OptionsCatalog;
 
 namespace Aurora.Platform.Settings.Application.Options.Commands.CreateOption;
 

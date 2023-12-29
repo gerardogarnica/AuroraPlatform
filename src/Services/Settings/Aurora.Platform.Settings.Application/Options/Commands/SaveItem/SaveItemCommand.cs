@@ -3,6 +3,7 @@ using Aurora.Platform.Settings.Domain.Exceptions;
 using Aurora.Platform.Settings.Domain.Repositories;
 using AutoMapper;
 using MediatR;
+using OptionsCatalogModel = Aurora.Framework.Platform.Options.OptionsCatalog;
 
 namespace Aurora.Platform.Settings.Application.Options.Commands.SaveItem;
 
