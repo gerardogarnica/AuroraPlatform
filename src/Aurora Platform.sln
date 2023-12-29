@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aurora.Framework.Cryptograp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aurora.Framework.Logging", "Common\Aurora.Framework.Logging\Aurora.Framework.Logging.csproj", "{C5897498-905A-4F45-8A81-7390BCEFB5CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aurora.Framework.Platform", "Common\Aurora.Framework.Platform\Aurora.Framework.Platform.csproj", "{F46E1230-89C9-4C2C-A5EA-83B01E069D17}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aurora.Framework.Repositories", "Common\Aurora.Framework.Repositories\Aurora.Framework.Repositories.csproj", "{92971233-7A4B-41FF-8D6C-DA73662EB7B5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aurora.Framework.Validations", "Common\Aurora.Framework.Validations\Aurora.Framework.Validations.csproj", "{02E74BEB-6A62-4C2B-92D0-210C372D0089}"
@@ -125,6 +127,10 @@ Global
 		{93531877-E5DB-4E8D-BA94-EBC601CCC96A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93531877-E5DB-4E8D-BA94-EBC601CCC96A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93531877-E5DB-4E8D-BA94-EBC601CCC96A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F46E1230-89C9-4C2C-A5EA-83B01E069D17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F46E1230-89C9-4C2C-A5EA-83B01E069D17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F46E1230-89C9-4C2C-A5EA-83B01E069D17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F46E1230-89C9-4C2C-A5EA-83B01E069D17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +155,7 @@ Global
 		{F64F19E0-5EA2-4349-BAE5-C98CED09A8C2} = {B08AC877-5366-4404-95E9-CD7D273B65F6}
 		{38B4BB90-86B5-4341-BA2D-6424FD08B786} = {B08AC877-5366-4404-95E9-CD7D273B65F6}
 		{93531877-E5DB-4E8D-BA94-EBC601CCC96A} = {E6B601F6-40F6-4E3D-AC1E-321535AFA613}
+		{F46E1230-89C9-4C2C-A5EA-83B01E069D17} = {DA438FED-1EA7-4EEA-AF3A-7400D8F07E42}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D05D69AA-B5E0-4BA2-95CC-41BFA1277990}
