@@ -1,76 +1,68 @@
 ﻿using Aurora.Framework;
 using Aurora.Framework.Settings;
 using Aurora.Platform.Settings.Domain.Entities;
+using AttributeSettingModel = Aurora.Framework.Platform.Attributes.AttributeSetting;
 
 namespace Aurora.Platform.Settings.Application.Attributes
 {
-    public class AttributeSettingModel : AuroraAttributeSetting
+    public static class AttributeSettingExtensions
     {
-        public int AttributeId { get; set; }
-        public string Code { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string ScopeType { get; set; }
-        public bool IsVisible { get; set; }
-        public bool IsEditable { get; set; }
-        public bool IsActive { get; set; }
-
-        public AttributeValue GetDefaultAttributeValue(AttributeSetting setting, int relationshipId)
+        public static AttributeValue GetDefaultAttributeValue(this AttributeSetting setting, AttributeSettingModel settingModel, int relationshipId)
         {
             return new AttributeValue()
             {
-                Id = AttributeId,
+                Id = settingModel.AttributeId,
                 RelationshipId = relationshipId,
-                Value = GetDefaultValue(),
+                Value = settingModel.GetDefaultValue(),
                 AttributeSetting = setting
             };
         }
 
-        private string GetDefaultValue()
+        private static string GetDefaultValue(this AttributeSettingModel setting)
         {
-            switch (DataType)
+            switch (setting.DataType)
             {
                 case AuroraDataType.Boolean:
                     var booleanValue = new BooleanAttributeValue()
                     {
-                        Value = BooleanSetting.DefaultValue
+                        Value = setting.BooleanSetting.DefaultValue
                     };
                     return booleanValue.GetValueWrapper();
 
                 case AuroraDataType.Integer:
                     var integerValue = new IntegerAttributeValue()
                     {
-                        Value = IntegerSetting.DefaultValue
+                        Value = setting.IntegerSetting.DefaultValue
                     };
-                    return integerValue.GetValueWrapper(IntegerSetting);
+                    return integerValue.GetValueWrapper(setting.IntegerSetting);
 
                 case AuroraDataType.Money:
                     var moneyValue = new MoneyAttributeValue()
                     {
-                        Value = MoneySetting.DefaultValue
+                        Value = setting.MoneySetting.DefaultValue
                     };
-                    return moneyValue.GetValueWrapper(MoneySetting);
+                    return moneyValue.GetValueWrapper(setting.MoneySetting);
 
                 case AuroraDataType.Numeric:
                     var numericValue = new NumericAttributeValue()
                     {
-                        Value = NumericSetting.DefaultValue
+                        Value = setting.NumericSetting.DefaultValue
                     };
-                    return numericValue.GetValueWrapper(NumericSetting);
+                    return numericValue.GetValueWrapper(setting.NumericSetting);
 
                 case AuroraDataType.Options:
                     var optionListValue = new OptionsAttributeValue()
                     {
-                        ItemCodes = OptionsSetting.DefaultItemCodes
+                        ItemCodes = setting.OptionsSetting.DefaultItemCodes
                     };
-                    return optionListValue.GetValueWrapper(OptionsSetting);
+                    return optionListValue.GetValueWrapper(setting.OptionsSetting);
 
                 case AuroraDataType.Text:
                     var textValue = new TextAttributeValue()
                     {
-                        Value = TextSetting.DefaultValue
+                        Value = setting.TextSetting.DefaultValue
                     };
-                    return textValue.GetValueWrapper(TextSetting);
+                    return textValue.GetValueWrapper(setting.TextSetting);
 
                 default:
                     return string.Empty;

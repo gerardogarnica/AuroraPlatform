@@ -1,5 +1,6 @@
 ﻿using Aurora.Framework.Settings;
 using MediatR;
+using AttributeValueModel = Aurora.Framework.Platform.Attributes.AttributeValue;
 
 namespace Aurora.Platform.Settings.Application.Attributes.Commands.SaveValue;
 

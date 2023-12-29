@@ -3,6 +3,7 @@ using Aurora.Platform.Settings.Domain.Exceptions;
 using Aurora.Platform.Settings.Domain.Repositories;
 using AutoMapper;
 using MediatR;
+using AttributeSettingModel = Aurora.Framework.Platform.Attributes.AttributeSetting;
 
 namespace Aurora.Platform.Settings.Application.Attributes.Commands.CreateSetting;
 

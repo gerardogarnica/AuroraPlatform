@@ -1,6 +1,5 @@
 ﻿using Aurora.Framework.Api;
 using Aurora.Framework.Entities;
-using Aurora.Platform.Settings.Application.Attributes;
 using Aurora.Platform.Settings.Application.Attributes.Commands.CreateSetting;
 using Aurora.Platform.Settings.Application.Attributes.Commands.SaveValue;
 using Aurora.Platform.Settings.Application.Attributes.Queries.GetSettingByCode;
@@ -9,6 +8,8 @@ using Aurora.Platform.Settings.Application.Attributes.Queries.GetValueByCode;
 using Aurora.Platform.Settings.Application.Attributes.Queries.GetValues;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using AttributeSettingModel = Aurora.Framework.Platform.Attributes.AttributeSetting;
+using AttributeValueModel = Aurora.Framework.Platform.Attributes.AttributeValue;
 
 namespace Aurora.Platform.Settings.API.Controllers
 {

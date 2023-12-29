@@ -1,6 +1,8 @@
 ﻿using Aurora.Platform.Settings.Domain.Repositories;
 using AutoMapper;
 using MediatR;
+using AttributeSettingModel = Aurora.Framework.Platform.Attributes.AttributeSetting;
+using AttributeValueModel = Aurora.Framework.Platform.Attributes.AttributeValue;
 
 namespace Aurora.Platform.Settings.Application.Attributes.Queries.GetValueByCode;
 
@@ -53,7 +55,7 @@ public class GetValueByCodeHandler : IRequestHandler<GetValueByCodeQuery, Attrib
             if (settingModel == null) return null;
 
             // Get default value
-            value = settingModel.GetDefaultAttributeValue(setting, request.RelationshipId);
+            value = setting.GetDefaultAttributeValue(settingModel, request.RelationshipId);
         }
 
         // Returns value model

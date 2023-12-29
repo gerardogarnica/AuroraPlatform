@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Aurora.Framework.Platform\Aurora.Framework.Platform.csproj" />
     <ProjectReference Include="..\..\..\Common\Aurora.Framework.Validations\Aurora.Framework.Validations.csproj" />
     <ProjectReference Include="..\Aurora.Platform.Settings.Domain\Aurora.Platform.Settings.Domain.csproj" />
   </ItemGroup>

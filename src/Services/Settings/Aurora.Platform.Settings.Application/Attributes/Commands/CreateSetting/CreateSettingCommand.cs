@@ -1,5 +1,6 @@
 ﻿using Aurora.Framework.Settings;
 using MediatR;
+using AttributeSettingModel = Aurora.Framework.Platform.Attributes.AttributeSetting;
 
 namespace Aurora.Platform.Settings.Application.Attributes.Commands.CreateSetting;
 
