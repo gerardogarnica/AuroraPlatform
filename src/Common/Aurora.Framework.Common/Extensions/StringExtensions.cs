@@ -48,5 +48,10 @@ namespace Aurora.Framework
 
             return null;
         }
+
+        public static string Truncate(this string value, int length)
+        {
+            return value.Length > length ? value.Substring(0, length) : value;
+        }
     }
 }
