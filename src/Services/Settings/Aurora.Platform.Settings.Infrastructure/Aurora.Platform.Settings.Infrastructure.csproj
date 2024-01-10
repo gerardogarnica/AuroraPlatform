@@ -18,4 +18,13 @@
     <ProjectReference Include="..\Aurora.Platform.Settings.Domain\Aurora.Platform.Settings.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Seeds\Data\attributes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Seeds\Data\options.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

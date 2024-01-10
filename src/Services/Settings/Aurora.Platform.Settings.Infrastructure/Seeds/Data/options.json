@@ -1,0 +1,29 @@
+[
+  {
+    "Code": "AttributeType",
+    "Name": "Attribute Types",
+    "Description": "Level or scope of attribute settings.",
+    "IsVisible": true,
+    "IsEditable": false,
+    "Items": [
+      {
+        "Code": "Security",
+        "Description": "Global security attributes.",
+        "IsEditable": false,
+        "IsActive": true
+      },
+      {
+        "Code": "Contact",
+        "Description": "Contact attributes.",
+        "IsEditable": true,
+        "IsActive": true
+      },
+      {
+        "Code": "ProductItem",
+        "Description": "Product item attributes.",
+        "IsEditable": true,
+        "IsActive": true
+      }
+    ]
+  }
+]
